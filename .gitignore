@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+.idea/
+.kotlin/
+app/src/androidTest/
+app/src/test/
+.gitignore.bak

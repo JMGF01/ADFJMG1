@@ -11,14 +11,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 /**
- *
  *  SI TU IMC ESTÁ POR DEBAJO DE 16, TU IMC ES DESNUTRIDO
  *  SI TU IMC ES MAYOR O IGUAL A 16 Y MENOR QUE 18 --> DELGADO
  *  SI TU IMC ES MAYOR O IGUAL A 18 Y MENOR QUE 25 --> IDEAL
  *  SI TU IMC ES MAYOR O IGUAL A 25 Y MENOR QUE 31 --> SOBREPESO
  *  SI TU IMC ES MAYOR O IGUAL QUE 31 --> OBESO
  */
-
 // TODO: Pasar del valor número al valor nominal --> ESTÁS IDEAL
 
 class ImcActivity : AppCompatActivity() {
@@ -36,9 +34,8 @@ class ImcActivity : AppCompatActivity() {
         }
     }
 
-    fun calcularImc(view: View) {
-        // TODO hacer el cálculo del IMC
-        // TODO MODIFICAR EL CÓDIGO PARA QUE AL TOAST LE ACOMPAÑE LA INFO DEL NÚMERO DE VECES QUE TOCA EL BOTÓN DE USUARIO.
+    fun calcularImc(view: View)
+    {
         Log.d("MiImcActivity","El usuario ha tocado el botón de calcular IMC")
         // creamos la notificación/mensaje
         //informarNumVecesBoton()
@@ -60,6 +57,10 @@ class ImcActivity : AppCompatActivity() {
         //finishAffinity()
     }
 
+    /**
+     * Obtiene el peso y lo devuelve.
+     * @return peso: El peso obtenido.
+     */
     fun obtenerPeso(): Float
     {
         // obtiene el peso y lo devuelve
@@ -73,9 +74,12 @@ class ImcActivity : AppCompatActivity() {
         return peso
     }
 
+    /**
+     * Obtiene la altura y la devuelve.
+     * @return altura: la altura obtenida.
+     */
     fun obtenerAltura(): Float
     {
-        // obtiene la altura y la devuelve
         var altura:Float = 0f
         val editTextAltura: EditText = findViewById<EditText>(R.id.editTextNumberDecimalAltura)
         altura = editTextAltura.text.toString().toFloat()
@@ -83,10 +87,10 @@ class ImcActivity : AppCompatActivity() {
     }
 
     /**
-     * Delvuelve el cálculo de IMC usando la fórmula peso / altura * altura
-     * @param peso: el peso
-     * @param altura: la altura
-     * @return el IMC calculado
+     * Delvuelve el cálculo de IMC usando la fórmula: peso / altura * altura
+     * @param peso: el peso.
+     * @param altura: la altura.
+     * @return imc: el IMC calculado.
      */
     fun obtenerImc(peso:Float, altura:Float): Float // PARÁMETROS FORMALES
     {
@@ -96,12 +100,39 @@ class ImcActivity : AppCompatActivity() {
         return imc
     }
 
+    /**
+     * Muestra y evalúa el IMC formateado a 2 decimales a través de un Toast
+     * @param imc: el IMC previamente calculado
+     */
     fun mostrarResultado(imc:Float)
     {
-        var resultadoImc = Toast.makeText(this, "Su IMC es $imc", Toast.LENGTH_LONG)
+        /**
+         *  SI TU IMC ESTÁ POR DEBAJO DE 16, TU IMC ES DESNUTRIDO
+         *  SI TU IMC ES MAYOR O IGUAL A 16 Y MENOR QUE 18 --> DELGADO
+         *  SI TU IMC ES MAYOR O IGUAL A 18 Y MENOR QUE 25 --> IDEAL
+         *  SI TU IMC ES MAYOR O IGUAL A 25 Y MENOR QUE 31 --> SOBREPESO
+         *  SI TU IMC ES MAYOR O IGUAL QUE 31 --> OBESO
+         */
+        var evaluacionIMC:String = ""
+        // formateo del IMC a dos decimales
+        var imcFormateado:String = String.format("%.2f", imc)
+
+        when (imc) {
+            in 0f..16f -> evaluacionIMC = "¡ESTÁS DESNUTRIDO!"
+            in 16f..18f -> evaluacionIMC= "¡ESTÁS DELGADO!"
+            in 18f..25f -> evaluacionIMC = "¡ESTÁS IDEAL!"
+            in 25f..31f -> evaluacionIMC = "¡TIENES SOBREPESO!"
+            in 31f..Float.MAX_VALUE -> evaluacionIMC = "¡ESTÁS OBESO!"
+            else -> evaluacionIMC = "¡ESTÁS FUERA DE RANGO!"
+        }
+
+        var resultadoImc = Toast.makeText(this, "Su IMC es $imcFormateado $evaluacionIMC", Toast.LENGTH_LONG)
         resultadoImc.show()
     }
 
+    /**
+     * Muestra con un Toast el número de veces que el usuario pulsa el botón de calcular.
+     */
     fun informarNumVecesBoton()
     {
         numeroVecesBoton = ++numeroVecesBoton
