@@ -63,7 +63,6 @@ class ImcActivity : AppCompatActivity() {
      */
     fun obtenerPeso(): Float
     {
-        // obtiene el peso y lo devuelve
         // uso var cuando la variable declarada puede cambiar su valor después (mutable)
         var peso:Float = 0f //Inicializo la variable
         //obtengo el peso de la caja
@@ -118,10 +117,10 @@ class ImcActivity : AppCompatActivity() {
         var imcFormateado:String = String.format("%.2f", imc)
 
         when (imc) {
-            in 0f..16f -> evaluacionIMC = "¡ESTÁS DESNUTRIDO!"
-            in 16f..18f -> evaluacionIMC= "¡ESTÁS DELGADO!"
-            in 18f..25f -> evaluacionIMC = "¡ESTÁS IDEAL!"
-            in 25f..31f -> evaluacionIMC = "¡TIENES SOBREPESO!"
+            in 0f..15f -> evaluacionIMC = "¡ESTÁS DESNUTRIDO!"
+            in 16f..17f -> evaluacionIMC= "¡ESTÁS DELGADO!"
+            in 18f..24f -> evaluacionIMC = "¡ESTÁS IDEAL!"
+            in 25f..30f -> evaluacionIMC = "¡TIENES SOBREPESO!"
             in 31f..Float.MAX_VALUE -> evaluacionIMC = "¡ESTÁS OBESO!"
             else -> evaluacionIMC = "¡ESTÁS FUERA DE RANGO!"
         }
