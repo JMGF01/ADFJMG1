@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.util.Locale
 
 /**
  *  SI TU IMC ESTÁ POR DEBAJO DE 16, TU IMC ES DESNUTRIDO
@@ -25,6 +26,7 @@ class ImcActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Locale.setDefault(Locale.US)
         enableEdgeToEdge()
         setContentView(R.layout.activity_imc)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -116,7 +118,7 @@ class ImcActivity : AppCompatActivity() {
         // formateo del IMC a dos decimales
         var imcFormateado:String = String.format("%.2f", imc)
 
-        when (imc) {
+        when (imcFormateado.toFloat()) {
             in 0f..15.99f -> evaluacionIMC = "¡ESTÁS DESNUTRIDO!"
             in 16.0f..17.99f -> evaluacionIMC= "¡ESTÁS DELGADO!"
             in 18.0f..24.99f -> evaluacionIMC = "¡ESTÁS IDEAL!"
