@@ -117,11 +117,11 @@ class ImcActivity : AppCompatActivity() {
         var imcFormateado:String = String.format("%.2f", imc)
 
         when (imc) {
-            in 0f..15f -> evaluacionIMC = "¡ESTÁS DESNUTRIDO!"
-            in 16f..17f -> evaluacionIMC= "¡ESTÁS DELGADO!"
-            in 18f..24f -> evaluacionIMC = "¡ESTÁS IDEAL!"
-            in 25f..30f -> evaluacionIMC = "¡TIENES SOBREPESO!"
-            in 31f..Float.MAX_VALUE -> evaluacionIMC = "¡ESTÁS OBESO!"
+            in 0f..15.99f -> evaluacionIMC = "¡ESTÁS DESNUTRIDO!"
+            in 16.0f..17.99f -> evaluacionIMC= "¡ESTÁS DELGADO!"
+            in 18.0f..24.99f -> evaluacionIMC = "¡ESTÁS IDEAL!"
+            in 25.0f..30.99f -> evaluacionIMC = "¡TIENES SOBREPESO!"
+            in 31.0f..Float.MAX_VALUE -> evaluacionIMC = "¡ESTÁS OBESO!"
             else -> evaluacionIMC = "¡ESTÁS FUERA DE RANGO!"
         }
 
