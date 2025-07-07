@@ -127,8 +127,38 @@ class ImcActivity : AppCompatActivity() {
             else -> evaluacionIMC = "¡ESTÁS FUERA DE RANGO!"
         }
 
-        var resultadoImc = Toast.makeText(this, "Su IMC es $imcFormateado $evaluacionIMC", Toast.LENGTH_LONG)
+        var resultadoImc = Toast.makeText(this, "Su IMC es $imcFormateado \n $evaluacionIMC", Toast.LENGTH_LONG)
         resultadoImc.show()
+    }
+
+    /**
+     * Muestra y evalúa el IMC formateado a 2 decimales a través de un Toast,
+     * utilizando estructuras if
+     * @param resultado: el IMC calculado previamente.
+     * @return la evaluación del IMC
+     */
+    fun traducirResultadoImcVersionIF(resultado:Float):String
+    {
+        var imcResultado:String = ""
+
+        //TODO completar el cuerpo de la función o con IF o con WHEN
+        if (resultado<16) {
+            imcResultado = "DESNUTRIDO"
+        } else if (resultado>=16 && resultado<18)
+        {
+            imcResultado = "DELGADO"
+        } else if (resultado>=18 && resultado <25)
+        {
+            imcResultado = "IDEAL"
+        } else if (resultado>=25 && resultado<31)
+        {
+            imcResultado = "SOBREPESO"
+        } else if (resultado>=31)
+        {
+            imcResultado = "OBESO"
+        }
+
+        return imcResultado
     }
 
     /**
