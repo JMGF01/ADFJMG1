@@ -20,7 +20,6 @@ import java.util.Locale
  *  SI TU IMC ES MAYOR O IGUAL A 25 Y MENOR QUE 31 --> SOBREPESO
  *  SI TU IMC ES MAYOR O IGUAL QUE 31 --> OBESO
  */
-// TODO: Pasar del valor número al valor nominal --> ESTÁS IDEAL
 
 class ImcActivity : AppCompatActivity() {
 
@@ -116,24 +115,18 @@ class ImcActivity : AppCompatActivity() {
     }
 
     /**
-     * Evalua el IMC dado
+     * Evalua el IMC dado:
+     * - SI TU IMC ESTÁ POR DEBAJO DE 16 - TU IMC ES DESNUTRIDO
+     * - SI TU IMC ES MAYOR O IGUAL A 16 Y MENOR QUE 18 --> DELGADO
+     * - SI TU IMC ES MAYOR O IGUAL A 18 Y MENOR QUE 25 --> IDEAL
+     * - SI TU IMC ES MAYOR O IGUAL A 25 Y MENOR QUE 31 --> SOBREPESO
+     * - SI TU IMC ES MAYOR O IGUAL QUE 31 --> OBESO
      * @param imc el IMC a evaluar:
-     *          SI TU IMC ESTÁ POR DEBAJO DE 16, TU IMC ES DESNUTRIDO
-     *          *  SI TU IMC ES MAYOR O IGUAL A 16 Y MENOR QUE 18 --> DELGADO
-     *          *  SI TU IMC ES MAYOR O IGUAL A 18 Y MENOR QUE 25 --> IDEAL
-     *          *  SI TU IMC ES MAYOR O IGUAL A 25 Y MENOR QUE 31 --> SOBREPESO
-     *          *  SI TU IMC ES MAYOR O IGUAL QUE 31 --> OBESO
+     *
      * @return la evaluación del IMC
      */
     fun evaluarResultado(imc:Float):String
     {
-        /**
-         *  SI TU IMC ESTÁ POR DEBAJO DE 16, TU IMC ES DESNUTRIDO
-         *  SI TU IMC ES MAYOR O IGUAL A 16 Y MENOR QUE 18 --> DELGADO
-         *  SI TU IMC ES MAYOR O IGUAL A 18 Y MENOR QUE 25 --> IDEAL
-         *  SI TU IMC ES MAYOR O IGUAL A 25 Y MENOR QUE 31 --> SOBREPESO
-         *  SI TU IMC ES MAYOR O IGUAL QUE 31 --> OBESO
-         */
         var evaluacionIMC:String = ""
         // formateo del IMC a dos decimales
         var imcFormateado:String = String.format("%.2f", imc)

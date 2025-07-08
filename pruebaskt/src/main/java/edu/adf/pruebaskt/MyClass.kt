@@ -1,5 +1,7 @@
 package edu.adf.pruebaskt
 
+import kotlin.system.measureNanoTime
+
 fun main() {
 /*    val morningNotification = 51
     val eveningNotification = 135
@@ -47,25 +49,41 @@ fun main() {
 
 
     // Test ejercicio 1
+    println("*** TEST EJERCICIO 1 ***")
     println(esAdulto(14))
     println(esAdulto(18))
+    println()
 
     // Test ejercicio 2
+    println("*** TEST EJERCICIO 2 ***")
     println(resultadoNotas(0))
     println(resultadoNotas(5))
     println(resultadoNotas(6))
     println(resultadoNotas(8))
     println(resultadoNotas(10))
+    println()
 
     // Test ejercicio 3
-    println(numeroMayor(3,45,8))
-    println(numeroMayor(26,13,8))
-    println(numeroMayor(1,57,124))
+    println("*** TEST EJERCICIO 3 ***")
+    println(numeroMayor1(3,45,8))
+    println(numeroMayor1(26,13,8))
+    println(numeroMayor1(1,57,124))
+    println()
+
+    //Test rendimiento
+    println("*** PRUEBA DE RENDIMIENTO ***")
+    val tiemponumeroMayor1:Long = measureNanoTime { numeroMayor1(1,57,124) }
+    val tiemponumeroMayor2:Long = measureNanoTime { numeroMayor2(1,57,124) }
+    println("Tiempo de ejecución de numeroMayor1: $tiemponumeroMayor1 ms")
+    println("Tiempo de ejecución de numeroMayor2: $tiemponumeroMayor2 ms")
+    println()
 
     // Test ejercicio 4
+    println("*** TEST EJERCICIO 4 ***")
     println("The movie ticket price for a person aged $child is \$${ticketPrice(child, isMonday)}.")
     println("The movie ticket price for a person aged $adult is \$${ticketPrice(adult, isMonday)}.")
     println("The movie ticket price for a person aged $senior is \$${ticketPrice(senior, isMonday)}.")
+    println()
 
 }
 
@@ -162,9 +180,9 @@ https://developer.android.com/codelabs/basic-android-kotlin-compose-kotlin-funda
 */
 
 /**
- * EJERCICIO 1
- * RECIBE UNA EDAD Y DICE SI ES MAYOR DE EDAD O NO
- * @param age la edad
+ * EJERCICIO 1 -
+ * RECIBE UNA EDAD Y DICE SI ES MAYOR DE EDAD (+18) O NO
+ * @param age la edad a evaluar
  * @return string indicando si es mayor o menor de edad
  */
 fun esAdulto(age:Int):String
@@ -180,8 +198,14 @@ fun esAdulto(age:Int):String
 }
 
 /**
- * EJERCICIO 2
+ * EJERCICIO 2 -
  * RECIBE UNA NOTA NUMÉRICA Y DICE LA NOMINAL CORRESPONDIENTE
+ * BASÁNDOSE EN ESTE RANGO:
+ *   - 0-4 SUSPENSO
+ *   - 5- APROBADO
+ *   - 6 - BIEN
+ *   - 7, 8 - NOTABLE
+ *   - 9, 10 - SOBRESALIENTE
  * @param nota la nota a evaluar
  * @return la evaluación de la nota
  */
@@ -202,14 +226,14 @@ fun resultadoNotas(nota:Int):String
 }
 
 /**
- * EJERCICIO 3
+ * EJERCICIO 3 -
  * RECIBE 3 NÚMEROS Y DICE CUÁL ES EL MAYOR
  * @param num1 primer número
  * @param num2 segundo número
  * @param num3 tercer número
  * @return devuelve el número mayor
  */
-fun numeroMayor(num1:Int, num2:Int, num3:Int):Int
+fun numeroMayor1(num1:Int, num2:Int, num3:Int):Int
 {
     var numMayor:Int = num3
 
@@ -224,8 +248,13 @@ fun numeroMayor(num1:Int, num2:Int, num3:Int):Int
     return numMayor
 }
 
+fun numeroMayor2(num1:Int, num2: Int, num3: Int):Int
+{
+    return maxOf(num1, num2, num3)
+}
+
 /**
- * EJERCICIO 4
+ * EJERCICIO 4 -
  * Función que recibe una edad y si es lunes,y devuelve un valor de entrada de cine
  * @param age edad
  * @param isMonday booleano que indica si es lunes
