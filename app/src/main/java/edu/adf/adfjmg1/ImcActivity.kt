@@ -1,9 +1,11 @@
 package edu.adf.adfjmg1
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -52,7 +54,19 @@ class ImcActivity : AppCompatActivity() {
         val imc:Float = obtenerImc(peso, altura)
         Log.i("MiImcActivity","Imc calculado: $peso" )
         // 4 mostrar el resultado
-        mostrarResultado(imc)
+        //mostrarResultado(imc)
+
+        //var resultadoNombre = traducirResultadoImcVersionIF(imc)
+        //val tvresultado = findViewById<TextView>(R.id.imcResultado)
+        //tvresultado.text = resultadoNombre
+        //tvresultado.visibility = View.VISIBLE
+
+        mostrarResultadoCaja(imc,evaluarResultado(imc))
+        //TODO transitar a una ventana nueva ImagenResultadoActivity
+        val intent:Intent = Intent(this, ImagenResultadoActivity::class.java) // declaración del intent para ir a la ventana nueva (parámetros: context, clase a la que ir)
+        intent.putExtra("resultado", evaluarResultado(imc))  //Aquí estoy guardando del saco
+        startActivity(intent)
+
         // cerrar la activity (si hubiera una ventana/activity apilada -detrás-, se mostraría, si no, se sale de la app.
         //finish()
         // salir de la app / cerrar todas las ventanas.
@@ -102,6 +116,41 @@ class ImcActivity : AppCompatActivity() {
     }
 
     /**
+     * Evalua el IMC dado
+     * @param imc el IMC a evaluar:
+     *          SI TU IMC ESTÁ POR DEBAJO DE 16, TU IMC ES DESNUTRIDO
+     *          *  SI TU IMC ES MAYOR O IGUAL A 16 Y MENOR QUE 18 --> DELGADO
+     *          *  SI TU IMC ES MAYOR O IGUAL A 18 Y MENOR QUE 25 --> IDEAL
+     *          *  SI TU IMC ES MAYOR O IGUAL A 25 Y MENOR QUE 31 --> SOBREPESO
+     *          *  SI TU IMC ES MAYOR O IGUAL QUE 31 --> OBESO
+     * @return la evaluación del IMC
+     */
+    fun evaluarResultado(imc:Float):String
+    {
+        /**
+         *  SI TU IMC ESTÁ POR DEBAJO DE 16, TU IMC ES DESNUTRIDO
+         *  SI TU IMC ES MAYOR O IGUAL A 16 Y MENOR QUE 18 --> DELGADO
+         *  SI TU IMC ES MAYOR O IGUAL A 18 Y MENOR QUE 25 --> IDEAL
+         *  SI TU IMC ES MAYOR O IGUAL A 25 Y MENOR QUE 31 --> SOBREPESO
+         *  SI TU IMC ES MAYOR O IGUAL QUE 31 --> OBESO
+         */
+        var evaluacionIMC:String = ""
+        // formateo del IMC a dos decimales
+        var imcFormateado:String = String.format("%.2f", imc)
+
+        when (imcFormateado.toFloat()) {
+            in 0f..15.99f -> evaluacionIMC = "¡ESTÁS DESNUTRIDO!"
+            in 16.0f..17.99f -> evaluacionIMC= "¡ESTÁS DELGADO!"
+            in 18.0f..24.99f -> evaluacionIMC = "¡ESTÁS IDEAL!"
+            in 25.0f..30.99f -> evaluacionIMC = "¡TIENES SOBREPESO!"
+            in 31.0f..Float.MAX_VALUE -> evaluacionIMC = "¡ESTÁS OBESO!"
+            else -> evaluacionIMC = "¡ESTÁS FUERA DE RANGO!"
+        }
+
+        return evaluacionIMC
+    }
+
+    /**
      * Muestra y evalúa el IMC formateado a 2 decimales a través de un Toast
      * @param imc: el IMC previamente calculado
      */
@@ -129,6 +178,22 @@ class ImcActivity : AppCompatActivity() {
 
         var resultadoImc = Toast.makeText(this, "Su IMC es $imcFormateado \n $evaluacionIMC", Toast.LENGTH_LONG)
         resultadoImc.show()
+    }
+
+    /**
+     * Muestra un texto en una caja previamente invisible,
+     * indicando el IMC obtenido y su evaluación
+     * @param imc el IMC calculado
+     * @param evaluacionIMC la evaluación del IMC
+     */
+    fun mostrarResultadoCaja(imc:Float ,evaluacionIMC:String)
+    {
+        // formateo del IMC a dos decimales
+        var imcFormateado:String = String.format("%.2f", imc)
+
+        val tvresultado = findViewById<TextView>(R.id.imcResultado)
+        tvresultado.text = "Su IMC es $imcFormateado \n $evaluacionIMC"
+        tvresultado.visibility = View.VISIBLE
     }
 
     /**
