@@ -74,12 +74,18 @@ fun main() {
     println("*** PRUEBA DE RENDIMIENTO ***")
     val tiemponumeroMayor1:Long = measureNanoTime { numeroMayor1(1,57,124) }
     val tiemponumeroMayor2:Long = measureNanoTime { numeroMayor2(1,57,124) }
-    println("Tiempo de ejecución de numeroMayor1: $tiemponumeroMayor1 ms")
-    println("Tiempo de ejecución de numeroMayor2: $tiemponumeroMayor2 ms")
+    println("Tiempo de ejecución de numeroMayor1: $tiemponumeroMayor1 ns")
+    println("Tiempo de ejecución de numeroMayor2: $tiemponumeroMayor2 ns")
     println()
 
     // Test ejercicio 4
-    println("*** TEST EJERCICIO 4 ***")
+/*  println("*** TEST EJERCICIO 4 ***")
+    println("The movie ticket price for a person aged $child is \$${ticketPrice(child, isMonday)}.")
+    println("The movie ticket price for a person aged $adult is \$${ticketPrice(adult, isMonday)}.")
+    println("The movie ticket price for a person aged $senior is \$${ticketPrice(senior, isMonday)}.")
+    println()
+*/
+    println("*** TicketPrice ***")
     println("The movie ticket price for a person aged $child is \$${ticketPrice(child, isMonday)}.")
     println("The movie ticket price for a person aged $adult is \$${ticketPrice(adult, isMonday)}.")
     println("The movie ticket price for a person aged $senior is \$${ticketPrice(senior, isMonday)}.")
@@ -260,7 +266,7 @@ fun numeroMayor2(num1:Int, num2: Int, num3: Int):Int
  * @param isMonday booleano que indica si es lunes
  * @return el precio de la entrada
  */
-fun ticketPrice(age: Int, isMonday: Boolean): Int {
+fun ticketPriceIf(age: Int, isMonday: Boolean): Int {
 
     var precioEntrada:Int = -1
 
@@ -279,7 +285,31 @@ fun ticketPrice(age: Int, isMonday: Boolean): Int {
     return precioEntrada
 }
 
+/**
+ * EJERCICIO 4 -
+ * Función que recibe una edad y si es lunes,y devuelve un valor de entrada de cine
+ * @param age edad
+ * @param isMonday booleano que indica si es lunes
+ * @return el precio de la entrada
+ */
+fun ticketPrice(age: Int, isMonday: Boolean): Int {
 
+    var precioEntrada:Int = -1
+
+     when (age) {
+        in 0..12 -> precioEntrada = 15
+        in 13..60 -> {
+            if (isMonday)
+            {
+                precioEntrada = 25
+            } else
+                precioEntrada = 30
+        }
+        in 61..100 -> precioEntrada = 20
+    }
+
+    return precioEntrada
+}
 
 
 

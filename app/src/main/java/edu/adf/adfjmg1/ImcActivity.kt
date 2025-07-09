@@ -26,6 +26,7 @@ class ImcActivity : AppCompatActivity() {
     var numeroVecesBoton:Int = 0 // Para llevar la cuenta de veces que el usuario toca un botón.
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("MiImcActivity", "en OnCreate")
         super.onCreate(savedInstanceState)
         Locale.setDefault(Locale.US)
         enableEdgeToEdge()
@@ -35,6 +36,31 @@ class ImcActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("MiImcActivity", "en onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("MiImcActivity", "en onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("MiImcActivity", "en onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("MiImcActivity", "en onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("MiImcActivity", "en onDestroy")
     }
 
     fun calcularImc(view: View)
@@ -131,13 +157,22 @@ class ImcActivity : AppCompatActivity() {
         // formateo del IMC a dos decimales
         var imcFormateado:String = String.format("%.2f", imc)
 
-        when (imcFormateado.toFloat()) {
+ /*       when (imcFormateado.toFloat()) {
             in 0f..15.99f -> evaluacionIMC = "¡ESTÁS DESNUTRIDO!"
             in 16.0f..17.99f -> evaluacionIMC= "¡ESTÁS DELGADO!"
             in 18.0f..24.99f -> evaluacionIMC = "¡ESTÁS IDEAL!"
             in 25.0f..30.99f -> evaluacionIMC = "¡TIENES SOBREPESO!"
             in 31.0f..Float.MAX_VALUE -> evaluacionIMC = "¡ESTÁS OBESO!"
             else -> evaluacionIMC = "¡ESTÁS FUERA DE RANGO!"
+        }
+*/
+        when (imcFormateado.toFloat()) {
+            in 0f..15.99f -> evaluacionIMC = "DESNUTRIDO"
+            in 16.0f..17.99f -> evaluacionIMC= "DELGADO"
+            in 18.0f..24.99f -> evaluacionIMC = "IDEAL"
+            in 25.0f..30.99f -> evaluacionIMC = "SOBREPESO"
+            in 31.0f..Float.MAX_VALUE -> evaluacionIMC = "OBESO"
+            else -> evaluacionIMC = "FUERA DE RANGO"
         }
 
         return evaluacionIMC
