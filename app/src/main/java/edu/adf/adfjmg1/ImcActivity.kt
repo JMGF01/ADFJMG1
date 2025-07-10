@@ -24,6 +24,7 @@ import java.util.Locale
 class ImcActivity : AppCompatActivity() {
 
     var numeroVecesBoton:Int = 0 // Para llevar la cuenta de veces que el usuario toca un botón.
+    var resultadoNombre:String = "" //variable de ámbito global/de clase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("MiImcActivity", "en OnCreate")
@@ -31,11 +32,30 @@ class ImcActivity : AppCompatActivity() {
         Locale.setDefault(Locale.US)
         enableEdgeToEdge()
         setContentView(R.layout.activity_imc)
+        // si bundle está a null no hago nada, si es distinto de null, pillo el resultadoNombre y actualizao el valor de la caja
+        if ( savedInstanceState != null)
+        {
+            Log.d("MiImcActivity","El saco tiene cosas. La actividad viene de recrearse")
+            resultadoNombre = savedInstanceState.getString("resultadoNombre","")
+            val cajaResultado = findViewById<TextView>(R.id.imcResultado)
+            cajaResultado.text = resultadoNombre
+            cajaResultado.visibility = View.VISIBLE
+        }
+        else {
+            Log.d("MiImcActivity","La actividad se ha creado por primera vez")
+        }
+
+        // usando características "avanzadas" de kotlin
+        resultadoNombre = savedInstanceState?.getString("resultadoNombre") ?: "" //con el interrogante sólo se va a invocar si no es null
+        // ?: se llama operador Elvis (Elvis operator)
+
+        /*
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        */
     }
 
     override fun onStart() {
@@ -63,6 +83,16 @@ class ImcActivity : AppCompatActivity() {
         Log.d("MiImcActivity", "en onDestroy")
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d("MiImcActivity", "en OnSaveInstanceState")
+        //1 obtengo el nombre del resultado de la caja
+        //2 lo guardo
+        // otra opción es declarar la variable de ámbito global
+        //tengo que guardar resultadoNombre
+        outState.putString("resultadoNombre", resultadoNombre) // guardo resultadoNombre en el saco de Bundle
+    }
+
     fun calcularImc(view: View)
     {
         Log.d("MiImcActivity","El usuario ha tocado el botón de calcular IMC")
@@ -81,10 +111,10 @@ class ImcActivity : AppCompatActivity() {
         // 4 mostrar el resultado
         //mostrarResultado(imc)
 
-        //var resultadoNombre = traducirResultadoImcVersionIF(imc)
-        //val tvresultado = findViewById<TextView>(R.id.imcResultado)
-        //tvresultado.text = resultadoNombre
-        //tvresultado.visibility = View.VISIBLE
+        resultadoNombre = traducirResultadoImcVersionIF(imc)
+        val tvresultado = findViewById<TextView>(R.id.imcResultado)
+        tvresultado.text = resultadoNombre
+        tvresultado.visibility = View.VISIBLE
 
         mostrarResultadoCaja(imc,evaluarResultado(imc))
         //TODO transitar a una ventana nueva ImagenResultadoActivity
