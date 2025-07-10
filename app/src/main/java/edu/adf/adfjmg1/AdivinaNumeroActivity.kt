@@ -3,6 +3,9 @@ package edu.adf.adfjmg1
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
@@ -26,25 +29,105 @@ class AdivinaNumeroActivity : AppCompatActivity() {
     var numeroSecreto:Int = 0
     var numeroVidas:Int = 5
 
+    // REGIÓN DE TEXTOS
+    val textoFinalEnhorabuena:String = "¡ENHORABUENA, LO HAS ADIVINADO!"
+    val textoFinalFallo:String = "GAME OVER, OTRA VEZ SERÁ"
+    val numeroMenor:String = "El número secreto es MENOR"
+    val numeroMayor:String = "El número secreto es MAYOR"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_adivina_numero)
         numeroSecreto = generarNumeroSecreto()
-
     }
 
     fun intentoAdivina(view: View) {
         Log.d("MIAPPADIVINA","El usuario ha dado a probar")
-        // TODO continuar con la APP
+
+        if (numeroVidas > 1) {
+            var numeroUsuario = obtenerNumeroUsuario()
+
+            if (numeroUsuario == numeroSecreto) {
+                muestraTextoFinal(textoFinalEnhorabuena)
+            } else {
+                actualizarNumeroVidas()
+                if (numeroUsuario < numeroSecreto) {
+                    mostrarToast(numeroMayor)
+                } else {
+                    mostrarToast(numeroMenor)
+                }
+            }
+        } else if (numeroVidas == 1) {
+            actualizarNumeroVidas()
+            muestraTextoFinal(textoFinalFallo)
+        } else {
+            finish()
+        }
     }
 
+    /**
+     * Muestra mediante un Toast el mensaje proporcionado
+     * @param texto el mensaje a mostrar
+     */
+    fun mostrarToast(texto:String)
+    {
+        var mensajeConsejo:Toast = Toast.makeText(this, texto, Toast.LENGTH_LONG)
+        mensajeConsejo.show()
+        Log.d("MIAPPADIVINA","Texto final mostrado: $texto")
+    }
+
+    /**
+     * Muestra el texto proporcionado en el textView textoFinal
+     * @param texto el texto a mostrar
+     */
+    fun muestraTextoFinal(texto:String)
+    {
+        var etTextoFinal:TextView = findViewById<TextView>(R.id.textoFinal)
+
+        etTextoFinal.text = texto
+        etTextoFinal.visibility = View.VISIBLE
+        Log.d("MIAPPADIVINA","Texto final mostrado: $texto")
+    }
+
+    /**
+     *  Actualiza el textView numVidas con el número de vidas actual.
+     */
+    fun actualizarNumeroVidas()
+    {
+        --numeroVidas
+        var tvNumeroVidas:TextView = findViewById<TextView>(R.id.numVidas)
+
+        tvNumeroVidas.text = numeroVidas.toString()
+        Log.d("MIAPPADIVINA","Número de vídas actualizado: $numeroVidas")
+    }
+
+    /**
+     * Genera un número secreto aleatorio
+     * @return el número aleatorio generado
+     */
     fun generarNumeroSecreto():Int
     {
         var numeroSecretoLocal:Int = 0
 
         numeroSecretoLocal = Random.nextInt(1,100)
+        Log.d("MIAPPADIVINA","El número secreto generado es: $numeroSecretoLocal")
 
         return numeroSecretoLocal
+    }
+
+    /**
+     * Obtiene el número introducido por el usuario.
+     * @return el número jugado.
+     */
+    fun obtenerNumeroUsuario():Int
+    {
+        var numUsuario:Int = 0
+
+        var etNumeroUsuario:EditText = findViewById<EditText>(R.id.numeroUsuario)
+        numUsuario = etNumeroUsuario.text.toString().toInt()
+        Log.d("MIAPPADIVINA", "El número introducido por el usuario es: $etNumeroUsuario")
+
+        return numUsuario
     }
 }
