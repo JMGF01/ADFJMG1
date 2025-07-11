@@ -3,11 +3,14 @@ package edu.adf.adfjmg1
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import kotlin.random.Random
 
 /**
@@ -28,10 +31,11 @@ class AdivinaNumeroActivity : AppCompatActivity() {
 
     var numeroSecreto:Int = 0
     var numeroVidas:Int = 5
+    lateinit var etTextoFinal:TextView
 
     // REGIÓN DE TEXTOS
     val textoFinalEnhorabuena:String = "¡ENHORABUENA, LO HAS ADIVINADO!"
-    val textoFinalFallo:String = "GAME OVER, OTRA VEZ SERÁ"
+    val textoFinalFallo:String = "GAME OVER, EL NÚMERO ERA "
     val numeroMenor:String = "El número secreto es MENOR"
     val numeroMayor:String = "El número secreto es MAYOR"
 
@@ -39,23 +43,61 @@ class AdivinaNumeroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_adivina_numero)
-        numeroSecreto = generarNumeroSecreto()
+        etTextoFinal = findViewById<TextView>(R.id.textoFinal)
+        this.numeroSecreto = savedInstanceState?.getInt("numSecreto") ?: generarNumeroSecreto()
+        this.numeroVidas = savedInstanceState?.getInt("numVidas") ?: 5
+        findViewById<TextView>(R.id.numVidas).text = numeroVidas.toString() + " VIDAS"
+//        if (this.numeroVidas== 0) {
+//            findViewById<Button>(R.id.botonJugar).isEnabled = false
+//        }
+        var finalText = savedInstanceState?.getString("textoFinal") ?: ""
+        when {
+            finalText.equals(textoFinalEnhorabuena) -> muestraTextoFinal(textoFinalEnhorabuena)
+            finalText.equals(textoFinalFallo) -> muestraTextoFinal(textoFinalFallo + numeroSecreto)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d("MIAPPADIVINA","onSaveInstanceState")
+        outState.putInt("numVidas", this.numeroVidas)
+        outState.putInt("numSecreto", this.numeroSecreto)
+
+        if (etTextoFinal.visibility == View.VISIBLE ) {
+            when {
+                numeroVidas == 0 -> outState.putString("textoFinal", this.textoFinalFallo)
+                numeroVidas > 0 -> outState.putString("textoFinal", this.textoFinalEnhorabuena)
+            }
+        } else {
+            outState.putString("textoFinal", "")
+        }
     }
 
     fun intentoAdivina(view: View) {
         Log.d("MIAPPADIVINA","El usuario ha dado a probar")
 
         when {
-            numeroVidas > 1 -> comprobarIntento() // Se comprueba si el usuario ha acertado
-            numeroVidas == 1 -> {   // El usuario ha gastado su último intento y ha fallado
+            this.numeroVidas > 1 -> comprobarIntento() // Se comprueba si el usuario ha acertado
+            this.numeroVidas == 1 -> {   // El usuario ha gastado su último intento y ha fallado
                 actualizarNumeroVidas()
-                muestraTextoFinal(textoFinalFallo)
+                muestraTextoFinal(this.textoFinalFallo + numeroSecreto)
             }
             else -> {
                 Log.d("MIAPPADIVINA","El juego ha finalizado pero el usuario sigue jugando, finalizando la ejecución")
                 finishAffinity()
             }
         }
+    }
+
+    /**
+     *
+     */
+    fun actualizarImagen (imagen:Int) {
+        //findViewById<ImageView>(R.id.imagenAdivina).setImageResource(imagen)
+         Glide.with(this)
+             .asGif()
+             .load(imagen)
+             .into(findViewById<ImageView>(R.id.imagenAdivina))
     }
 
     /**
@@ -68,8 +110,8 @@ class AdivinaNumeroActivity : AppCompatActivity() {
         var numeroUsuario = obtenerNumeroUsuario()
 
         if (numeroUsuario == numeroSecreto) {
-            muestraTextoFinal(textoFinalEnhorabuena)
-            numeroVidas = 0  // Se actualiza numeroVidas a 0 para evitar que se pueda seguir jugando
+            muestraTextoFinal(this.textoFinalEnhorabuena)
+            //this.numeroVidas = 0  // Se actualiza numeroVidas a 0 para evitar que se pueda seguir jugando
             Log.d("MIAPPADIVINA","comprobarIntento -> El usuario ha acertado")
         } else {
             actualizarNumeroVidas()
@@ -86,9 +128,9 @@ class AdivinaNumeroActivity : AppCompatActivity() {
     fun mostrarPista(numUsuario:Int)
     {
         if (numUsuario < numeroSecreto) {
-            mostrarToast(numeroMayor)
+            mostrarToast(this.numeroMayor)
         } else {
-            mostrarToast(numeroMenor)
+            mostrarToast(this.numeroMenor)
         }
     }
 
@@ -98,8 +140,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
      */
     fun mostrarToast(texto:String)
     {
-        var mensajeConsejo:Toast = Toast.makeText(this, texto, Toast.LENGTH_LONG)
-        mensajeConsejo.show()
+        Toast.makeText(this, texto, Toast.LENGTH_LONG).show()
         Log.d("MIAPPADIVINA","Pista mostrada: $texto")
     }
 
@@ -109,11 +150,16 @@ class AdivinaNumeroActivity : AppCompatActivity() {
      */
     fun muestraTextoFinal(texto:String)
     {
-        var etTextoFinal:TextView = findViewById<TextView>(R.id.textoFinal)
+//        var etTextoFinal:TextView = findViewById<TextView>(R.id.textoFinal)
 
         etTextoFinal.text = texto
         etTextoFinal.visibility = View.VISIBLE
         Log.d("MIAPPADIVINA","Texto final mostrado: $texto")
+        findViewById<Button>(R.id.botonJugar).isEnabled = false // Deshabilita el botón
+        when {
+            texto.equals(textoFinalEnhorabuena) -> actualizarImagen(R.drawable.imagen_victoria)
+            else -> actualizarImagen(R.drawable.imagen_derrota)
+        }
     }
 
     /**
@@ -121,11 +167,11 @@ class AdivinaNumeroActivity : AppCompatActivity() {
      */
     fun actualizarNumeroVidas()
     {
-        numeroVidas = --numeroVidas
+        this.numeroVidas = --this.numeroVidas
         var tvNumeroVidas:TextView = findViewById<TextView>(R.id.numVidas)
 
-        tvNumeroVidas.text = numeroVidas.toString()
-        Log.d("MIAPPADIVINA","Número de vídas actualizado: $numeroVidas")
+        tvNumeroVidas.text = this.numeroVidas.toString() + " VIDAS"
+        Log.d("MIAPPADIVINA","Número de vídas actualizado: $this.numeroVidas")
     }
 
     /**
