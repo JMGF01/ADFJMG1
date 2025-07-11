@@ -43,13 +43,11 @@ class AdivinaNumeroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_adivina_numero)
+
         etTextoFinal = findViewById<TextView>(R.id.textoFinal)
         this.numeroSecreto = savedInstanceState?.getInt("numSecreto") ?: generarNumeroSecreto()
         this.numeroVidas = savedInstanceState?.getInt("numVidas") ?: 5
         findViewById<TextView>(R.id.numVidas).text = numeroVidas.toString() + " VIDAS"
-//        if (this.numeroVidas== 0) {
-//            findViewById<Button>(R.id.botonJugar).isEnabled = false
-//        }
         var finalText = savedInstanceState?.getString("textoFinal") ?: ""
         when {
             finalText.equals(textoFinalEnhorabuena) -> muestraTextoFinal(textoFinalEnhorabuena)
@@ -68,8 +66,6 @@ class AdivinaNumeroActivity : AppCompatActivity() {
                 numeroVidas == 0 -> outState.putString("textoFinal", this.textoFinalFallo)
                 numeroVidas > 0 -> outState.putString("textoFinal", this.textoFinalEnhorabuena)
             }
-        } else {
-            outState.putString("textoFinal", "")
         }
     }
 
@@ -90,17 +86,6 @@ class AdivinaNumeroActivity : AppCompatActivity() {
     }
 
     /**
-     *
-     */
-    fun actualizarImagen (imagen:Int) {
-        //findViewById<ImageView>(R.id.imagenAdivina).setImageResource(imagen)
-         Glide.with(this)
-             .asGif()
-             .load(imagen)
-             .into(findViewById<ImageView>(R.id.imagenAdivina))
-    }
-
-    /**
      * Se comprueba si el usuario ha acertado el número:
      * - si acierta, se muestra un mensaje de felicitación
      * - si falla, se muestra una pista
@@ -118,6 +103,18 @@ class AdivinaNumeroActivity : AppCompatActivity() {
             mostrarPista(numeroUsuario)
             Log.d("MIAPPADIVINA","comprobarIntento -> El usuario ha fallado")
         }
+    }
+
+    /**
+     * Dada una imagen por su id de la clase R, la muestra en el ImageView imagenAdivina
+     * @param imagen el id de la imagen a mostrar
+     */
+    fun actualizarImagen (imagen:Int) {
+        //findViewById<ImageView>(R.id.imagenAdivina).setImageResource(imagen)
+        Glide.with(this)
+            .asGif()
+            .load(imagen)
+            .into(findViewById<ImageView>(R.id.imagenAdivina))
     }
 
     /**
