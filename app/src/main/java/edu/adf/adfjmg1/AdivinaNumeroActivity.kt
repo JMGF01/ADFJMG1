@@ -45,24 +45,50 @@ class AdivinaNumeroActivity : AppCompatActivity() {
     fun intentoAdivina(view: View) {
         Log.d("MIAPPADIVINA","El usuario ha dado a probar")
 
-        if (numeroVidas > 1) {
-            var numeroUsuario = obtenerNumeroUsuario()
-
-            if (numeroUsuario == numeroSecreto) {
-                muestraTextoFinal(textoFinalEnhorabuena)
-            } else {
+        when {
+            numeroVidas > 1 -> comprobarIntento() // Se comprueba si el usuario ha acertado
+            numeroVidas == 1 -> {   // El usuario ha gastado su último intento y ha fallado
                 actualizarNumeroVidas()
-                if (numeroUsuario < numeroSecreto) {
-                    mostrarToast(numeroMayor)
-                } else {
-                    mostrarToast(numeroMenor)
-                }
+                muestraTextoFinal(textoFinalFallo)
             }
-        } else if (numeroVidas == 1) {
-            actualizarNumeroVidas()
-            muestraTextoFinal(textoFinalFallo)
+            else -> {
+                Log.d("MIAPPADIVINA","El juego ha finalizado pero el usuario sigue jugando, finalizando la ejecución")
+                finishAffinity()
+            }
+        }
+    }
+
+    /**
+     * Se comprueba si el usuario ha acertado el número:
+     * - si acierta, se muestra un mensaje de felicitación
+     * - si falla, se muestra una pista
+     */
+    fun comprobarIntento()
+    {
+        var numeroUsuario = obtenerNumeroUsuario()
+
+        if (numeroUsuario == numeroSecreto) {
+            muestraTextoFinal(textoFinalEnhorabuena)
+            numeroVidas = 0  // Se actualiza numeroVidas a 0 para evitar que se pueda seguir jugando
+            Log.d("MIAPPADIVINA","comprobarIntento -> El usuario ha acertado")
         } else {
-            finish()
+            actualizarNumeroVidas()
+            mostrarPista(numeroUsuario)
+            Log.d("MIAPPADIVINA","comprobarIntento -> El usuario ha fallado")
+        }
+    }
+
+    /**
+     * Muestra un mensaje a modo de pista:
+     * - si el número del usuario es menor, la pista le indica que el númro secreto es mayor.
+     * - si el número del usuario es mayor, la pista le indica que el númro secreto es menor.
+     */
+    fun mostrarPista(numUsuario:Int)
+    {
+        if (numUsuario < numeroSecreto) {
+            mostrarToast(numeroMayor)
+        } else {
+            mostrarToast(numeroMenor)
         }
     }
 
@@ -74,7 +100,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
     {
         var mensajeConsejo:Toast = Toast.makeText(this, texto, Toast.LENGTH_LONG)
         mensajeConsejo.show()
-        Log.d("MIAPPADIVINA","Texto final mostrado: $texto")
+        Log.d("MIAPPADIVINA","Pista mostrada: $texto")
     }
 
     /**
@@ -95,7 +121,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
      */
     fun actualizarNumeroVidas()
     {
-        --numeroVidas
+        numeroVidas = --numeroVidas
         var tvNumeroVidas:TextView = findViewById<TextView>(R.id.numVidas)
 
         tvNumeroVidas.text = numeroVidas.toString()
@@ -126,7 +152,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
 
         var etNumeroUsuario:EditText = findViewById<EditText>(R.id.numeroUsuario)
         numUsuario = etNumeroUsuario.text.toString().toInt()
-        Log.d("MIAPPADIVINA", "El número introducido por el usuario es: $etNumeroUsuario")
+        Log.d("MIAPPADIVINA", "El número introducido por el usuario es: $numUsuario")
 
         return numUsuario
     }
