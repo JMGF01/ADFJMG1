@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Calculadora">
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:text="CALCULADORA"
+        android:textSize="20sp"
+        android:layout_margin="40dp"
+        android:layout_gravity="center"
+        android:color="@color/miAzul"
+    />
+
+    <LinearLayout
+        android:id="@+id/caja1"
+        android:orientation="vertical"
+        android:background="@color/miAzul"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/caja2"
+        android:orientation="horizontal"
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="2">
+
+        <EditText
+            android:id="@+id/etSumando1"
+            android:layout_width="140sp"
+            android:layout_height="140sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="45dp"
+            android:textColor="@color/white"
+            android:textSize="23sp"
+            android:hint="SUMANDO 1"
+            android:textAlignment="center"
+            />
+
+        <EditText
+            android:id="@+id/etSumando2"
+            android:layout_width="140sp"
+            android:layout_height="140sp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="45dp"
+            android:textColor="@color/white"
+            android:textSize="23sp"
+            android:hint="SUMANDO 2"
+            android:textAlignment="center"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/caja3"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="3"
+        android:background="@color/black"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/caja4"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@color/miRojo"
+            android:orientation="horizontal">
+
+ <!--       se podría usar android:background="@drawable/boton_sumar"-->
+            <ImageButton
+                android:id="@+id/botonSuma"
+                android:onClick="calcularSuma"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Botón de imagen"
+                android:scaleType="fitXY"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/caja5"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_margin="80px"
+            android:layout_weight="2"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/cajaResultado"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="200"
+                android:textColor="@color/black"
+                android:textSize="80sp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

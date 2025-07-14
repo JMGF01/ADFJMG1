@@ -8,11 +8,47 @@
     android:orientation="vertical"
     tools:context=".CuadrosActivity">
     <LinearLayout
-        android:orientation="vertical"
-        android:background="@color/black"
         android:id="@+id/caja1"
+        android:orientation="vertical"
+        android:background="@color/miNaranja"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0px"
+        android:layout_weight="1">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/caja2"
+        android:orientation="vertical"
+        android:background="@color/miAzul"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="2">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/caja3"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="3"
+        android:background="@color/black"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/caja4"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@color/miRojo"
+            android:orientation="horizontal"></LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/caja5"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_margin="180px"
+            android:layout_weight="2"
+            android:background="@color/white"
+            android:orientation="horizontal"></LinearLayout>
 
     </LinearLayout>
 
