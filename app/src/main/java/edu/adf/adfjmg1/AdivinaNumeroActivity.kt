@@ -1,10 +1,13 @@
 package edu.adf.adfjmg1
 
+import android.app.ActivityOptions
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -38,6 +41,8 @@ class AdivinaNumeroActivity : AppCompatActivity() {
     val textoFinalFallo:String = "GAME OVER, EL NÚMERO ERA "
     val numeroMenor:String = "El número secreto es MENOR"
     val numeroMayor:String = "El número secreto es MAYOR"
+    val botonReset:String = "¿VOLVER A JUGAR?"
+    val botonJugar:String = "PRUEBA"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,8 +84,9 @@ class AdivinaNumeroActivity : AppCompatActivity() {
                 muestraTextoFinal(this.textoFinalFallo + numeroSecreto)
             }
             else -> {
-                Log.d("MIAPPADIVINA","El juego ha finalizado pero el usuario sigue jugando, finalizando la ejecución")
-                finishAffinity()
+                Log.d("MIAPPADIVINA","El juego ha finalizado pero el usuario sigue jugando, reseteamos la partida")
+//                resetPartida()
+//                finishAffinity()
             }
         }
     }
@@ -110,6 +116,8 @@ class AdivinaNumeroActivity : AppCompatActivity() {
      * @param imagen el id de la imagen a mostrar
      */
     fun actualizarImagen (imagen:Int) {
+
+        findViewById<ImageView>(R.id.imagenAdivina).visibility = View.VISIBLE
         //findViewById<ImageView>(R.id.imagenAdivina).setImageResource(imagen)
         Glide.with(this)
             .asGif()
@@ -152,11 +160,29 @@ class AdivinaNumeroActivity : AppCompatActivity() {
         etTextoFinal.text = texto
         etTextoFinal.visibility = View.VISIBLE
         Log.d("MIAPPADIVINA","Texto final mostrado: $texto")
-        findViewById<Button>(R.id.botonJugar).isEnabled = false // Deshabilita el botón
+        //findViewById<Button>(R.id.botonJugar).isEnabled = false // Deshabilita el botón
         when {
             texto.equals(textoFinalEnhorabuena) -> actualizarImagen(R.drawable.imagen_victoria)
             else -> actualizarImagen(R.drawable.imagen_derrota)
         }
+        //findViewById<Button>(R.id.botonJugar).text = botonReset
+        findViewById<ImageButton>(R.id.botonReinicio).visibility = View.VISIBLE
+
+    }
+
+    /**
+     * resetea la partida para poder comenzar de nuevo
+     */
+    fun resetPartida()
+    {
+        generarNumeroSecreto()
+        this.numeroVidas = 5
+        findViewById<TextView>(R.id.numVidas).text = "5"
+        findViewById<EditText>(R.id.numeroUsuario).setText("")
+        etTextoFinal.visibility = View.INVISIBLE
+        findViewById<ImageView>(R.id.imagenAdivina).visibility = View.INVISIBLE
+        findViewById<Button>(R.id.botonJugar).text = botonJugar
+        Log.d("MIAPPADIVINA","Partida reseteada")
     }
 
     /**
@@ -198,5 +224,22 @@ class AdivinaNumeroActivity : AppCompatActivity() {
         Log.d("MIAPPADIVINA", "El número introducido por el usuario es: $numUsuario")
 
         return numUsuario
+    }
+
+    fun reiniciarPartida(view: View)
+    {
+//        recreate() // esto reinicia la pantalla, pero llmaa a onSaveInstanceState y en este caso no me interesa porque la partida ha terminado y no me interesa guardar nada.
+        finish()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+        {
+            val options = ActivityOptions.makeCustomAnimation(this, 0,0)
+            startActivity(intent, options.toBundle())
+        } else {
+            startActivity(intent)
+            overridePendingTransition(0,0)
+//            finish()
+//            startActivity(intent)
+//            overridePendingTransition(0,0)
+        }
     }
 }

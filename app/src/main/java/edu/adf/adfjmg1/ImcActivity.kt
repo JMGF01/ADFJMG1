@@ -3,6 +3,8 @@ package edu.adf.adfjmg1
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -56,6 +58,30 @@ class ImcActivity : AppCompatActivity() {
             insets
         }
         */
+    }
+
+    // PARA DIBUJAR UN MENÚ EN LA PARTE SUPERIOR DEBO DEFINIR EL
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_imc, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    // Este método es invocado cuando el usuario toca una opción del menú
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId)
+        {
+            R.id.opcionSalir -> {
+                Log.d("MiImcActivity", "El usuario quiere salir")
+                finish()
+            }
+            R.id.opcionLimpiar -> {
+                Log.d("MiImcActivity", "El usuario quiere salir")
+                // cojo las cajas de texto y las pongo a vacío
+                findViewById<EditText>(R.id.editTextNumberDecimalPeso).setText("")
+                findViewById<EditText>(R.id.editTextNumberDecimalAltura).setText("")
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onStart() {
