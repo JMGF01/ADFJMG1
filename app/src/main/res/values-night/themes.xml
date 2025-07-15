@@ -4,6 +4,7 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="colorPrimary">@color/miAzul</item>
+        <item name="colorOnSurface">@color/miNaranja</item>
     </style>
 
     <style name="Theme.ADFJMG1" parent="Base.Theme.ADFJMG1" />
