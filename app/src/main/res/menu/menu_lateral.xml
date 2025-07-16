@@ -4,11 +4,45 @@
 <item android:title="EJERCICIOS BÁSICOS">
     <menu>
         <item
+            android:id="@+id/menuVersiones"
             android:icon="@drawable/outline_arrow_forward_ios_24"
             app:showAsAction="always"
-            android:title="Versiones"
+            android:title="VERSIONES"
             android:orderInCategory="1"
             ></item>
+
+        <item
+            android:id="@+id/menuAdivinaNumero"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="ADIVINA NÚMERO"
+            android:orderInCategory="2"
+            />
+
+        <item
+            android:id="@+id/menuCalculadora"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="CALCULADORA"
+            android:orderInCategory="3"
+            />
+
+        <item
+            android:id="@+id/menuCuadros"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="CUADROS"
+            android:orderInCategory="4"
+            />
+
+        <item
+            android:id="@+id/menuImc"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="IMC"
+            android:orderInCategory="5"
+            />
+
     </menu>
 </item>
 </menu>

@@ -1,14 +1,12 @@
 package edu.adf.adfjmg1
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
@@ -51,11 +49,12 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 Log.d("MiImcActivity", "Botón Hamburguesa tocado")
                 if (this.menuvisible) {
                     this.drawerLayout.closeDrawers()
-                    this.menuvisible = false
+//                    this.menuvisible = false
                 } else {
                     this.drawerLayout.openDrawer(GravityCompat.START)
-                    this.menuvisible = true
+//                    this.menuvisible = true
                 }
+                this.menuvisible = !this.menuvisible
             }
         }
 
@@ -63,9 +62,30 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.d("MiImcActivity", "Opción ${item.order} seleccionada")
+        Log.d("MiImcActivity", "Opción ${item.itemId} seleccionada")
         this.drawerLayout.closeDrawers()
         this.menuvisible = false
+        // TODO: Completad el menú lateral y su funciomaniento
+
+        var intent:Intent = when(item.itemId) {
+            R.id.menuVersiones -> Intent(this, VersionActivity::class.java)
+            R.id.menuAdivinaNumero -> Intent(this, AdivinaNumeroActivity::class.java)
+            R.id.menuCalculadora -> Intent(this, Calculadora::class.java)
+            R.id.menuCuadros -> Intent(this, CuadrosActivity::class.java)
+            else -> Intent(this, ImcActivity::class.java)
+        }
+        startActivity(intent) // Voy a otra pantalla
+
+//        // Versión mas avanzada usando genéricos
+//        var objeto:Class<out Activity> = when(item.order) {
+//            2 -> VersionActivity::class.java
+//            3 -> AdivinaNumeroActivity::class.java
+//            4 -> Calculadora::class.java
+//            5 -> CuadrosActivity::class.java
+//            else -> ImcActivity::class.java
+//        }
+//        val miIntent: Intent = Intent(this, objeto)
+//        startActivity(miIntent)
 
         return true
     }
