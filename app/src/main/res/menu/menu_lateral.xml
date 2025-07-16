@@ -43,6 +43,14 @@
             android:orderInCategory="5"
             />
 
+        <item
+            android:id="@+id/menuSuma"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="SUMA"
+            android:orderInCategory="6"
+            />
+
     </menu>
 </item>
 </menu>

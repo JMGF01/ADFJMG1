@@ -72,6 +72,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             R.id.menuAdivinaNumero -> Intent(this, AdivinaNumeroActivity::class.java)
             R.id.menuCalculadora -> Intent(this, Calculadora::class.java)
             R.id.menuCuadros -> Intent(this, CuadrosActivity::class.java)
+            R.id.menuSuma -> Intent(this, SumaActivity::class.java)
             else -> Intent(this, ImcActivity::class.java)
         }
         startActivity(intent) // Voy a otra pantalla
