@@ -34,6 +34,16 @@ fun main() {
         edadAlumno(a)
     }
 
+    println("RECORRIDO CON FOREACH CON FUNCIÓN ANÓNIMA")
+    listaAlumnos.forEach( fun (a: Alumno) {
+        println("LA EDAD ES: ${a.edad}")
+    })
+
+    println("RECORRIDO CON FOREACH CON FUNCIÓN LAMBDA")
+    listaAlumnos.forEach({ //el parámetro es una variable predefinida que se llama it (iterador)
+        println("LA EDAD ES: ${it.edad}")
+    })
+
 }
 
 // TODO Haced una función que reciba una lista de alumnos y devuelva la media de las edades

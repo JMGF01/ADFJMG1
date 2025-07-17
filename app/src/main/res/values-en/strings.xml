@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ADFJMG1</string>
+    <string name="titulo_actividad_suma">ADD</string>
+    <string name="hint_sum_uno">Enter Number 1</string>
+    <string name="hint_sum_dos">Enter Number 2</string>
+    <string name="boton_sumar">ADD</string>
+    <!-- Si el parámetro es número entero $d-->
+    <!-- Si el parámetro es número real float $f-->
+    <!-- Si el parámetro es fecha/hora DateTime $t-->
+    <!-- Si el parámetro es string $s-->
+    <string name="mensaje_resultado_suma">The result of add\n%1$d and %2$d is %3$d</string>
+    <string name="texto_IMC">¡FANTASTIC IMC CALCULATOR!</string>
+    <string name="hint_peso">Weight (kg)</string>
+    <string name="hint_altura">Height (m)</string>
+    <string name="imc_altura">Height</string>
+    <string name="imc_peso">Weight</string>
+    <string name="imc_boton_calcular">Calculate IMC</string>
+    <string name="imc_desnutrido">YOU ARE MALNUTRITED!</string>
+    <string name="imc_delgado">YOU\'RE THIN!</string>
+    <string name="imc_ideal">YOU LOOK GREAT!</string>
+    <string name="imc_sobrepeso">YOU ARE OVERWEIGHT!</string>
+    <string name="imc_obeso">YOU\'RE OBESE!</string>
+    <string name="imc_fueraRango">YOU\'RE OUT OF RANGE!</string>
+    <string name="imc_mensajeResultado">Your IMC is %1$s \\n %2$s</string>
+</resources>

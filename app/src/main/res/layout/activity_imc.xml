@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="112dp"
-        android:text="¡FANTASTIC IMC CALCULATOR!"
+        android:text="@string/texto_IMC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="264dp"
         android:ems="10"
-        android:hint="Altura (m)"
+        android:hint="@string/hint_altura"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.67"
@@ -37,7 +37,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="172dp"
         android:ems="10"
-        android:hint="Peso (kg)"
+        android:hint="@string/hint_peso"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.67"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="364dp"
         android:onClick="calcularImc"
-        android:text="Calcular IMC"
+        android:text="@string/imc_boton_calcular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="128dp"
         android:layout_marginTop="188dp"
-        android:text="Peso"
+        android:text="@string/imc_peso"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
         android:layout_marginEnd="24dp"
-        android:text="Altura"
+        android:text="@string/imc_altura"
         app:layout_constraintEnd_toStartOf="@+id/editTextNumberDecimalAltura"
         app:layout_constraintTop_toBottomOf="@+id/textViewPeso" />
 

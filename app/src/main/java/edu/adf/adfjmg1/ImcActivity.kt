@@ -34,7 +34,7 @@ class ImcActivity : AppCompatActivity() {
         Locale.setDefault(Locale.US)
         enableEdgeToEdge()
         setContentView(R.layout.activity_imc)
-        // si bundle está a null no hago nada, si es distinto de null, pillo el resultadoNombre y actualizao el valor de la caja
+        // si bundle está a null no hago nada, si es distinto de null, pillo el resultadoNombre y actualizo el valor de la caja
         if ( savedInstanceState != null)
         {
             Log.d("MiImcActivity","El saco tiene cosas. La actividad viene de recrearse")
@@ -252,12 +252,12 @@ class ImcActivity : AppCompatActivity() {
         var imcFormateado:String = String.format("%.2f", imc)
 
         when (imcFormateado.toFloat()) {
-            in 0f..15.99f -> evaluacionIMC = "¡ESTÁS DESNUTRIDO!"
-            in 16.0f..17.99f -> evaluacionIMC= "¡ESTÁS DELGADO!"
-            in 18.0f..24.99f -> evaluacionIMC = "¡ESTÁS IDEAL!"
-            in 25.0f..30.99f -> evaluacionIMC = "¡TIENES SOBREPESO!"
-            in 31.0f..Float.MAX_VALUE -> evaluacionIMC = "¡ESTÁS OBESO!"
-            else -> evaluacionIMC = "¡ESTÁS FUERA DE RANGO!"
+            in 0f..15.99f -> evaluacionIMC = resources.getString(R.string.imc_desnutrido)
+            in 16.0f..17.99f -> evaluacionIMC= resources.getString(R.string.imc_delgado)
+            in 18.0f..24.99f -> evaluacionIMC = resources.getString(R.string.imc_ideal)
+            in 25.0f..30.99f -> evaluacionIMC = resources.getString(R.string.imc_sobrepeso)
+            in 31.0f..Float.MAX_VALUE -> evaluacionIMC = resources.getString(R.string.imc_obeso)
+            else -> evaluacionIMC = resources.getString(R.string.imc_fueraRango)
         }
 
         var resultadoImc = Toast.makeText(this, "Su IMC es $imcFormateado \n $evaluacionIMC", Toast.LENGTH_LONG)
@@ -276,7 +276,8 @@ class ImcActivity : AppCompatActivity() {
         var imcFormateado:String = String.format("%.2f", imc)
 
         val tvresultado = findViewById<TextView>(R.id.imcResultado)
-        tvresultado.text = "Su IMC es $imcFormateado \n $evaluacionIMC"
+        //tvresultado.text = "Su IMC es $imcFormateado \n $evaluacionIMC"
+        tvresultado.text = resources.getString(R.string.imc_mensajeResultado, imcFormateado, evaluacionIMC)
         tvresultado.visibility = View.VISIBLE
     }
 
