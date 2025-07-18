@@ -45,7 +45,7 @@ fun main() {
     //Como Referencia
     printFinalTemperature(27.0,"Celsius", "Fahrenheit", ::convertirTemperaturaDeCelsiusAFahrenheit)
 
-    //función lambda
+    //expresión lambda
     printFinalTemperature(27.0, "Celsius", "Fahrenheit", {temperaturaInicial -> (temperaturaInicial *9)/5+32} )
 
     //función anónima

@@ -1,5 +1,6 @@
 package edu.adf.adfjmg1
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,9 +11,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import java.util.Locale
 
 /**
@@ -72,7 +72,45 @@ class ImcActivity : AppCompatActivity() {
         {
             R.id.opcionSalir -> {
                 Log.d("MiImcActivity", "El usuario quiere salir")
-                finish()
+                //finish()
+
+                // Si nos confirma --> haremos finish
+                // si no quiere --> borrar el cuadro de dialogo
+                // TODO: 1) Hacerlo i18N con inglés o el que queráis
+                // TODO: 2) añadir el botón de neutro y usar cancel para el neutro, usando el cancel del diálogo
+                var dialogo = AlertDialog.Builder(this)
+                    .setTitle(resources.getString(R.string.imc_tituloAviso))
+                    .setMessage(resources.getString(R.string.imc_mensajeAviso))
+                    .setIcon(R.drawable.imagen_derrota)
+//                    .setPositiveButton("SÍ", fun(dialogo: DialogInterface, opcion: Int){
+//                        this.finish()
+//                    }) /* requiere un listener, es decir, poner una función que se ejecuta cuando el usuario dice sí */
+//                    .setNegativeButton("NO", fun (dialogo: DialogInterface, opcion: Int){
+//                        dialogo.dismiss()
+//                    })
+                    .setPositiveButton(R.string.imc_avisoSI){ dialogo, opcion ->
+                        Log.d("MiImcActivity", "Opción positiva salir = $opcion")
+                        this.finish()
+                    } // es el segundo parámetro, pero está definido fuera
+                    .setNegativeButton(R.string.imc_avisoNO){ dialogo: DialogInterface, opcion: Int ->
+                        Log.d("MiImcActivity", "Opción positiva salir = $opcion")
+                        dialogo.dismiss()
+                    }
+                    .setNeutralButton(R.string.imc_avisoCANCEL){dialogo, opcion ->
+                        Log.d("MiImcActivity", "Opción neutral salir = $opcion")
+                        dialogo.cancel()
+                    }
+
+                dialogo.setOnCancelListener{
+                    Log.d("MiImcActivity", "HA CANCELADO EL DIÁLOGO")
+                }
+
+//                dialogo.setOnCancelListener(fun (dialogo: DialogInterface){
+//                    Log.d("MiImcActivity", "HA CANCELADO EL DIÁLOGO")
+//                })
+
+                dialogo.show() //lo muestro
+
             }
             R.id.opcionLimpiar -> {
                 Log.d("MiImcActivity", "El usuario quiere salir")

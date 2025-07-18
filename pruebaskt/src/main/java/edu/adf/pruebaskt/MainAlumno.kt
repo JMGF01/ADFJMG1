@@ -9,6 +9,7 @@ fun main() {
     val alumno1:Alumno = Alumno("Fran",45,8)
     val alumno2:Alumno = Alumno("Miguel",19,8)
 
+
     println("EDAD Fran ${alumno1.edad}")
     val listaAlumnos:List<Alumno> = listOf(alumno, alumno1, alumno2)
 

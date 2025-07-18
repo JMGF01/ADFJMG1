@@ -22,4 +22,12 @@
     <string name="imc_obeso">¡ESTÁS OBESO!</string>
     <string name="imc_fueraRango">¡ESTÁS FUERA DE RANGO!</string>
     <string name="imc_mensajeResultado">Su IMC es %1$s \\n %2$s</string>
+    <string name="imc_tituloAviso">AVISO</string>
+    <string name="imc_mensajeAviso">¿Desea salir?</string>
+    <string name="imc_avisoSI">SI</string>
+    <string name="imc_avisoNO">NO</string>
+    <string name="imc_avisoCANCEL">CANCELAR</string>
+    <string name="titulo_actividad_imc">ACTIVIDAD IMC</string>
+    <string name="imc_menuSalir">SALIR</string>
+    <string name="imc_menuLimpiar">LIMPIAR</string>
 </resources>

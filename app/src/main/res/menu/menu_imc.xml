@@ -4,13 +4,13 @@
 
     <item android:id="@+id/opcionLimpiar"
         android:orderInCategory="1"
-        android:title="LIMPIAR"
+        android:title="@string/imc_menuLimpiar"
         android:icon="@drawable/outline_cleaning_services_24"
         app:showAsAction="always"/>
 
     <item android:id="@+id/opcionSalir"
         android:orderInCategory="2"
-        android:title="SALIR"
+        android:title="@string/imc_menuSalir"
         app:showAsAction="never"/>
 
 </menu>

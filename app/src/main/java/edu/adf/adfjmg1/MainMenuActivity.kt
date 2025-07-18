@@ -36,22 +36,59 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         //TODO tarea opcional: Haced esta función setNavigationItemSelectedListener en versión función anónima
 
-        this.navigationView.setNavigationItemSelectedListener{
-            Log.d("MiImcActivity", "Opción ${it.itemId} seleccionada")
+        // CON FUNCIÓN LAMBDA
+//        this.navigationView.setNavigationItemSelectedListener{
+//            Log.d("MiImcActivity", "Opción ${it.itemId} seleccionada")
+//            this.drawerLayout.closeDrawers()
+//            this.menuvisible = false
+//
+//            var intent:Intent = when(it.itemId) {
+//                R.id.menuAdivinaNumero -> Intent(this, AdivinaNumeroActivity::class.java)
+//                R.id.menuCalculadora -> Intent(this, Calculadora::class.java)
+//                R.id.menuCuadros -> Intent(this, CuadrosActivity::class.java)
+//                R.id.menuImc -> Intent(this, ImcActivity::class.java)
+//                R.id.menuSuma -> Intent(this, SumaActivity::class.java)
+//                else -> Intent(this, VersionActivity::class.java)
+//            }
+//            startActivity(intent)
+//            true //en una lambda, no hace falta poner return (de hecho daría error)
+//        }
+
+        // CON FUNCIÓN ANÓNIMA
+        this.navigationView.setNavigationItemSelectedListener (fun (item: MenuItem): Boolean {
+            Log.d("MiImcActivity", "Opción ${item.itemId} seleccionada")
             this.drawerLayout.closeDrawers()
             this.menuvisible = false
 
-            var intent:Intent = when(it.itemId) {
+            var intent:Intent = when(item.itemId) {
+                R.id.menuVersiones -> Intent(this, VersionActivity::class.java)
                 R.id.menuAdivinaNumero -> Intent(this, AdivinaNumeroActivity::class.java)
                 R.id.menuCalculadora -> Intent(this, Calculadora::class.java)
                 R.id.menuCuadros -> Intent(this, CuadrosActivity::class.java)
-                R.id.menuImc -> Intent(this, ImcActivity::class.java)
                 R.id.menuSuma -> Intent(this, SumaActivity::class.java)
-                else -> Intent(this, VersionActivity::class.java)
+                else -> Intent(this, ImcActivity::class.java)
             }
-            startActivity(intent)
-            true //en una lambda, no hace falta poner return (de hecho daría error)
-        }
+            startActivity(intent) // Voy a otra pantalla
+            return true
+        })
+
+
+//        this.navigationView.setNavigationItemSelectedListener{
+//            Log.d("MiImcActivity", "Opción ${it.itemId} seleccionada")
+//            this.drawerLayout.closeDrawers()
+//            this.menuvisible = false
+//
+//            var intent:Intent = when(it.itemId) {
+//                R.id.menuAdivinaNumero -> Intent(this, AdivinaNumeroActivity::class.java)
+//                R.id.menuCalculadora -> Intent(this, Calculadora::class.java)
+//                R.id.menuCuadros -> Intent(this, CuadrosActivity::class.java)
+//                R.id.menuImc -> Intent(this, ImcActivity::class.java)
+//                R.id.menuSuma -> Intent(this, SumaActivity::class.java)
+//                else -> Intent(this, VersionActivity::class.java)
+//            }
+//            startActivity(intent)
+//            true //en una lambda, no hace falta poner return (de hecho daría error)
+//        }
 
         this.supportActionBar?.setDisplayHomeAsUpEnabled(true) // dibuja el ícono de menú
         this.supportActionBar?.setHomeAsUpIndicator(R.drawable.outline_menu_24) // le digo que me dibuje la hamburguesa

@@ -57,7 +57,7 @@
         <activity
             android:name=".ImcActivity"
             android:exported="true"
-            android:label="ACTIVIDAD IMC" />
+            android:label= "@string/titulo_actividad_imc" />
         <activity
             android:name=".VersionActivity"
             android:exported="true">

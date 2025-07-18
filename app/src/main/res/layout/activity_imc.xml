@@ -62,6 +62,8 @@
         android:layout_marginStart="128dp"
         android:layout_marginTop="188dp"
         android:text="@string/imc_peso"
+        app:layout_constraintEnd_toStartOf="@+id/editTextNumberDecimalPeso"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,10 +71,12 @@
         android:id="@+id/textViewAltura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="24dp"
         android:text="@string/imc_altura"
         app:layout_constraintEnd_toStartOf="@+id/editTextNumberDecimalAltura"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPeso" />
 
     <TextView
