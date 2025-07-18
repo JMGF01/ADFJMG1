@@ -146,7 +146,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
     fun mostrarToast(texto:String)
     {
         Toast.makeText(this, texto, Toast.LENGTH_LONG).show()
-        Log.d("MIAPPADIVINA","Pista mostrada: $texto")
+        Log.d("MIAPP_ADIVINA","Pista mostrada: $texto")
     }
 
     /**
@@ -159,7 +159,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
 
         etTextoFinal.text = texto
         etTextoFinal.visibility = View.VISIBLE
-        Log.d("MIAPPADIVINA","Texto final mostrado: $texto")
+        Log.d("MIAPP_ADIVINA","Texto final mostrado: $texto")
         //findViewById<Button>(R.id.botonJugar).isEnabled = false // Deshabilita el botón
         when {
             texto.equals(textoFinalEnhorabuena) -> actualizarImagen(R.drawable.imagen_victoria)
@@ -182,7 +182,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
         etTextoFinal.visibility = View.INVISIBLE
         findViewById<ImageView>(R.id.imagenAdivina).visibility = View.INVISIBLE
         findViewById<Button>(R.id.botonJugar).text = botonJugar
-        Log.d("MIAPPADIVINA","Partida reseteada")
+        Log.d("MIAPP_ADIVINA","Partida reseteada")
     }
 
     /**
@@ -194,7 +194,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
         var tvNumeroVidas:TextView = findViewById<TextView>(R.id.numVidas)
 
         tvNumeroVidas.text = this.numeroVidas.toString() + " VIDAS"
-        Log.d("MIAPPADIVINA","Número de vídas actualizado: $this.numeroVidas")
+        Log.d("MIAPP_ADIVINA","Número de vídas actualizado: $this.numeroVidas")
     }
 
     /**
@@ -206,7 +206,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
         var numeroSecretoLocal:Int = 0
 
         numeroSecretoLocal = Random.nextInt(1,100)
-        Log.d("MIAPPADIVINA","El número secreto generado es: $numeroSecretoLocal")
+        Log.d("MIAPP_ADIVINA","El número secreto generado es: $numeroSecretoLocal")
 
         return numeroSecretoLocal
     }
@@ -221,7 +221,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
 
         var etNumeroUsuario:EditText = findViewById<EditText>(R.id.numeroUsuario)
         numUsuario = etNumeroUsuario.text.toString().toInt()
-        Log.d("MIAPPADIVINA", "El número introducido por el usuario es: $numUsuario")
+        Log.d("MIAPP_ADIVINA", "El número introducido por el usuario es: $numUsuario")
 
         return numUsuario
     }

@@ -29,7 +29,7 @@ class ImcActivity : AppCompatActivity() {
     var resultadoNombre:String = "" //variable de ámbito global/de clase
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("MiImcActivity", "en OnCreate")
+        Log.d("MIAPP_IMC", "en OnCreate")
         super.onCreate(savedInstanceState)
         Locale.setDefault(Locale.US)
         enableEdgeToEdge()
@@ -44,7 +44,7 @@ class ImcActivity : AppCompatActivity() {
             cajaResultado.visibility = View.VISIBLE
         }
         else {
-            Log.d("MiImcActivity","La actividad se ha creado por primera vez")
+            Log.d("MIAPP_IMC","La actividad se ha creado por primera vez")
         }
 
         // usando características "avanzadas" de kotlin
@@ -89,20 +89,20 @@ class ImcActivity : AppCompatActivity() {
 //                        dialogo.dismiss()
 //                    })
                     .setPositiveButton(R.string.imc_avisoSI){ dialogo, opcion ->
-                        Log.d("MiImcActivity", "Opción positiva salir = $opcion")
+                        Log.d("MIAPP_IMC", "Opción positiva salir = $opcion")
                         this.finish()
                     } // es el segundo parámetro, pero está definido fuera
                     .setNegativeButton(R.string.imc_avisoNO){ dialogo: DialogInterface, opcion: Int ->
-                        Log.d("MiImcActivity", "Opción positiva salir = $opcion")
+                        Log.d("MIAPP_IMC", "Opción positiva salir = $opcion")
                         dialogo.dismiss()
                     }
                     .setNeutralButton(R.string.imc_avisoCANCEL){dialogo, opcion ->
-                        Log.d("MiImcActivity", "Opción neutral salir = $opcion")
+                        Log.d("MIAPP_IMC", "Opción neutral salir = $opcion")
                         dialogo.cancel()
                     }
 
                 dialogo.setOnCancelListener{
-                    Log.d("MiImcActivity", "HA CANCELADO EL DIÁLOGO")
+                    Log.d("MIAPP_IMC", "HA CANCELADO EL DIÁLOGO")
                 }
 
 //                dialogo.setOnCancelListener(fun (dialogo: DialogInterface){
@@ -113,7 +113,7 @@ class ImcActivity : AppCompatActivity() {
 
             }
             R.id.opcionLimpiar -> {
-                Log.d("MiImcActivity", "El usuario quiere salir")
+                Log.d("MIAPP_IMC", "El usuario quiere salir")
                 // cojo las cajas de texto y las pongo a vacío
                 findViewById<EditText>(R.id.editTextNumberDecimalPeso).setText("")
                 findViewById<EditText>(R.id.editTextNumberDecimalAltura).setText("")
@@ -124,32 +124,32 @@ class ImcActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.d("MiImcActivity", "en onStart")
+        Log.d("MIAPP_IMC", "en onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("MiImcActivity", "en onResume")
+        Log.d("MIAPP_IMC", "en onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("MiImcActivity", "en onPause")
+        Log.d("MIAPP_IMC", "en onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("MiImcActivity", "en onStop")
+        Log.d("MIAPP_IMC", "en onStop")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("MiImcActivity", "en onDestroy")
+        Log.d("MIAPP_IMC", "en onDestroy")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.d("MiImcActivity", "en OnSaveInstanceState")
+        Log.d("MIAPP_IMC", "en OnSaveInstanceState")
         //1 obtengo el nombre del resultado de la caja
         //2 lo guardo
         // otra opción es declarar la variable de ámbito global
@@ -159,19 +159,19 @@ class ImcActivity : AppCompatActivity() {
 
     fun calcularImc(view: View)
     {
-        Log.d("MiImcActivity","El usuario ha tocado el botón de calcular IMC")
+        Log.d("MIAPP_IMC","El usuario ha tocado el botón de calcular IMC")
         // creamos la notificación/mensaje
         //informarNumVecesBoton()
         //IMC = peso / altura al cuadrado
         // 1 obtener el peso introducido
         var peso:Float = obtenerPeso()
-        Log.i("MiImcActivity","Peso introducido: $peso" )
+        Log.i("MIAPP_IMC","Peso introducido: $peso" )
         // 2 obtener la altura introducida
         val altura:Float = obtenerAltura()
-        Log.i("MiImcActivity","Altura introducida: $altura" )
+        Log.i("MIAPP_IMC","Altura introducida: $altura" )
         // 3 hacer la fórmula del IMC - PARÁMETROS ACTUALES
         val imc:Float = obtenerImc(peso, altura)
-        Log.i("MiImcActivity","Imc calculado: $peso" )
+        Log.i("MIAPP_IMC","Imc calculado: $peso" )
         // 4 mostrar el resultado
         //mostrarResultado(imc)
 

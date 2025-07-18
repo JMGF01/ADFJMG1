@@ -56,7 +56,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         // CON FUNCIÓN ANÓNIMA
         this.navigationView.setNavigationItemSelectedListener (fun (item: MenuItem): Boolean {
-            Log.d("MiImcActivity", "Opción ${item.itemId} seleccionada")
+            Log.d("MIAPP_MAINMENU", "Opción ${item.itemId} seleccionada")
             this.drawerLayout.closeDrawers()
             this.menuvisible = false
 
@@ -66,6 +66,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuCalculadora -> Intent(this, Calculadora::class.java)
                 R.id.menuCuadros -> Intent(this, CuadrosActivity::class.java)
                 R.id.menuSuma -> Intent(this, SumaActivity::class.java)
+                R.id.menuBusqueda -> Intent(this, BusquedaActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla
@@ -103,7 +104,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         when(item.itemId) {
             android.R.id.home -> {// Esta clase R no es la de mi proyecto, si no la de Android.
-                Log.d("MiImcActivity", "Botón Hamburguesa tocado")
+                Log.d("MIAPP_MAINMENU", "Botón Hamburguesa tocado")
                 if (this.menuvisible) {
                     this.drawerLayout.closeDrawers()
 //                    this.menuvisible = false
@@ -119,7 +120,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.d("MiImcActivity", "Opción ${item.itemId} seleccionada")
+        Log.d("MIAPP_MAINMENU", "Opción ${item.itemId} seleccionada")
         this.drawerLayout.closeDrawers()
         this.menuvisible = false
         // TODO: Completad el menú lateral y su funciomaniento

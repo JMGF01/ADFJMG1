@@ -14,7 +14,7 @@ class ImagenResultadoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val resultado = intent.getStringExtra("resultado")  // "Aquí estoy leyendo del saco.
-        Log.d("MiImcActivity","RESULTADO = $resultado")
+        Log.d("MIAPP_IMC_RESULTADO","RESULTADO = $resultado")
 //        enableEdgeToEdge() // es para que se pueda usar la pantalla entera, incluyendo donde está el rejoj, la batería, etc
         setContentView(R.layout.activity_imagen_resultado)
 /*        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

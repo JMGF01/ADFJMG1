@@ -51,6 +51,15 @@
             android:orderInCategory="6"
             />
 
+        <item
+            android:id="@+id/menuBusqueda"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="BÚSQUEDA"
+            android:orderInCategory="7"
+            />
+
+
     </menu>
 </item>
 </menu>

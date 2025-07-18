@@ -24,10 +24,10 @@ class VersionActivity : AppCompatActivity() {
 
     fun saludar(view: View) {
         //TODO: poner en la caja de texto: "Hola Mundo".
-        Log.d("MIAPP","El usuario ha tocado el botón de saludar()")
+        Log.d("MIAPP_VERSION","El usuario ha tocado el botón de saludar()")
     }
     fun obtenerVersion(view: View) {
         //TODO: poner en la caja de texto la versión Android del dispositivo.
-        Log.d("MIAPP","El usuario ha tocado el botón de obtenerVersion()")
+        Log.d("MIAPP_VERSION","El usuario ha tocado el botón de obtenerVersion()")
     }
 }
