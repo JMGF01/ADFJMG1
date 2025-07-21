@@ -41,20 +41,28 @@ class BusquedaActivity : AppCompatActivity() {
         Log.d("MIAPP_BUSQUEDA", "El usuario quiere buscar $busqueda")
         val url:String = "https://google.com/search?q=$busqueda"
         val web:Uri = url.toUri() // para eliminar espacios, tildes, la url la formamos bien con este método
-        val intentBusqueda = Intent(Intent.ACTION_VIEW, web) // INTENT IMPLÍCITO
-        if (intentBusqueda.resolveActivity(packageManager)!= null) {
-            Log.d("MIAPP_BUSQUEDA", "El dispositivo puede navegar por Internet")
-            startActivity(intentBusqueda)
-        } else {
-            Toast.makeText(this, "No se ha detectado un navegador", Toast.LENGTH_LONG).show()
-            val intentTienda = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.android.chrome"))
-            Log.d("MIAPP_BUSQUEDA", "Le invitamos a que instale Google Chrome de la tienda")
-            if (intentTienda.resolveActivity(packageManager) != null) {
-                startActivity(intentTienda)
-            } else {
-                Log.d("MIAPP_BUSQUEDA", "El dispositivo ni tiene navegador ni tiene Play Store")
-            }
+        val intentBusqueda = Intent(Intent.ACTION_VIEW, web) // INTENT IMPLÍCITO (en el propio INTENT estoy diciendo lo que quiero hacer)
+        try {
+            startActivity(Intent.createChooser(intentBusqueda, "ELIGE NAVEGADOR"))
+//            startActivity(intentBusqueda)
+//            if (intentBusqueda.resolveActivity(packageManager)!= null) {
+//                Log.d("MIAPP_BUSQUEDA", "El dispositivo puede navegar por Internet")
+////            startActivity(intentBusqueda)
+//                startActivity(Intent.createChooser(intentBusqueda, "ELIGE NAVEGADOR"))
+//            } else {
+//                Toast.makeText(this, "No se ha detectado un navegador", Toast.LENGTH_LONG).show()
+//                val intentTienda = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.android.chrome"))
+//                Log.d("MIAPP_BUSQUEDA", "Le invitamos a que instale Google Chrome de la tienda")
+//                if (intentTienda.resolveActivity(packageManager) != null) {
+//                    startActivity(intentTienda)
+//                } else {
+//                    Log.d("MIAPP_BUSQUEDA", "El dispositivo ni tiene navegador ni tiene Play Store")
+//                }
+//            }
+        } catch (e: Throwable) {
+            Log.d("MIAPP_BUSQUEDA", "Excepción no hay navegador")
         }
+
 
     }
 }

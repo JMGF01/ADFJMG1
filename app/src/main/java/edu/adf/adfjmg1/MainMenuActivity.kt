@@ -67,6 +67,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuCuadros -> Intent(this, CuadrosActivity::class.java)
                 R.id.menuSuma -> Intent(this, SumaActivity::class.java)
                 R.id.menuBusqueda -> Intent(this, BusquedaActivity::class.java)
+                R.id.menuWeb -> Intent(this, WebViewActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla
@@ -131,6 +132,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             R.id.menuCalculadora -> Intent(this, Calculadora::class.java)
             R.id.menuCuadros -> Intent(this, CuadrosActivity::class.java)
             R.id.menuSuma -> Intent(this, SumaActivity::class.java)
+            R.id.menuWeb -> Intent(this, WebViewActivity::class.java)
             else -> Intent(this, ImcActivity::class.java)
         }
         startActivity(intent) // Voy a otra pantalla
