@@ -60,11 +60,27 @@
             />
 
         <item
+            android:id="@+id/menuEnviarMensaje"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="ENVIAR MENSAJE"
+            android:orderInCategory="8"
+            />
+
+        <item
+            android:id="@+id/menuSpinner"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="SPINNER"
+            android:orderInCategory="8"
+            />
+
+        <item
             android:id="@+id/menuWeb"
             android:icon="@drawable/outline_arrow_forward_ios_24"
             app:showAsAction="always"
             android:title="WEB ADF"
-            android:orderInCategory="7"
+            android:orderInCategory="10"
             />
 
 

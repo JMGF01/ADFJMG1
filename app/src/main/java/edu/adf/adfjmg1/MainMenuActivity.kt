@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
@@ -67,7 +68,13 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuCuadros -> Intent(this, CuadrosActivity::class.java)
                 R.id.menuSuma -> Intent(this, SumaActivity::class.java)
                 R.id.menuBusqueda -> Intent(this, BusquedaActivity::class.java)
-                R.id.menuWeb -> Intent(this, WebViewActivity::class.java)
+                R.id.menuEnviarMensaje -> Intent(this, EnviarMensajeActivity::class.java)
+                R.id.menuSpinner -> Intent(this, SpinnerActivity::class.java)
+                R.id.menuWeb -> {
+                    val intent = Intent(Intent.ACTION_VIEW, "https://adf-formacion.es/".toUri()) // Intent implícito
+                    Intent.createChooser(intent, "Elige APP para ver ADF WEB")
+//                    Intent(this, WebViewActivity::class.java) //intent explícito
+                }
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla
@@ -99,6 +106,14 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 //        val intent = Intent(this, ImcActivity::class.java)
 //        startActivity(intent)
 
+    }
+
+    fun intentCompartir()
+    {
+        val intentEnviarTexto = Intent(Intent.ACTION_SEND) // ENVIAR
+        intentEnviarTexto.type = "text/plain" //TIPO MIME - significa de qué tipo es la información
+        intentEnviarTexto.putExtra(Intent.EXTRA_TEXT, "Hola desde Android :)")
+        startActivity(Intent.createChooser(intentEnviarTexto, "Enviar mensaje con ..."))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
