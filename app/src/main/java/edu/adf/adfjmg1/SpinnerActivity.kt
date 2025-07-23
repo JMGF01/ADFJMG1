@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import edu.adf.adfjmg1.databinding.ActivitySpinnerBinding
 import java.util.zip.Inflater
 
+//class SpinnerActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 class SpinnerActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySpinnerBinding
@@ -29,6 +30,7 @@ class SpinnerActivity : AppCompatActivity() {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // cuando la lista se despliegue, hay que indicarle tambien un estilo (un estilo para la clase desplegada).
         binding.spinner.adapter = spinnerAdapter
 
+//        binding.spinner.onItemSelectedListener = this // Si añadimnos la clase
         // CASO ESPECIAL PORQUE AdapterView.OnItemSelectedListener TIENE 2 MÉTODOS ABSTRACTOS
         // SI SÓLO TUVIERA UNO (ONCLICK) PODRÍAMOS HABERLO IMPLEMENTADO CON UNA FUNCIÓN LAMBDA/ANÓNIMA
         binding.spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener { // como requiere dos funciones como parámetros, lo podemos hacer definiendo de manera explícita dichas funciones de esta forma, creando un objeto.
@@ -61,4 +63,27 @@ class SpinnerActivity : AppCompatActivity() {
             }
         }
     }
+
+//    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//        if (primeraVez)
+//        {
+//            Log.d("MIAPP_SPINNER", "ES LA PRIMERA VEZ QUE SE CARGA EL SPINNER (el usuario en realidad no ha tocado el spinner)")
+//            primeraVez = false
+//        }
+//        else {
+//            Log.d("MIAPP_SPINNER", "OPCIÓN $position SELECCIONADA")
+//            // Si toca el cero --> visible - la imagen la dejo visible
+//            // Si toca el uno --> invisible - la imagen la dejo en invisible
+//            // Si toca el dos --> gone - la imagen la dejo en gone
+//            when (position) {
+//                0 -> binding.imagenMuestra.visibility = View.VISIBLE
+//                1 -> binding.imagenMuestra.visibility = View.INVISIBLE
+//                2 -> binding.imagenMuestra.visibility = View.GONE
+//            }
+//        }
+//    }
+//
+//    override fun onNothingSelected(parent: AdapterView<*>?) {
+//        Log.d("MIAPP_SPINNER", "OPCIÓN ELIMINADA DEL SPINNER") // ESTO NUNCA PASARÁ
+//    }
 }

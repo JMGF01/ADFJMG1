@@ -70,11 +70,14 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuBusqueda -> Intent(this, BusquedaActivity::class.java)
                 R.id.menuEnviarMensaje -> Intent(this, EnviarMensajeActivity::class.java)
                 R.id.menuSpinner -> Intent(this, SpinnerActivity::class.java)
-                R.id.menuWeb -> {
-                    val intent = Intent(Intent.ACTION_VIEW, "https://adf-formacion.es/".toUri()) // Intent implícito
-                    Intent.createChooser(intent, "Elige APP para ver ADF WEB")
+                R.id.menuFormulario -> Intent(this, FormularioActivity::class.java)
+//                R.id.menuWeb ->
+//                    {
+//                    val intent = Intent(Intent.ACTION_VIEW, "https://adf-formacion.es/".toUri()) // Intent implícito
+//                    Intent.createChooser(intent, "Elige APP para ver ADF WEB")
 //                    Intent(this, WebViewActivity::class.java) //intent explícito
-                }
+//                }
+                R.id.menuWeb -> Intent(this, WebViewActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla

@@ -72,7 +72,7 @@
             android:icon="@drawable/outline_arrow_forward_ios_24"
             app:showAsAction="always"
             android:title="SPINNER"
-            android:orderInCategory="8"
+            android:orderInCategory="9"
             />
 
         <item
@@ -81,6 +81,14 @@
             app:showAsAction="always"
             android:title="WEB ADF"
             android:orderInCategory="10"
+            />
+
+        <item
+            android:id="@+id/menuFormulario"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="FORMULARIO"
+            android:orderInCategory="11"
             />
 
 

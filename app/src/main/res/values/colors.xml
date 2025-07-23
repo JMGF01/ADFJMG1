@@ -2,9 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="miNaranja">#FF6600</color>
-    <color name="miAzul">#0033cc</color>
-    <color name="miRojo">#FF6961</color>
+    <color name="miNaranja">#FF9800</color>
+    <color name="miAzul">#2196F3</color>
+    <color name="miRojo">#F44336</color>
     <color name="miGrisClaro">#D3D3D3</color>
-    <color name="miVerde">#38973B</color>
+    <color name="miRosa">#E91E63</color>
+    <color name="miVerde">#00E676</color>
+    <color name="miAmarillo">#FFEB3B</color>
 </resources>

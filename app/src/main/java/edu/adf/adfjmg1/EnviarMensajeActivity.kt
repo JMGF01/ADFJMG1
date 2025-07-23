@@ -3,11 +3,7 @@ package edu.adf.adfjmg1
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import edu.adf.adfjmg1.databinding.ActivityBusquedaBinding
 import edu.adf.adfjmg1.databinding.ActivityEnviarMensajeBinding
 
 class EnviarMensajeActivity : AppCompatActivity() {
@@ -27,6 +23,7 @@ class EnviarMensajeActivity : AppCompatActivity() {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, mensaje)
         }
+
         startActivity(Intent.createChooser(intentEnviarTexto, "Enviar mensaje con ..."))
     }
 }
