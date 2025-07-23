@@ -5,10 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class SubColorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,10 +24,10 @@ class SubColorActivity : AppCompatActivity() {
 
         //guardar el color seleccioando como la resultado de la actividad
         //y finalizar la actividad
-        val intent_resutaldo = Intent() //este intent, representa el valor devuelto por la actividad  memoria temporal
-        intent_resutaldo.putExtra("COLOR_ELEGIDO", color)
+        val intent_resultado = Intent() //este intent, representa el valor devuelto por la actividad  memoria temporal
+        intent_resultado.putExtra("COLOR_ELEGIDO", color)
 
-        setResult(RESULT_OK, intent_resutaldo)
+        setResult(RESULT_OK, intent_resultado)
         finish()
     }
 }

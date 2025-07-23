@@ -16,7 +16,7 @@
         tools:targetApi="31">
         <activity
             android:name=".SubColorActivity"
-            android:label="SUBCOLOR"
+            android:label="SELECCIONE COLOR FAVORITO"
             android:theme="@style/Theme.ADFJMG1.SinBarra"
             android:exported="false" />
         <activity
@@ -47,6 +47,9 @@
                 <data
                     android:host="adf-formacion.es"
                     android:scheme="https" />
+                <!--
+                <data android:mimeType="text/plain"></data>
+                -->
             </intent-filter>
         </activity>
         <activity
