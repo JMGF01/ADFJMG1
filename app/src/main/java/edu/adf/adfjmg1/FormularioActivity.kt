@@ -6,6 +6,7 @@ import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
@@ -14,8 +15,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import edu.adf.adfjmg1.databinding.ActivityFormularioBinding
 import java.util.zip.Inflater
+import androidx.core.content.edit
 
 class FormularioActivity : AppCompatActivity() {
 
@@ -49,6 +53,46 @@ class FormularioActivity : AppCompatActivity() {
         } else {
             Log.d("MIAPP_FORMULARIO","El fichero de preferencias 'usuario' ESTÁ VACÍO")
         }
+
+        // cuando la caja de texto del nombre pierda el foco, se valide
+        // y si el nombre no es correcto, me salga en rojo
+        binding.editTextNombreFormulario.setOnFocusChangeListener (fun (view: View, tieneFoco: Boolean) {
+            if (tieneFoco)
+            {
+                Log.d(Constantes.ETIQUETA_LOG_FORMULARIO, "la caja del nombre tiene el foco")
+            } else {
+                Log.d(Constantes.ETIQUETA_LOG_FORMULARIO, "la caja del nombre ha perdido el foco")
+                // AUNQUE PARECE QUE FUNCIONA SIN ESO, VER SIGUIENTES LÍNEAS, el problema de las funciones anónimas es que se ejecutan en su propio contexto, por lo que "this" hace referencia al contexto de la función, no a la actividad de fuera, por eso para llamar funciones de fuera hay que hacer la siguiente línea
+//                if (!this@FormularioActivity.esNombreValido(this@FormularioActivity.binding.editTextNombreFormulario.text.toString()))
+//                    {
+//                        this@FormularioActivity.binding.tilnombre.error = "Nombre incorrecto"
+//                    } else {
+//                        this@FormularioActivity.binding.tilnombre.isErrorEnabled = false
+//                }
+                if (!esNombreValido(binding.editTextNombreFormulario.text.toString()))
+                {
+                    binding.tilnombre.error = "Nombre incorrecto"
+                } else {
+                    binding.tilnombre.isErrorEnabled = false
+                }
+            }
+        })
+
+//        binding.editTextNombreFormulario.setOnFocusChangeListener { view: View, tieneFoco: Boolean ->
+//            if (tieneFoco)
+//            {
+//                Log.d(Constantes.ETIQUETA_LOG_FORMULARIO, "la caja del nombre tiene el foco")
+//            } else {
+//                Log.d(Constantes.ETIQUETA_LOG_FORMULARIO, "la caja del nombre ha perdido el foco")
+//
+//                if (!esNombreValido(binding.editTextNombreFormulario.text.toString()))
+//                {
+//                   binding.tilnombre.error = "Nombre incorrecto"
+//                } else {
+//                    binding.tilnombre.isErrorEnabled = false
+//                }
+//            }
+//        }
 
         lanzador = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult() //lo lque hay entre {} es el segundo parámetro de ActivityResultContracts.StartActivityForResult(), que lo sacamos fuera para que quede mas claro. Lo que lanzo es una actividad
@@ -115,6 +159,16 @@ class FormularioActivity : AppCompatActivity() {
         val usuario: Usuario = Usuario(nombre, edad, sexo, mayorEdad, color)
         Log.d("MIAPP_FORMULARIO", "USUARIO = $usuario")
         guardarUsuario(usuario)
+
+        // mostramos el SNACKBAR -> Mensaje guardado.
+        val snackbar = Snackbar.make(binding.main, "USUARIO GUARDADO", BaseTransientBottomBar.LENGTH_LONG) // recibe la vista donde ejecutarlo, el mensaje, y la duración (que hay que coger de la clase BaseTransientBottomBar)
+        snackbar.setAction("DESHACER") {v:View ->
+            Log.d(Constantes.ETIQUETA_LOG_FORMULARIO, "HA TOCADO DESHACER")
+            borrarUsuario()
+        }
+        //snackbar.setTextColor(getColor(R.color.miRojo)) // el color de la acción
+        snackbar.show()
+
     }
 
 
@@ -147,6 +201,39 @@ class FormularioActivity : AppCompatActivity() {
         editor.putInt("color", usuario.colorFavorito)
         editor.putBoolean("mayorEdad", usuario.esMayorEdad)
         editor.apply() // o commit - guardo los cambios de verdad en el fichero - se confirma
+    }
+
+    /**
+     * Borra el fichero de preferencias USUARIO
+     */
+    fun borrarUsuario()
+    {
+        val ficheroUsuario = getSharedPreferences(Constantes.FICHERO_PREFERENCIAS, MODE_PRIVATE)
+        //ficheroUsuario.edit().clear().apply()
+        ficheroUsuario.edit (true){ clear() } //a la función edit le puedes pasar un parámetro que indique si hace commit al terminar
+
+        //versión alternativa "tradicional"
+        //val editor =  fichero.edit()
+        //editor.clear()
+        //editor.commit()
+        Log.d(Constantes.ETIQUETA_LOG_FORMULARIO, "FICHERO USUARIO BORRADO")
+    }
+
+    fun esNombreValido (nombre:String): Boolean
+    {
+//        var nombreValido: Boolean = false // declaro e inicializo la variable
+
+//        nombreValido = if (nombre.length > 2)
+//        {
+//            true
+//        } else {
+//            false
+//        }
+//        nombreValido = (nombre.length > 2)
+
+//        return nombreValido
+
+        return nombre.length > 2
     }
 
 }
