@@ -201,6 +201,7 @@ class FormularioActivity : AppCompatActivity() {
         editor.putInt("color", usuario.colorFavorito)
         editor.putBoolean("mayorEdad", usuario.esMayorEdad)
         editor.apply() // o commit - guardo los cambios de verdad en el fichero - se confirma
+        editor.commit()
     }
 
     /**

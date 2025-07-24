@@ -31,6 +31,13 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         this.drawerLayout =  findViewById<DrawerLayout>(R.id.drawer)
         this.navigationView = findViewById<NavigationView>(R.id.navigationView)
 
+        val ficheroInicio = getSharedPreferences(Constantes.FICHERO_PREFERENCIAS_INICIO, MODE_PRIVATE)
+        val saltarVideo = ficheroInicio.getBoolean("SALTAR VIDEO", false)
+        if (!saltarVideo) {
+            val intentvideo = Intent(this, VideoActivity::class.java)
+            startActivity(intentvideo)
+        }
+
         // en esta actividad (this) escuchamos la selección sobre el menú Navigation
         //this.navigationView.setNavigationItemSelectedListener(this)
         //this.navigationView.setNavigationItemSelectedListener{false} así sería suficiente
