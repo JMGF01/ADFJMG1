@@ -10,6 +10,7 @@ import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import edu.adf.adfjmg1.ejercicio1.Ejercicio1Activity
 
 /**
  *  ESTA ES LA ACTIVIDAD DE INICIO
@@ -85,6 +86,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 //                    Intent(this, WebViewActivity::class.java) //intent explícito
 //                }
                 R.id.menuWeb -> Intent(this, WebViewActivity::class.java)
+                R.id.menuEjercicio1 -> Intent(this, Ejercicio1Activity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla
