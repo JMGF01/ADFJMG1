@@ -100,7 +100,15 @@
                 android:id="@+id/menuEjercicio1"
                 android:icon="@drawable/outline_cards_24"
                 app:showAsAction="always"
-                android:title="EJERCICIO 1"
+                android:title="JUEGO BÁSICO"
+                android:orderInCategory="12"
+                />
+
+            <item
+                android:id="@+id/menuEjercicio2"
+                android:icon="@drawable/outline_cards_24"
+                app:showAsAction="always"
+                android:title="PRENSA DEPORTIVA"
                 android:orderInCategory="12"
                 />
         </menu>

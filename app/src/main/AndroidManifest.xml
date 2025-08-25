@@ -15,9 +15,13 @@
         android:theme="@style/Theme.ADFJMG1"
         tools:targetApi="31">
         <activity
+            android:name=".ejercicio2.PrensaDeportivaActivity"
+            android:exported="false"
+            android:label="PRENSA DEPORTIVA"/>
+        <activity
             android:name=".ejercicio1.Ejercicio1Activity"
-            android:label="EJERCICIO 1"
-            android:exported="false" />
+            android:exported="false"
+            android:label="JUEGO BÁSICO" />
         <activity
             android:name=".VideoActivity"
             android:exported="false"

@@ -18,9 +18,19 @@ object Constantes {
     val NOMBRE_NEGRO = "NEGRO "
 
     //EJERICCIO 1
-    val ETIQUETA_LOG_EJERCICIO_1:String = "MIAPP_EJERCICIO_1"
+    val ETIQUETA_LOG_EJERCICIO_1:String = "MIAPP_JUEGO_BÁSICO"
     val FIN_JUEGO:String = "JUEGO TERMINADO"
     val JUEGO_CONTINUA:String = "El juego continúa"
-    val AREA_JUEGO_PULSADA = "Pulsada área de juego: "
-    val AREA_JUEGO_PINTADA = "Área de juego pintada: "
+    val AREA_JUEGO_PULSADA:String = "Pulsada área de juego: "
+    val AREA_JUEGO_PINTADA:String = "Área de juego pintada: "
+
+    //PRENSA DEPORTIVA
+    val URL_AS:String = "https://as.com"
+    val URL_MARCA:String = "https://www.marca.com"
+    val URL_MUNDODEPORTIVO:String = "https://www.mundodeportivo.com"
+    val URL_SPORT:String = "https://www.sport.es/es"
+    val ETIQUETA_LOG_PRENSA_DEPORTIVA:String = "MIAPP_PRENSA_DEPORTIVA"
+    val WEBS_INICIALIZADAS:String = "Webs inicializadas"
+    val VISITAR_WEB_PULSADO:String = "Pulsado botón visitar Web: "
+    val ABRIENDO_NAVEGADOR:String = "Abriendo en navegador... "
 }
