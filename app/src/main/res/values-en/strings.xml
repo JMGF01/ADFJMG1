@@ -31,4 +31,5 @@
     <string name="titulo_actividad_imc">IMC ACTIVITY</string>
     <string name="imc_menuSalir">EXIT</string>
     <string name="imc_menuLimpiar">RESET</string>
+    <string name="visita_web">VISIT WEB</string>
 </resources>

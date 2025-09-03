@@ -88,7 +88,6 @@ fun mediaEdadAlumnos3(listAlumnos: List<Alumno>): Float
 }
 
 
-// TODO Haced una función que reciba un Alumno e imprima su edad. No devuelve nada.
 
 fun edadAlumno(alumno:Alumno)
 {

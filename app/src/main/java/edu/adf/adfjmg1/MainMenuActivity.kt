@@ -13,12 +13,32 @@ import com.google.android.material.navigation.NavigationView
 import edu.adf.adfjmg1.ejercicio1.Ejercicio1Activity
 import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
 import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
+import edu.adf.adfjmg1.InflarActivity
 
 /**
  *  ESTA ES LA ACTIVIDAD DE INICIO
  *  DESDE AQUÍ, LANZAMOS EL RESTO DE ACTIVIDADES
  *  EN UN FUTURO, PONDREMOS UN MENÚ HAMBURGUESA / LATERAL
  *  DE MOMENTO, LO HACEMOS CON INTENTS
+ *
+ * //TODO TERMINAR PRENSA APP X
+ * //TODO INFLAR
+ * //TODO SERIALIZABLE VS PARCELABLE
+ * //TODO hacer que el Usuario pueda seleccionar una FOTo y que se visualice en el IMAGEVIEW
+ * //TODO RECYCLERVIEW - listas  LISTVIEW no
+ * //TODO HTTP API RETROFIT - PREVIO CORUTINAS KT - COLECCIONES -KT - git hub
+ * //TODO FRAGMENTS - VIEWPAGER - TABS
+ * //TODO FIREBASE
+ * //TODO PERMISOS PELIGROSOS
+ * //TODO CÁMARA FOTOS / VIDEO
+ * //TODO GPS Y MAPAS // bLUETHOHT¿¿ // NFC dni??
+ * //TODO SERVICIOS DEL SISTEMA (DOWNLOAD MANAGER, ALARM MANAGER)
+ * //TODO SERVICIOS PROPIOS??
+ * //TODO RECIEVERS
+ * //TODO PROVIDERS
+ * //TODO SQLITE - ROOM
+ * //TODO LIVE DATA?
+ * //TODO apuntes JETPCK COMPOSE Y MONETIZACIÓN, DISEÑO Y SEGURIDAD
  */
 class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -91,6 +111,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuEjercicio1 -> Intent(this, Ejercicio1Activity::class.java)
                 R.id.menuEjercicio2 -> Intent(this, PrensaDeportivaActivity::class.java)
                 R.id.menuEjercicio3 -> Intent(this, TheMemoryActivity::class.java)
+                R.id.menuInflar -> Intent(this, InflarActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla6

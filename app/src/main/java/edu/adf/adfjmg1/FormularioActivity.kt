@@ -117,18 +117,31 @@ class FormularioActivity : AppCompatActivity() {
      * en el formulario.
      * @param fichUsuario El fichero SharedPreferences
      */
-    private fun cargarFichero(fichUsuario: SharedPreferences)
+    private fun cargarFichero(fichUsuario: SharedPreferences): Usuario
     {
-        binding.editTextNombreFormulario.setText(fichUsuario.getString("nombre", ""))
+        val nombre: String = fichUsuario.getString("nombre", "") ?: ""
+        binding.editTextNombreFormulario.setText(nombre)
+        val edad: Int = fichUsuario.getInt("edad", 0) ?: 0
         binding.editTextEdadFormulario.setText(fichUsuario.getInt("edad", 0).toString())
 
-        when (fichUsuario.getString("sexo", "M")) {
-            "M" -> binding.radioButtonHombre.isChecked = true
-            "F" -> binding.radioButtonMujer.isChecked = true
+        val sexo: Char = fichUsuario.getString("sexo", "M")!!.get(0)
+        when (sexo) {
+            'M' -> binding.radioButtonHombre.isChecked = true
+            'F' -> binding.radioButtonMujer.isChecked = true
         }
 
-        binding.colorFavorito.setBackgroundColor(fichUsuario.getInt("color", 0))
-        binding.checkBox.isChecked = fichUsuario.getBoolean("mayorEdad", false)
+        val colorFavorito: Int = fichUsuario.getInt("color", 0)
+        binding.colorFavorito.setBackgroundColor(colorFavorito)
+        val mayorEdad: Boolean = fichUsuario.getBoolean("mayorEdad", false)
+        binding.checkBox.isChecked = mayorEdad
+
+        val usuarioFichero: Usuario = Usuario(nombre, edad, sexo, mayorEdad, colorFavorito)
+
+        val intent:Intent = Intent(this, BienvenidaActivity::class.java)
+        intent.putExtra("usuario", usuarioFichero)
+        startActivity(intent)
+
+        return usuarioFichero
     }
 
     fun seleccionarColorFavorito(view: View)
@@ -235,6 +248,11 @@ class FormularioActivity : AppCompatActivity() {
 //        return nombreValido
 
         return nombre.length > 2
+    }
+
+    fun borrarUsuarioPrefs(view: View)
+    {
+        borrarUsuario()
     }
 
 }

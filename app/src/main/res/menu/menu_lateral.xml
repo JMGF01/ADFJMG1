@@ -91,6 +91,14 @@
             android:orderInCategory="11"
             />
 
+        <item
+            android:id="@+id/menuInflar"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="INFLAR"
+            android:orderInCategory="15"
+            />
+
     </menu>
 </item>
 

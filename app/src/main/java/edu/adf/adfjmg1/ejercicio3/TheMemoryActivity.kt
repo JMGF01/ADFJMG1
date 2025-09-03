@@ -216,7 +216,7 @@ class TheMemoryActivity : AppCompatActivity() {
             while (tiempoTranscurrido < tiempoLimite) {
                 delay(1000)
                 tiempoTranscurrido++
-                binding.textViewTiempo.text = "Tiempo: $tiempoTranscurrido s"
+                binding.textViewTiempo.text = "⌛ Tiempo: $tiempoTranscurrido s"
 
                 if (tiempoTranscurrido >= tiempoLimite) {
                     finalizarJuego("¡TIEMPO AGOTADO! \uD83D\uDE13 ")
