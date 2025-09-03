@@ -34,6 +34,8 @@ class VideoActivity : AppCompatActivity() {
 
         binding.videoView.setVideoURI(rutaUriVideo.toUri())
         binding.videoView.start()
+        // cuando acabe el vídeo, cerramos esta actividad
+        binding.videoView.setOnCompletionListener { mediaPlayer -> finish() }
 
     }
 

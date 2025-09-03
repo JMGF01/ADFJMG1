@@ -33,4 +33,9 @@ object Constantes {
     val WEBS_INICIALIZADAS:String = "Webs inicializadas"
     val VISITAR_WEB_PULSADO:String = "Pulsado botón visitar Web: "
     val ABRIENDO_NAVEGADOR:String = "Abriendo en navegador... "
+
+    //THE MEMORY
+    val ETIQUETA_LOG_THE_MEMORY: String = "MIAPP_THE_MEMORY"
+    val SEPARADOR: String = " -------> "
+
 }

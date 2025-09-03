@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import edu.adf.adfjmg1.ejercicio1.Ejercicio1Activity
 import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
+import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
 
 /**
  *  ESTA ES LA ACTIVIDAD DE INICIO
@@ -89,9 +90,10 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuWeb -> Intent(this, WebViewActivity::class.java)
                 R.id.menuEjercicio1 -> Intent(this, Ejercicio1Activity::class.java)
                 R.id.menuEjercicio2 -> Intent(this, PrensaDeportivaActivity::class.java)
+                R.id.menuEjercicio3 -> Intent(this, TheMemoryActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
-            startActivity(intent) // Voy a otra pantalla
+            startActivity(intent) // Voy a otra pantalla6
             return true
         })
 

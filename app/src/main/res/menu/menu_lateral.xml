@@ -109,7 +109,15 @@
                 android:icon="@drawable/outline_cards_24"
                 app:showAsAction="always"
                 android:title="PRENSA DEPORTIVA"
-                android:orderInCategory="12"
+                android:orderInCategory="13"
+                />
+
+            <item
+                android:id="@+id/menuEjercicio3"
+                android:icon="@drawable/outline_cards_24"
+                app:showAsAction="always"
+                android:title="THE MEMORY"
+                android:orderInCategory="14"
                 />
         </menu>
 

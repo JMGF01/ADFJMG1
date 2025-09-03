@@ -8,7 +8,7 @@
     tools:context=".VersionActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/mensajeSalida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hola Mundo!"
@@ -19,24 +19,24 @@
 
     <Button
         android:onClick="saludar"
-        android:id="@+id/button"
+        android:id="@+id/botonSaludo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text="Saludo"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/mensajeSalida"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:onClick="obtenerVersion"
-        android:id="@+id/button2"
+        android:id="@+id/botonVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Versión Android"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/mensajeSalida" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

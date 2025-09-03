@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ejercicio3.TheMemoryActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="40dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_height="wrap_content"
+            android:layout_width="190dp"
+            android:layout_marginEnd="25dp"
+            android:id="@+id/tilnombre">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/editTextNombre"
+            android:hint="Introduce nombre"
+            android:textSize="16sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/botonJugar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="JUGAR"
+            android:onClick="jugarPulsado"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:orientation="horizontal"
+        android:padding="40dp">
+
+        <TextView
+            android:id="@+id/textViewTiempo"
+            android:layout_width="110dp"
+            android:layout_height="25dp"
+            android:text="⌛ TIEMPO: 0 s"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="110dp"
+            android:layout_marginBottom="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/casilla1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/casilla5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla7"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla8"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/casilla9"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla10"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla11"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla12"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/casilla13"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla14"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla15"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+
+        <ImageView
+            android:id="@+id/casilla16"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:onClick="casillaPulsada"/>
+    </LinearLayout>
+
+</LinearLayout>

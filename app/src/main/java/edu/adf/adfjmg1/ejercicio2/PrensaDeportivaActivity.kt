@@ -28,15 +28,19 @@ class PrensaDeportivaActivity : AppCompatActivity() {
      * Inicializa los webView con sus webs correspondientes.
      */
     private fun cargaInicialWebs() {
+        binding.diarioAS.settings.javaScriptEnabled = true
         binding.diarioAS.webViewClient = WebViewClient() // para evitar que se abra el navegador externo, y forzar a que se cargue en el webView
         binding.diarioAS.loadUrl(Constantes.URL_AS)
 
+        binding.diarioMarca.settings.javaScriptEnabled = true
         binding.diarioMarca.webViewClient = WebViewClient()
         binding.diarioMarca.loadUrl(Constantes.URL_MARCA)
 
+        binding.diarioMundoDeportivo.settings.javaScriptEnabled = true
         binding.diarioMundoDeportivo.webViewClient = WebViewClient()
         binding.diarioMundoDeportivo.loadUrl(Constantes.URL_MUNDODEPORTIVO)
 
+        binding.diarioSport.settings.javaScriptEnabled = true
         binding.diarioSport.webViewClient = WebViewClient()
         binding.diarioSport.loadUrl(Constantes.URL_SPORT)
 
