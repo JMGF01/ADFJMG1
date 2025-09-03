@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import edu.adf.adfjmg1.Constantes
 import edu.adf.adfjmg1.R
@@ -29,7 +28,7 @@ class TheMemoryActivity : AppCompatActivity() {
     var puntuacion: Int = 0
 
     private var tiempoTranscurrido = 0
-    private val tiempoLimite = 10 // segundos
+    private val tiempoLimite = 30 // segundos
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,9 +92,12 @@ class TheMemoryActivity : AppCompatActivity() {
                     comprobarPareja(casillaJugada)
                 }
 
-                if (comprobarFin(tablero)) {
-                    Toast.makeText(this, "FIN JUEGO", Toast.LENGTH_LONG).show()
-                }
+//                if (comprobarFin(tablero)) {
+//                    Toast.makeText(this, "FIN JUEGO \uD83C\uDF89", Toast.LENGTH_LONG).show()
+//                    Thread.sleep(3500)
+//                    guardarPuntuacion()
+//                    mostrarClasificacion()
+//                }
             }
         }
     }
@@ -217,7 +219,11 @@ class TheMemoryActivity : AppCompatActivity() {
                 binding.textViewTiempo.text = "Tiempo: $tiempoTranscurrido s"
 
                 if (tiempoTranscurrido >= tiempoLimite) {
-                    finalizarJuegoPorTiempo()
+                    finalizarJuego("¡TIEMPO AGOTADO! \uD83D\uDE13 ")
+                    break
+                } else if (comprobarFin(tablero)) {
+                    finalizarJuego("FIN JUEGO \uD83C\uDF89")
+                    break
                 }
             }
         }
@@ -227,11 +233,21 @@ class TheMemoryActivity : AppCompatActivity() {
      * finaliza el juego al llegar al límite de tiempo
      * y muestra la clasificación
      */
-    fun finalizarJuegoPorTiempo() {
+    fun finalizarJuego(mensajeFin: String) {
         juegoActivo = false
-        Toast.makeText(this, "¡TIEMPO AGOTADO! \uD83C\uDF89 ", Toast.LENGTH_LONG).show()
+//        Toast.makeText(this, "¡TIEMPO AGOTADO! \uD83D\uDE13 ", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, mensajeFin, Toast.LENGTH_LONG).show()
         Thread.sleep(3500)
 
+        guardarPuntuacion()
+        mostrarClasificacion()
+    }
+
+    /**
+     * guarda la puntuación en un fichero SharedPreferences
+     */
+    fun guardarPuntuacion()
+    {
         val ficheroPuntuaciones = getSharedPreferences("TheMemoryPuntuaciones", MODE_PRIVATE)
         val editor = ficheroPuntuaciones.edit()
         puntuacion = puntuacion - tiempoTranscurrido * 500
@@ -239,7 +255,13 @@ class TheMemoryActivity : AppCompatActivity() {
         editor.putInt("nombre_$nombre", puntuacion)
         editor.apply()
         editor.commit()
+    }
 
+    /**
+     * muestra la clasificación
+     */
+    fun mostrarClasificacion()
+    {
         val intent = Intent(this, ClasificacionActivity::class.java)
         startActivity(intent)
     }

@@ -73,13 +73,4 @@ class ClasificacionActivity : AppCompatActivity() {
         finishAffinity()
     }
 
-//    val textoRanking = rankingOrdenado.mapIndexed { index, it ->
-//        val medalla = when (index) {
-//            0 -> "🥇"
-//            1 -> "🥈"
-//            2 -> "🥉"
-//            else -> "⭐"
-//        }
-//        "$medalla ${it.nombre}: ${it.puntos} ms"
-//    }.joinToString("\n")
 }
