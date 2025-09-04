@@ -14,6 +14,7 @@ import edu.adf.adfjmg1.ejercicio1.Ejercicio1Activity
 import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
 import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
 import edu.adf.adfjmg1.InflarActivity
+import edu.adf.adfjmg1.lista.ListaUsuariosActivity
 
 /**
  *  ESTA ES LA ACTIVIDAD DE INICIO
@@ -112,6 +113,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuEjercicio2 -> Intent(this, PrensaDeportivaActivity::class.java)
                 R.id.menuEjercicio3 -> Intent(this, TheMemoryActivity::class.java)
                 R.id.menuInflar -> Intent(this, InflarActivity::class.java)
+                R.id.menuRecycler -> Intent(this, ListaUsuariosActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla6

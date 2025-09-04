@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".lista.ListaUsuariosActivity">
+
+    <LinearLayout
+        android:id="@+id/cabeceraListado"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="128dp"
+        android:background="@color/miAzul"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_weight="40"
+            android:text="NOMBRE"
+            style="@style/EstiloCabaceraLista"
+            />
+
+        <TextView
+            android:layout_weight="15"
+            android:text="EDAD"
+            style="@style/EstiloCabaceraLista"
+            />
+
+        <TextView
+            android:layout_weight="15"
+            android:text="SEXO"
+            style="@style/EstiloCabaceraLista" />
+
+        <TextView
+            android:layout_weight="20"
+            android:text="COLOR"
+            style="@style/EstiloCabaceraLista" />
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recViewUsuarios"
+        android:layout_width="match_parent"
+        android:layout_height="245dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cabeceraListado" />
+
+    <Button
+        android:id="@+id/button2"
+        android:onClick="ordenarPorNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="ORDERNAR POR NOMBRE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recViewUsuarios" />
+
+    <Button
+        android:id="@+id/button3"
+        android:onClick="ondenarPorEdad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="ORDENAR POR EDAD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+</androidx.constraintlayout.widget.ConstraintLayout>
