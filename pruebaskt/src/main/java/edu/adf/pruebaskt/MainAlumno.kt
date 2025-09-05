@@ -27,6 +27,7 @@ fun main() {
     val tiempo_mediaEdadAlumnos:Long = measureNanoTime { mediaEdadAlumnos(listaAlumnos) }
     val tiempo_mediaEdadAlumnos2:Long = measureNanoTime { mediaEdadAlumnos2(listaAlumnos) }
     val tiempo_mediaEdadAlumnos3:Long = measureNanoTime { mediaEdadAlumnos2(listaAlumnos) }
+
     println("El tiempo de ejecución de mediaEdadAlumnos es: $tiempo_mediaEdadAlumnos")
     println("El tiempo de ejecución de mediaEdadAlumnos2 es: $tiempo_mediaEdadAlumnos2")
     println("El tiempo de ejecución de mediaEdadAlumnos3 es: $tiempo_mediaEdadAlumnos3")
