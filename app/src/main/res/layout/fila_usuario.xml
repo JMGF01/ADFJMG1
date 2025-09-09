@@ -15,13 +15,13 @@
         android:layout_weight="40"/>
 
     <TextView
-        android:text="41"
-        android:textSize="20sp"
-        android:gravity="center"
         android:id="@+id/edadUsuario"
         android:layout_width="0px"
         android:layout_height="match_parent"
-        android:layout_weight="15"/>
+        android:layout_weight="15"
+        android:gravity="center"
+        android:text="41"
+        android:textSize="20sp" />
 
     <TextView
         android:text="M"
