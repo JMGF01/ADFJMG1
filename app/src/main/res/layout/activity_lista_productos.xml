@@ -7,7 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".productos.ListaProductosActivity">
 
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sliderPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/miNaranja"
@@ -16,10 +29,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="PRODUCTO"
             android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="28dp"/>
+            android:text="PRODUCTO"
+            android:textSize="28dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -40,13 +53,13 @@
         <TextView
             style="@style/EstiloCabaceraLista"
             android:layout_width="wrap_content"
-            android:layout_weight="30"
+            android:layout_weight="40"
             android:text="NOMBRE" />
 
         <TextView
             style="@style/EstiloCabaceraLista"
             android:layout_width="wrap_content"
-            android:layout_weight="15"
+            android:layout_weight="20"
             android:text="PRECIO" />
 
         <TextView
@@ -56,13 +69,59 @@
             android:text="FOTO" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recViewProductos"
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="315dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recViewProductos"
+            android:layout_width="match_parent"
+            android:layout_height="315dp"
+            android:scrollbars="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        <ProgressBar
+            android:id="@+id/barraProgreso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"></ProgressBar>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/masBarato"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
+    <TextView
+        android:id="@+id/masCaro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/masBarato" />
+
+    <TextView
+        android:id="@+id/precioMedio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/masCaro" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

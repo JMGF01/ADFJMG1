@@ -33,7 +33,7 @@
 
     <ImageView
         android:id="@+id/imagenProducto"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="40"/>

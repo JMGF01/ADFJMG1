@@ -9,4 +9,5 @@
     </style>
 
     <style name="Theme.ADFJMG1" parent="Base.Theme.ADFJMG1" />
+    <style name="Theme.ADFJMG1.SinBarra" parent="Theme.Material3.DayNight.NoActionBar" />
 </resources>

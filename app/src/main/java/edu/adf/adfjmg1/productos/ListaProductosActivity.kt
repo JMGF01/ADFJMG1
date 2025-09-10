@@ -3,6 +3,7 @@ package edu.adf.adfjmg1.productos
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,9 +16,16 @@ import edu.adf.adfjmg1.Constantes
 import edu.adf.adfjmg1.R
 import edu.adf.adfjmg1.databinding.ActivityListaProductosBinding
 import edu.adf.adfjmg1.util.RedUtil
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.math.roundToInt
+import kotlin.system.measureNanoTime
 
 class ListaProductosActivity : AppCompatActivity() {
 
@@ -61,13 +69,86 @@ class ListaProductosActivity : AppCompatActivity() {
             "https://th.bing.com/th/id/OIP.g4i4Yra8E-tRflZSR7daDwHaFj?w=224&h=180&c=7&r=0&o=7&pid=1.7&rm=3",
             "https://res.cloudinary.com/grupobillingham/images/f_auto/t_product/t_w_lg/catalog/68174fd5ac1d2acd3a94ee1bb840a998/camiseta-tecnica-resistance-valento-150-personalizado")
 
+        //unused param
+        //usando este handler en el contexto de la corutina, se derivan
+        //las excepciones que el try catch no captura
+        //igualmente, tenemos el comportamiento extraño de no hallar el detalle de la execepción si unsamos exception.cause como tercer parámetro (parace ser problema de hilos propagando excepciones)
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e("CorrutinaError", "Error en corrutina: ${exception.message}", exception.cause)
+
+        }
 
         // preparo Retrofit
         val retrofit = Retrofit.Builder().baseUrl("https://my-json-server.typicode.com/")
+            //.baseUrl("https://my-json-server.typicode.es")//para probar la excepción
             .addConverterFactory(GsonConverterFactory.create()) // esta es la clase que se va a encargar de serializar o deserializar
             .build()
 
         val productoService = retrofit.create(ProductoService::class.java)
+
+//        if (RedUtil.hayInternet(this))
+//        {
+//            //el bloque que va dentro de este métod o, se ejecuta en un segundo plano (proceso a parte)
+//            Log.d(Constantes.ETIQUETA_LOG, "LANZNADO PETICIÓN HTTP 0")
+//
+//
+//            job = lifecycleScope.launch(Dispatchers.IO+handler+ CoroutineName("RutinaProductos"), CoroutineStart.LAZY) {
+//                var t1 = System.currentTimeMillis();
+//                val res = try {
+//                    delay(5000)
+//                    Log.d(Constantes.ETIQUETA_LOG, "LANZNADO PETICIÓN HTTP 1 ${coroutineContext[CoroutineName]?.name}")
+//                    listaProductos = productoService.obtenerProductos()
+//
+//                    //TODO HACER UN RECYCLER PARA MOSTRAR LA LISTA DE PRODUCTOS
+//                    listaProductos
+//                } catch (ex:ClassNotFoundException)
+//                {
+//                    Log.e(Constantes.ETIQUETA_LOG, "Error al obtener el listado", ex.cause) //IMPORTANTE USAR CAUSE PARA OBTENER EL DETALLE DEL FALLO
+//                    null
+//                    throw ex
+//
+//                }
+//                if (res!=null)
+//                {
+//                    Log.d(Constantes.ETIQUETA_LOG, "RESPUESTA RX ...")
+//                    listaProductos.forEach { Log.d(Constantes.ETIQUETA_LOG, it.toString()) }
+//                } else {
+//
+//                    val noti = Toast.makeText(this@ListaProductosActivity, "ERROR AL OBTENER EL LISTADO DE PRODUCTOS", Toast.LENGTH_LONG)
+//                    noti.show()
+//
+//                }
+//                var t2 = System.currentTimeMillis();
+//                var t = t2-t1;
+//                //Log.d(Constantes.ETIQUETA_LOG, "TIEMPO CON MAIN = $t ms")
+//                Log.d(Constantes.ETIQUETA_LOG, "TIEMPO CON IO = $t ms")
+//            }
+//
+//            job.start()//Lanzo la corutina ahora, por haber usado el modo start lazy; hasta que no lo ejecute yo, no se lanza
+//
+//
+//
+//        }else
+//        {
+//            val noti = Toast.makeText(this, "SIN CONEXIÓN A INTERNET", Toast.LENGTH_LONG)
+//            noti.show()
+//        }
+//        Log.d(Constantes.ETIQUETA_LOG, "LANZNADO PETICIÓN HTTP 2")
+//        /*
+//        SI HAY CONEXIÓN A INTERNET
+//            PIDO EL LISTADO DE PRODUCTOS
+//            DESPUÉS, MUESTRO EL LISTADO RX
+//          SI NO
+//            MUESTRO UN TOAST O MENSAJE DE ERROR
+//        * */
+//
+//
+//    }
+//
+//    fun cancelarPeticion(view: View) {
+//        job.cancel()//aunque se cancele ya ejecutado, no falla
+//    }
+
 
         if (RedUtil.hayInternet(this))
         {
@@ -79,17 +160,21 @@ class ListaProductosActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 val res = try {
-
+                    //this en esta función NO es
                     Log.d(Constantes.ETIQUETA_LOG, "LANZANDO PETICIÓN HTTP 1")
                     listaProductos = productoService.obtenerProductos()
+
+                    //ocultar progressbar
+                    this@ListaProductosActivity.binding.barraProgreso.visibility = View.GONE
 
                     for (i in listaProductos.indices) {
                         listaProductos[i].imageUrl = listaImagenesProductos[i]
                     }
 
 
-                    //listaProductos
                     mostrarListaProductos(listaProductos)
+                    dibujarSlider()
+
                 } catch (ex:Exception)
                 {
                     Log.e(Constantes.ETIQUETA_LOG, "Error al obtener el listado", ex.cause) //IMPORTANTE USAR CAUSE PARA OBTENER EL DETALLE DEL FALLO
@@ -125,7 +210,57 @@ class ListaProductosActivity : AppCompatActivity() {
         * */
     }
 
+    private fun dibujarSlider() {
+        this.binding.sliderPrecio.visibility = View.VISIBLE
+
+        //obtenemos el producto mas caro
+        val productoMasCaro = this.listaProductos.maxBy { it -> it.price.toFloat() }
+
+        //obtenemos el producto mas barato
+        val productoMasEconomico = this.listaProductos.minBy { it -> it.price.toFloat() }
+
+        //obtenemos el precio medio
+        var precioMedio:Double = 0.0
+        var tlambdas = measureNanoTime {
+            precioMedio = this.listaProductos.map { it.price.toFloat() }.average()
+        }
+
+        var tforClasico = measureNanoTime {
+            var sumaPrecio: Float = 0f
+            for (p in listaProductos.indices) {
+                sumaPrecio = sumaPrecio + listaProductos[p].price.toFloat()
+            }
+            val media = sumaPrecio / listaProductos.size
+        }
+
+        Log.d(Constantes.ETIQUETA_LOG, "tiempo lambdas: $tlambdas")
+        Log.d(Constantes.ETIQUETA_LOG, "tiempo for clásico: $tforClasico")
+
+        this.binding.masCaro.text = productoMasCaro.price
+        this.binding.masBarato.text = productoMasEconomico.price
+        this.binding.precioMedio.text = precioMedio.toString()
+
+        // Iniciamos el Slider
+        this.binding.sliderPrecio.visibility = View.VISIBLE
+        this.binding.sliderPrecio.valueFrom = productoMasEconomico.price.toFloat()
+        this.binding.sliderPrecio.valueTo = productoMasCaro.price.toFloat()
+        this.binding.sliderPrecio.value = productoMasCaro.price.toFloat()
+
+        this.binding.sliderPrecio.setLabelFormatter { "${it.roundToInt()} precio máx"}
+
+        this.binding.sliderPrecio.addOnChangeListener { slider, value, fromUser ->
+            Log.d(Constantes.ETIQUETA_LOG, "Valor actual ${value} del usuario ${fromUser}")
+
+            var listaProductosFiltrados = ListaProductos()
+            this.listaProductos.filter { producto -> if (producto.price.toFloat() <= value) {true} else {false} }.toCollection(listaProductosFiltrados)
+            this.adapter.listaProductos = listaProductosFiltrados //esta listaProductos es la del adapter, no la que recuperamos del API (en la línea 255)
+            this.adapter.notifyDataSetChanged() // "Emite una señal y el RecyblerView se repinta"
+        }
+
+    }
+
     private fun mostrarListaProductos(listaProductos: ListaProductos) {
+        this.adapter = ProductosAdapter(listaProductos)
         this.binding.recViewProductos.adapter = ProductosAdapter(this.listaProductos)
         this.binding.recViewProductos.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
     }
