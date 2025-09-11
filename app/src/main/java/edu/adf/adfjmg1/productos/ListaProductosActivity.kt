@@ -79,12 +79,13 @@ class ListaProductosActivity : AppCompatActivity() {
         }
 
         // preparo Retrofit
-        val retrofit = Retrofit.Builder().baseUrl("https://my-json-server.typicode.com/")
-            //.baseUrl("https://my-json-server.typicode.es")//para probar la excepción
-            .addConverterFactory(GsonConverterFactory.create()) // esta es la clase que se va a encargar de serializar o deserializar
-            .build()
+//        val retrofit = Retrofit.Builder().baseUrl("https://my-json-server.typicode.com/")
+//            //.baseUrl("https://my-json-server.typicode.es")//para probar la excepción
+//            .addConverterFactory(GsonConverterFactory.create()) // esta es la clase que se va a encargar de serializar o deserializar
+//            .build()
+//
+//        val productoService = retrofit.create(ProductoService::class.java)
 
-        val productoService = retrofit.create(ProductoService::class.java)
 
 //        if (RedUtil.hayInternet(this))
 //        {
@@ -152,6 +153,7 @@ class ListaProductosActivity : AppCompatActivity() {
 
         if (RedUtil.hayInternet(this))
         {
+            //el bloque que va dentro de este métod o, se ejecuta en un segundo plano (proceso a parte)
             Log.d(Constantes.ETIQUETA_LOG, "HAY INTERNET")
             val haywifi = RedUtil.hayWifi(this)
             Log.d(Constantes.ETIQUETA_LOG, "ES DE TIPO WIFI: ${haywifi}")
@@ -159,8 +161,12 @@ class ListaProductosActivity : AppCompatActivity() {
             Log.d(Constantes.ETIQUETA_LOG, "LANZANDO PETICIÓN HTTP 0")
 
             lifecycleScope.launch {
+                //this en este función NO es Activity , es la propia corrutina
+                //si necesito acceder al Contexto de la actvidad dentro
+                //de la corrutina, debo usar this@ListaProductosActivity
                 val res = try {
                     //this en esta función NO es
+                    val productoService = ProductosRetrofitHelper.getProductoServiceInstance()
                     Log.d(Constantes.ETIQUETA_LOG, "LANZANDO PETICIÓN HTTP 1")
                     listaProductos = productoService.obtenerProductos()
 
@@ -261,7 +267,7 @@ class ListaProductosActivity : AppCompatActivity() {
 
     private fun mostrarListaProductos(listaProductos: ListaProductos) {
         this.adapter = ProductosAdapter(listaProductos)
-        this.binding.recViewProductos.adapter = ProductosAdapter(this.listaProductos)
+        this.binding.recViewProductos.adapter = this.adapter
         this.binding.recViewProductos.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
     }
 }

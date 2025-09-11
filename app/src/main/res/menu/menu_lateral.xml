@@ -115,9 +115,16 @@
             android:orderInCategory="17"
             />
 
+        <item
+            android:id="@+id/menuAPI_ListaPerros"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="PERROS"
+            android:orderInCategory="18"
+            />
+
     </menu>
 </item>
-
     <item android:title="EJERCICIOS VERANO">
         <menu>
             <item

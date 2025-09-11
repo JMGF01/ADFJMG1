@@ -15,6 +15,7 @@ import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
 import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
 import edu.adf.adfjmg1.InflarActivity
 import edu.adf.adfjmg1.lista.ListaUsuariosActivity
+import edu.adf.adfjmg1.perros.PerrosActivity
 import edu.adf.adfjmg1.productos.ListaProductos
 import edu.adf.adfjmg1.productos.ListaProductosActivity
 
@@ -117,6 +118,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuInflar -> Intent(this, InflarActivity::class.java)
                 R.id.menuRecycler -> Intent(this, ListaUsuariosActivity::class.java)
                 R.id.menuAPI_ListaProductos -> Intent(this, ListaProductosActivity::class.java)
+                R.id.menuAPI_ListaPerros -> Intent(this, PerrosActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla6
