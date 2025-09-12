@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".perros.GaleriaPerrosActivity">
 
+    <!--
     <ImageView
         android:id="@+id/ivPerro"
         android:layout_width="wrap_content"
@@ -14,6 +15,30 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"/>  -->
 
+    <!-- esta sección es la deslizante  "Recycler" o como la queramos llama-->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!-- fin sección es la deslizante -->
+
+    <TextView
+        android:id="@+id/razaPerro"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="CANICHE"
+        android:textAllCaps="true"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewPager2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
