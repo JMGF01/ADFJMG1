@@ -5,7 +5,8 @@ import retrofit2.http.GET
 
 interface FotosPerroService {
 
-    @GET("api/breed/hound/images")
+//    @GET("api/breed/hound/images")
+    @GET("images")
     suspend fun obtenerFotosPerro(): FotosPerro
 
 }
