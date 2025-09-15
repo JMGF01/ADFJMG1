@@ -18,6 +18,7 @@ import edu.adf.adfjmg1.lista.ListaUsuariosActivity
 import edu.adf.adfjmg1.perros.PerrosActivity
 import edu.adf.adfjmg1.productos.ListaProductos
 import edu.adf.adfjmg1.productos.ListaProductosActivity
+import edu.adf.adfjmg1.tabs.TabsActivity
 
 /**
  *  ESTA ES LA ACTIVIDAD DE INICIO
@@ -119,6 +120,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuRecycler -> Intent(this, ListaUsuariosActivity::class.java)
                 R.id.menuAPI_ListaProductos -> Intent(this, ListaProductosActivity::class.java)
                 R.id.menuAPI_ListaPerros -> Intent(this, PerrosActivity::class.java)
+                R.id.menuAPI_TabsLayout -> Intent(this, TabsActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla6

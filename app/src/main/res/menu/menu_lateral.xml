@@ -129,6 +129,14 @@
                 android:title="FOTOS DE PERROS"
                 android:orderInCategory="18"
                 />
+
+            <item
+                android:id="@+id/menuAPI_TabsLayout"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="TABSLAYOUT"
+                android:orderInCategory="19"
+                />
         </menu>
     </item>
     <item android:title="EJERCICIOS VERANO">
