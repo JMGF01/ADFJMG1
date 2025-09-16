@@ -1,22 +1,19 @@
 package edu.adf.adfjmg1
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import edu.adf.adfjmg1.ejercicio1.Ejercicio1Activity
 import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
 import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
-import edu.adf.adfjmg1.InflarActivity
+import edu.adf.adfjmg1.canciones.BusquedaCancionesActivity
 import edu.adf.adfjmg1.lista.ListaUsuariosActivity
 import edu.adf.adfjmg1.perros.PerrosActivity
-import edu.adf.adfjmg1.productos.ListaProductos
 import edu.adf.adfjmg1.productos.ListaProductosActivity
 import edu.adf.adfjmg1.tabs.TabsActivity
 
@@ -121,6 +118,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuAPI_ListaProductos -> Intent(this, ListaProductosActivity::class.java)
                 R.id.menuAPI_ListaPerros -> Intent(this, PerrosActivity::class.java)
                 R.id.menuAPI_TabsLayout -> Intent(this, TabsActivity::class.java)
+                R.id.menuAPI_Canciones -> Intent(this, BusquedaCancionesActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla6

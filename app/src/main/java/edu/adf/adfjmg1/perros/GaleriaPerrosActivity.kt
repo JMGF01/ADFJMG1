@@ -2,6 +2,7 @@ package edu.adf.adfjmg1.perros
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,9 @@ class GaleriaPerrosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityGaleriaPerrosBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //dibujamos el control de la flecha hacia atrás
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val raza_seleccionada = intent.getStringExtra("RAZA_ELEGIDA") ?: "hound"
         Log.d(Constantes.ETIQUETA_LOG, "GaleriaPerrosActivity: A buscar Fotos de  =  $raza_seleccionada")
@@ -108,7 +112,16 @@ class GaleriaPerrosActivity : AppCompatActivity() {
 
 
         //binding.viewPager2.setPageTransformer(depthTransformer)
+    }
 
-
+    //programamos la función para escuchar los eventos sobre la APP BAR
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                Log.d(Constantes.ETIQUETA_LOG, "Tocado el botón flecha hacia atrás de navegación")
+                finish()
+            }
+        }
+        return true
     }
 }

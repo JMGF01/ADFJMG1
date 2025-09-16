@@ -137,6 +137,14 @@
                 android:title="TABSLAYOUT"
                 android:orderInCategory="19"
                 />
+
+            <item
+                android:id="@+id/menuAPI_Canciones"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="CANCIONES"
+                android:orderInCategory="20"
+                />
         </menu>
     </item>
     <item android:title="EJERCICIOS VERANO">
