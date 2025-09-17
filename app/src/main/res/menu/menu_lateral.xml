@@ -145,6 +145,13 @@
                 android:title="CANCIONES"
                 android:orderInCategory="20"
                 />
+            <item
+                android:id="@+id/menuContacto"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="SEL CONTACTO 1"
+                android:orderInCategory="21"
+                />
         </menu>
     </item>
     <item android:title="EJERCICIOS VERANO">
