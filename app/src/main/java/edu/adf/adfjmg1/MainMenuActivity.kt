@@ -13,6 +13,7 @@ import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
 import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
 import edu.adf.adfjmg1.canciones.BusquedaCancionesActivity
 import edu.adf.adfjmg1.contactos.SeleccionContactoActivity
+import edu.adf.adfjmg1.contactos.SeleccionContactoPermisosActivity
 import edu.adf.adfjmg1.lista.ListaUsuariosActivity
 import edu.adf.adfjmg1.perros.PerrosActivity
 import edu.adf.adfjmg1.productos.ListaProductosActivity
@@ -121,9 +122,10 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuAPI_TabsLayout -> Intent(this, TabsActivity::class.java)
                 R.id.menuAPI_Canciones -> Intent(this, BusquedaCancionesActivity::class.java)
                 R.id.menuContacto -> Intent(this, SeleccionContactoActivity::class.java)
+                R.id.menuContactoPermiso -> Intent(this, SeleccionContactoPermisosActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
-            startActivity(intent) // Voy a otra pantalla6
+            startActivity(intent) // Voy a otra pantalla
             return true
         })
 

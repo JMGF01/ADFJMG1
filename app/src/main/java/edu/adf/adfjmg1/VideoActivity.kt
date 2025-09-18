@@ -50,5 +50,14 @@ class VideoActivity : AppCompatActivity() {
         editor.apply()
     }
 
+    // El código siguiente es para tratar de corregir el error al reproducir el vídeo en SDK 21
+//    override fun onPause() {
+//        super.onPause()
+//        binding.videoView.stopPlayback()
+//    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//    }
 
 }

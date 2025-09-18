@@ -110,6 +110,22 @@
                 android:title="LISTA USUARIOS RECYCLER"
                 android:orderInCategory="16"
                 />
+
+            <item
+                android:id="@+id/menuContacto"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="SEL CONTACTO 1"
+                android:orderInCategory="21"
+                />
+
+            <item
+                android:id="@+id/menuContactoPermiso"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="SEL CONTACTO PERMISO"
+                android:orderInCategory="22"
+                />
         </menu>
     </item>
     <item android:title="EJERCICIOS AVANZADOS">
@@ -144,13 +160,6 @@
                 app:showAsAction="always"
                 android:title="CANCIONES"
                 android:orderInCategory="20"
-                />
-            <item
-                android:id="@+id/menuContacto"
-                android:icon="@drawable/outline_arrow_forward_ios_24"
-                app:showAsAction="always"
-                android:title="SEL CONTACTO 1"
-                android:orderInCategory="21"
                 />
         </menu>
     </item>
