@@ -2,31 +2,32 @@ package edu.adf.adfjmg1
 
 import android.app.Activity
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import android.view.View
-import androidx.activity.enableEdgeToEdge
+import android.widget.ImageView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import edu.adf.adfjmg1.databinding.ActivityFormularioBinding
-import java.util.zip.Inflater
 import androidx.core.content.edit
+import androidx.core.net.toUri
+import java.io.File
+import java.io.FileOutputStream
 
 class FormularioActivity : AppCompatActivity() {
 
     // para lanzar una subactividad (una actividad que me da un resultado)
-    lateinit var lanzador: ActivityResultLauncher<Intent>
+    lateinit var lanzadorColorFavorito: ActivityResultLauncher<Intent>
+    lateinit var lanzadorImagenFormulario: ActivityResultLauncher<Intent>
     lateinit var binding: ActivityFormularioBinding
     var color: Int = 0
+    lateinit var usuario:Usuario
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,7 @@ class FormularioActivity : AppCompatActivity() {
 
         binding = ActivityFormularioBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // ocultada la barra (actionbar) desde el tema del Manifest
+        // ocultada la barra (actionbar) desde el tema del Manifest específico para esta actividad.
         // TODO gestión automática del checkbox de edad
         // TODO validación / snackBar
         // TODO VideoView + SharedPrefs de saltar intro
@@ -45,11 +46,16 @@ class FormularioActivity : AppCompatActivity() {
 //                it.
 //            })
 
+        //si hay datos en el fichero
         val fichUsuario = getSharedPreferences("usuario", MODE_PRIVATE)
         if (fichUsuario.all.isNotEmpty())
         {
             Log.d("MIAPP_FORMULARIO","El fichero de preferencias 'usuario' EXISTE")
-            cargarFichero(fichUsuario)
+            this.usuario = cargarFichero(fichUsuario)
+            //NUEVO Como existe un usuario, queremos mostrar en otra actividad un mensaje de bienvenida
+            val intent = Intent(this, BienvenidaActivity::class.java)
+            intent.putExtra("USUARIO", usuario)
+            startActivity(intent)
         } else {
             Log.d("MIAPP_FORMULARIO","El fichero de preferencias 'usuario' ESTÁ VACÍO")
         }
@@ -94,7 +100,7 @@ class FormularioActivity : AppCompatActivity() {
 //            }
 //        }
 
-        lanzador = registerForActivityResult(
+        lanzadorColorFavorito = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult() //lo lque hay entre {} es el segundo parámetro de ActivityResultContracts.StartActivityForResult(), que lo sacamos fuera para que quede mas claro. Lo que lanzo es una actividad
         ){
             // la función que recibe el resultado
@@ -110,6 +116,107 @@ class FormularioActivity : AppCompatActivity() {
                 }
 
         }
+
+        lanzadorImagenFormulario = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+                resultado: ActivityResult ->
+            Log.d(Constantes.ETIQUETA_LOG, "Volviendo de la Galeria")
+            if (resultado.resultCode == RESULT_OK) {
+                Log.d(Constantes.ETIQUETA_LOG, "Volviendo de la Galeria ok")
+                Log.d(Constantes.ETIQUETA_LOG, "RUTA FOTO =  ${resultado.data?.data}")
+                binding.imagenFormulario.setImageURI(resultado.data?.data)
+                binding.imagenFormulario.scaleType = ImageView.ScaleType.CENTER_CROP
+                //en el propio ImageView, guardo la uri de la foto, para luego poder guardarla desde la Imagen setTag/getTag
+
+
+                val urilocal = copiarImagenALocal(resultado.data?.data!!)
+                Log.d(Constantes.ETIQUETA_LOG, "RUTA FOTO LOCAL =  ${urilocal}")
+                binding.imagenFormulario.tag = urilocal
+
+                //PEDIMOS PERMISOS PERMANTENES PARA ACCEDER A ESA FOTO DE LA GALERÍA DESPIUÉS (EN OTRO PROCESO, AL ARRANCAR EL PROGRAMA OTRA VEZ)
+                //ESTA SOLUCIÓN FALLA! EL Content Provider de DOcuimentos no nos concende acceso permanente
+                //val takeFlags = resultado.data?.flags!! and Intent.FLAG_GRANT_READ_URI_PERMISSION
+                //contentResolver.takePersistableUriPermission(resultado.data?.data!!, takeFlags)
+
+
+                //TODO probar la versión del detalle thumnail https://developer.android.com/guide/components/intents-common?hl=es-419#GetFile
+                //TODO probar escalar la imagen
+
+            } else {
+                Log.d(Constantes.ETIQUETA_LOG, "Volviendo de la Galeria MAL")
+            }
+
+        }
+
+        /*
+        lanzadorImagenFormulario = registerForActivityResult(ActivityResultContracts.StartActivityForResult(),
+            fun (res: ActivityResult) {
+            res
+        })
+
+        lanzadorImagenFormulario = registerForActivityResult(ActivityResultContracts.StartActivityForResult(),
+            this::aLaVueltaSeleccionFoto) //function referencia
+
+        lanzadorImagenFormulario = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            // void	onActivityResult(result:ActivityResult)
+            //it representa activityresult
+        }*/
+
+        //TODO mejora para seleccionar una foto de la galería y mostrarla en el imageview de la actividad
+        //0) programar el listener onclick sobre imageview
+        //1) Lanzar un intent implícito para seleccionar la foto
+        //2) tengo que preparar el objeto para lanar el 1) y recibir su respuesta
+        //3) a la vuelta, coger la foto y ponerla en el imageView
+        //función lambda / flecha
+        this.binding.imagenFormulario.setOnClickListener { imagen ->
+            seleccionarFoto()
+        }
+
+        /*this.binding.imagenFormulario.setOnClickListener {
+            seleccionarFoto()
+        }
+        //función anónima
+        this.binding.imagenFormulario.setOnClickListener ( fun (v: View) {
+            seleccionarFoto()
+        }
+        )
+
+        this.binding.imagenFormulario.setOnClickListener (this::seleccionarFoto2)*/
+
+    } // fin OnCreate
+
+    fun seleccionarFoto ()
+    {
+        //val intentGaleria = Intent(Intent.ACTION_PICK) //intent implicito para ir a la galeria
+        val intentGaleria = Intent(Intent.ACTION_GET_CONTENT) //intent implicito para ir a la galeria
+        intentGaleria.type = "image/*"
+
+        if (intentGaleria.resolveActivity(packageManager)!=null)
+        {
+            Log.d(Constantes.ETIQUETA_LOG, "SÍ HAY una APP de GALERIA")
+
+
+            lanzadorImagenFormulario.launch(intentGaleria)
+        } else {
+            Log.d(Constantes.ETIQUETA_LOG, "NO HAY APP de GALERÍA")
+        }
+
+
+    }
+    fun seleccionarFoto2 (v: View)
+    {
+
+    }
+
+
+    fun aLaVueltaSeleccionFoto (resultado: ActivityResult): Unit
+    {
+
+    }
+
+
+    fun aLaVueltaSeleccionFoto2 (resultado: Intent): Unit
+    {
+
     }
 
     /**
@@ -135,7 +242,15 @@ class FormularioActivity : AppCompatActivity() {
         val mayorEdad: Boolean = fichUsuario.getBoolean("mayorEdad", false)
         binding.checkBox.isChecked = mayorEdad
 
-        val usuarioFichero: Usuario = Usuario(nombre, edad, sexo, mayorEdad, colorFavorito)
+        val uriFoto = fichUsuario.getString("uriFoto", "")
+        if (uriFoto!="")
+        {
+            binding.imagenFormulario.setImageURI(uriFoto?.toUri())
+            binding.imagenFormulario.scaleType = ImageView.ScaleType.CENTER_CROP
+        }
+
+//        val usuarioFichero: Usuario = Usuario(nombre, edad, sexo, mayorEdad, colorFavorito)
+        val usuarioFichero = Usuario(nombre!!, edad, sexo, mayorEdad, color, uriFoto!!)
 
         val intent:Intent = Intent(this, BienvenidaActivity::class.java)
         intent.putExtra("usuario", usuarioFichero)
@@ -150,7 +265,7 @@ class FormularioActivity : AppCompatActivity() {
         val intent = Intent(this, SubColorActivity::class.java)
         //startActivity(intent)
         //startActivityForResult(intent, 99) // es como se hacía antiguamente, está deprecado, ya no se hace así
-        lanzador.launch(intent) // aquí lanzo la subactividad
+        lanzadorColorFavorito.launch(intent) // aquí lanzo la subactividad
     }
 
     fun mostrarInfoFormulario(view: View) {
@@ -169,6 +284,13 @@ class FormularioActivity : AppCompatActivity() {
         }
 
         val mayorEdad: Boolean = binding.checkBox.isChecked
+        val uriFoto = if (binding.imagenFormulario.tag == null)
+        {
+            "" //no tiene foto
+        } else
+        {
+            binding.imagenFormulario.tag as Uri //sí tiene foto
+        }
         val usuario: Usuario = Usuario(nombre, edad, sexo, mayorEdad, color)
         Log.d("MIAPP_FORMULARIO", "USUARIO = $usuario")
         guardarUsuario(usuario)
@@ -213,6 +335,7 @@ class FormularioActivity : AppCompatActivity() {
         editor.putString("sexo", usuario.sexo.toString())
         editor.putInt("color", usuario.colorFavorito)
         editor.putBoolean("mayorEdad", usuario.esMayorEdad)
+        editor.putString("uriFoto", usuario.uriFoto)
         editor.apply() // o commit - guardo los cambios de verdad en el fichero - se confirma
         editor.commit()
     }
@@ -253,6 +376,20 @@ class FormularioActivity : AppCompatActivity() {
     fun borrarUsuarioPrefs(view: View)
     {
         borrarUsuario()
+    }
+
+    fun copiarImagenALocal(uri: Uri): Uri {
+        val archivoGaleria = contentResolver.openInputStream(uri)
+        val nombreArchivo = "imagen_formulario_perfil.jpg"
+        val archivoNuevoSalida = File(filesDir, nombreArchivo)
+        val outputStream = FileOutputStream(archivoNuevoSalida)
+
+        archivoGaleria?.copyTo(outputStream)
+
+        archivoGaleria?.close()
+        outputStream.close()
+
+        return Uri.fromFile(archivoNuevoSalida) // este sí puedes guardar y reutilizar
     }
 
 }
