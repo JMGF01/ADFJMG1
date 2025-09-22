@@ -37,8 +37,8 @@ class BusquedaCancionesActivity : AppCompatActivity() {
                     lifecycleScope.launch {
                         val iTunesService = ITunesRetrofitHelper.getITunesServiceInstance()
                         Log.d(Constantes.ETIQUETA_LOG, "LANZANDO PETICIÓN HTTP")
-//                        val resultITunes: ResultITunes = iTunesService.obtenerCanciones(query ?: "")
-                        val resultITunes: ResultITunes = iTunesService.obtenerCanciones()
+                        val resultITunes: ResultITunes = iTunesService.obtenerCanciones(query ?: "")
+//                        val resultITunes: ResultITunes = iTunesService.obtenerCanciones()
                         mostrarListadoCanciones(resultITunes)
                     }
                 }

@@ -161,6 +161,14 @@
                 android:title="CANCIONES"
                 android:orderInCategory="20"
                 />
+
+            <item
+                android:id="@+id/menuFoto"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="FOTOGRAFIA"
+                android:orderInCategory="22"
+                />
         </menu>
     </item>
     <item android:title="EJERCICIOS VERANO">
