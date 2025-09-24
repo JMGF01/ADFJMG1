@@ -5,6 +5,7 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.PackageManager
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -25,22 +26,34 @@ import androidx.core.view.WindowInsetsCompat
 import edu.adf.adfjmg1.Constantes
 import edu.adf.adfjmg1.R
 import edu.adf.adfjmg1.databinding.ActivityFotoBinding
+import edu.adf.profe.foto.FotoViewModel
 import java.io.File
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Date
+import androidx.activity.viewModels
 
 class FotoActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityFotoBinding
-    lateinit var uriFoto:Uri
+//    lateinit var uriFoto:Uri
+    lateinit var uriFotoPrivada:Uri
+    lateinit var uriFotoPublica:Uri
+    //asociamos a esta actividad, su clase ViewModel (Modelo/estado)
+    private val viewModel: FotoViewModel by viewModels()
+
     val launcherIntentFoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     {
             resultado ->
         if (resultado.resultCode== RESULT_OK)
         {
             Log.d(Constantes.ETIQUETA_LOG, "La foto fue bien")
+//            binding.fotoTomada.setImageURI(this.uriFoto)
+            binding.fotoTomada.setImageURI(this.uriFotoPublica)
+//            viewModel.uriFoto = this.uriFoto
+            viewModel.uriFoto = this.uriFotoPublica
+            actualizarGaleria()
         } else {
             Log.d(Constantes.ETIQUETA_LOG, "La foto fue mal")
         }
@@ -52,6 +65,9 @@ class FotoActivity : AppCompatActivity() {
         binding =  ActivityFotoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel.uriFoto?.let {
+            binding.fotoTomada.setImageURI(it)
+        }
     }
 
     fun tomarFoto(view: View)
@@ -105,12 +121,16 @@ class FotoActivity : AppCompatActivity() {
         //1 CREAMOS UN FICHERO DESTINO
         val uri = crearFicheroDestino()
         uri?.let { //si uri es != null
-            this.uriFoto = it
-            Log.d(Constantes.ETIQUETA_LOG, "URI FOTO = ${this.uriFoto}")
+//            this.uriFoto = it
+            this.uriFotoPublica = it
+//            Log.d(Constantes.ETIQUETA_LOG, "URI FOTO = ${this.uriFoto}")
+            Log.d(Constantes.ETIQUETA_LOG, "URI FOTO = ${this.uriFotoPublica}")
             val intentFoto = Intent()
             intentFoto.setAction(MediaStore.ACTION_IMAGE_CAPTURE)
-            intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, this.uriFoto)
+//            intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, this.uriFoto)
+            intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, this.uriFotoPublica)
             launcherIntentFoto.launch(intentFoto)
+//            binding.fotoTomada.setImageURI(this.uriFoto)
         } ?: run {
             Toast.makeText(this, "NO FUE POSIBLE CREAR EL FICHERO DESTINO", Toast.LENGTH_LONG).show()
         }
@@ -181,6 +201,18 @@ class FotoActivity : AppCompatActivity() {
 
         //TODO CREAR RUTA PÚBLICA
         return rutaUriFoto
+    }
+
+    fun actualizarGaleria ()
+    {
+        MediaScannerConnection.scanFile(
+            this,
+            arrayOf(this.uriFotoPrivada.path),
+            arrayOf("image/jpeg") // o el MIME correspondiente
+        ) { path, uri ->
+            Log.d("Scan", "Archivo escaneado: $path, URI: $uri")
+        }
+
     }
 
 

@@ -1,9 +1,12 @@
 package edu.adf.adfjmg1
 
+import android.content.ComponentName
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -27,20 +30,21 @@ import edu.adf.adfjmg1.tabs.TabsActivity
  *  DE MOMENTO, LO HACEMOS CON INTENTS
  *
  * //TODO TERMINAR PRENSA APP X
- * //TODO INFLAR
- * //TODO SERIALIZABLE VS PARCELABLE
- * //TODO hacer que el Usuario pueda seleccionar una FOTo y que se visualice en el IMAGEVIEW
- * //TODO RECYCLERVIEW - listas  LISTVIEW no
- * //TODO HTTP API RETROFIT - PREVIO CORUTINAS KT - COLECCIONES -KT - git hub
- * //TODO FRAGMENTS - VIEWPAGER - TABS
+ * //TODO INFLAR X
+ * //TODO SERIALIZABLE VS PARCELABLE X
+ * //TODO hacer que el Usuario pueda seleccionar una FOTo y que se visualice en el IMAGEVIEW X
+ * //TODO RECYCLERVIEW - listas  LISTVIEW no X
+ * //TODO HTTP API RETROFIT - PREVIO CORUTINAS KT - COLECCIONES -KT - git hub X
+ * //TODO FRAGMENTS - VIEWPAGER - TABS X
+ * //TODO NOTIFICACIONES - PENDING INTENT
  * //TODO FIREBASE
- * //TODO PERMISOS PELIGROSOS
+ * //TODO PERMISOS PELIGROSOS X
  * //TODO CÁMARA FOTOS / VIDEO
  * //TODO GPS Y MAPAS // bLUETHOHT¿¿ // NFC dni??
  * //TODO SERVICIOS DEL SISTEMA (DOWNLOAD MANAGER, ALARM MANAGER)
  * //TODO SERVICIOS PROPIOS??
  * //TODO RECIEVERS
- * //TODO PROVIDERS
+ * //TODO PROVIDERS X
  * //TODO SQLITE - ROOM
  * //TODO LIVE DATA?
  * //TODO apuntes JETPCK COMPOSE Y MONETIZACIÓN, DISEÑO Y SEGURIDAD
@@ -50,14 +54,32 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
     var menuvisible: Boolean = false // Se usa para controlar el estado del menú de la aplicación.
+    var launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        Log.d(Constantes.ETIQUETA_LOG, "Volviendo de Ajustes Autonicio")
+        val ficherop = getSharedPreferences("ajustes", MODE_PRIVATE)
+        ficherop.edit().putBoolean("INICIO_AUTO", true).commit()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
         setContentView(R.layout.activity_main_menu)
 
+//        this.drawerLayout =  findViewById<DrawerLayout>(R.id.drawer)
+//        this.navigationView = findViewById<NavigationView>(R.id.navigationView)
+
+        val ficherop = getSharedPreferences("ajustes", MODE_PRIVATE)
+        val inicio_auto = ficherop.getBoolean("INICIO_AUTO", false)
+        if (!inicio_auto) {
+            solicitarInicioAutomatico()
+        }
+
         this.drawerLayout =  findViewById<DrawerLayout>(R.id.drawer)
         this.navigationView = findViewById<NavigationView>(R.id.navigationView)
+
+        // en esta actividad (this) escuchamos la selección sobre el menú Navigation
+        //this.navigationView.setNavigationItemSelectedListener(this)
+        //this.navigationView.setNavigationItemSelectedListener{false} así sería suficiente
 
         val ficheroInicio = getSharedPreferences(Constantes.FICHERO_PREFERENCIAS_INICIO, MODE_PRIVATE)
         val saltarVideo = ficheroInicio.getBoolean("SALTAR VIDEO", false)
@@ -66,9 +88,8 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             startActivity(intentvideo)
         }
 
-        // en esta actividad (this) escuchamos la selección sobre el menú Navigation
-        //this.navigationView.setNavigationItemSelectedListener(this)
-        //this.navigationView.setNavigationItemSelectedListener{false} así sería suficiente
+
+
 
         //TODO tarea opcional: Haced esta función setNavigationItemSelectedListener en versión función anónima
 
@@ -214,6 +235,25 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 //        startActivity(miIntent)
 
         return true
+    }
+
+    private fun solicitarInicioAutomatico() {
+        val manufacturer = Build.MANUFACTURER
+        try {
+            val intent = Intent()
+            if ("xiaomi".equals(manufacturer, ignoreCase = true)) {
+                intent.setComponent(
+                    ComponentName(
+                        "com.miui.securitycenter",
+                        "com.miui.permcenter.autostart.AutoStartManagementActivity"
+                    )
+                )
+            }
+
+            launcher.launch(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 
