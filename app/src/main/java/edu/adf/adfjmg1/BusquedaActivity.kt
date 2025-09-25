@@ -43,7 +43,14 @@ class BusquedaActivity : AppCompatActivity() {
         val web:Uri = url.toUri() // para eliminar espacios, tildes, la url la formamos bien con este método
         val intentBusqueda = Intent(Intent.ACTION_VIEW, web) // INTENT IMPLÍCITO (en el propio INTENT estoy diciendo lo que quiero hacer)
         try {
-            startActivity(Intent.createChooser(intentBusqueda, "ELIGE NAVEGADOR"))
+            if (intentBusqueda.resolveActivity(packageManager) != null) {
+                Log.d(Constantes.ETIQUETA_LOG, "El dispositivo puede navegar por internet")
+                startActivity(Intent.createChooser(intentBusqueda, "ELIGE NAVEGADOR..."))
+                //startActivity(intentBusqueda)
+            } else {
+                Toast.makeText(this, "No se ha detectado un navegador", Toast.LENGTH_LONG).show()
+            }
+//            startActivity(Intent.createChooser(intentBusqueda, "ELIGE NAVEGADOR"))
 //            startActivity(intentBusqueda)
 //            if (intentBusqueda.resolveActivity(packageManager)!= null) {
 //                Log.d("MIAPP_BUSQUEDA", "El dispositivo puede navegar por Internet")

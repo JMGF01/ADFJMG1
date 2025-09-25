@@ -4,6 +4,7 @@
     <!-- declaro que mi aplicación necesita conectarse a internet -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- mi app necesita acceder al estado de la red para saber si hay internet o nó y de qué tipo -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA"/> <!-- indicamos que la app usa la cámara y con true o false si el dispositivo tiene que tener cámara obligatoriamente o no -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/> <!-- permitimos que nuesta app se informe del inicio del dispositivo -->
@@ -11,6 +12,39 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" /> <!-- Si lo ponemos a true, si el dispositivo no tiene cámara, no me deja instalarlo. -->
+
+    <queries>
+        <!-- Declarar que quieres hacer consultas a aplicaciones de navegador -->
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+<!--            <data android:host="https"/>-->
+            <data android:scheme="https"/>
+
+        </intent>
+<!--         <package android:name="com.android.chrome" />-->
+<!--         <package android:name="org.mozilla.firefox" />-->
+<!--         <package android:name="com.opera.browser" />-->
+
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data
+                android:host="http"
+                />
+        </intent>
+    </queries>
+
+<!--    <queries>-->
+<!--        &lt;!&ndash; Declarar que quieres hacer consultas a aplicaciones de navegador &ndash;&gt;-->
+<!--        <intent>-->
+<!--            <action android:name="android.intent.action.VIEW"/>-->
+<!--            <data-->
+<!--                android:host="http"-->
+<!--                />-->
+<!--        </intent>-->
+<!--        &lt;!&ndash; <package android:name="com.android.chrome" />-->
+<!--         <package android:name="org.mozilla.firefox" />-->
+<!--         <package android:name="com.opera.browser" />&ndash;&gt;-->
+<!--    </queries>-->
 
     <application
         android:allowBackup="true"

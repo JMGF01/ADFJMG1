@@ -7,6 +7,7 @@ import android.util.Log
 import edu.adf.adfjmg1.Constantes
 import edu.adf.adfjmg1.MainMenuActivity
 import edu.adf.adfjmg1.ejercicio3.ClasificacionActivity
+import edu.adf.adfjmg1.notificaciones.Notificaciones
 
 
 class InicioMovilReceiver: BroadcastReceiver() {
@@ -15,9 +16,16 @@ class InicioMovilReceiver: BroadcastReceiver() {
         // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
         Log.d(Constantes.ETIQUETA_LOG, "En InicioMovil receiver")
 //        context.startActivity(Intent(context, MainMenuActivity::class.java))
-        val intentMainActivity = Intent(context, MainMenuActivity::class.java)
-        intentMainActivity.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        context.startActivity(intentMainActivity)//TODO REVISAR LOG LANZAMIENTO
+        try {
+            Notificaciones.lanzarNotificacion(context)
+        } catch (e: Exception) {
+            Log.d(Constantes.ETIQUETA_LOG, "Error al lanzar notificaciones -> ", e)
+        }
+
+        // TODO Comprobar si puedo lanzar la actividad desde el receiver
+//        val intentMainActivity = Intent(context, MainMenuActivity::class.java)
+//        intentMainActivity.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//        context.startActivity(intentMainActivity)//TODO REVISAR LOG LANZAMIENTO
     }
 
 }
