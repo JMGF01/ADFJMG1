@@ -167,7 +167,15 @@
                 android:icon="@drawable/outline_arrow_forward_ios_24"
                 app:showAsAction="always"
                 android:title="FOTOGRAFIA"
-                android:orderInCategory="22"
+                android:orderInCategory="23"
+                />
+
+            <item
+                android:id="@+id/menuDescarga"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="DOWNLOAD"
+                android:orderInCategory="23"
                 />
         </menu>
     </item>

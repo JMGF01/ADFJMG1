@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import edu.adf.adfjmg1.Constantes
 import edu.adf.adfjmg1.MainMenuActivity
+import edu.adf.adfjmg1.alarma.GestorAlarma
 import edu.adf.adfjmg1.ejercicio3.ClasificacionActivity
 import edu.adf.adfjmg1.notificaciones.Notificaciones
 
@@ -18,6 +19,7 @@ class InicioMovilReceiver: BroadcastReceiver() {
 //        context.startActivity(Intent(context, MainMenuActivity::class.java))
         try {
             Notificaciones.lanzarNotificacion(context)
+            GestorAlarma.programarAlarma(context)
         } catch (e: Exception) {
             Log.d(Constantes.ETIQUETA_LOG, "Error al lanzar notificaciones -> ", e)
         }

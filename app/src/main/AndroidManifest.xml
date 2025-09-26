@@ -1,50 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- declaro que mi aplicación necesita conectarse a internet -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- mi app necesita acceder al estado de la red para saber si hay internet o nó y de qué tipo -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.CAMERA"/> <!-- indicamos que la app usa la cámara y con true o false si el dispositivo tiene que tener cámara obligatoriamente o no -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/> <!-- permitimos que nuesta app se informe del inicio del dispositivo -->
-    <!-- indicamos que la app usa la cámara y con true o false indicamos si deja o no instalarlo. -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- indicamos que la app usa la cámara y con true o false si el dispositivo tiene que tener cámara obligatoriamente o no -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- permitimos que nuesta app se informe del inicio del dispositivo -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" /> <!-- indicamos que la app usa la cámara y con true o false indicamos si deja o no instalarlo. -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" /> <!-- Si lo ponemos a true, si el dispositivo no tiene cámara, no me deja instalarlo. -->
-
     <queries>
+
         <!-- Declarar que quieres hacer consultas a aplicaciones de navegador -->
         <intent>
-            <action android:name="android.intent.action.VIEW"/>
-<!--            <data android:host="https"/>-->
-            <data android:scheme="https"/>
-
+            <action android:name="android.intent.action.VIEW" />
+            <!-- <data android:host="https"/> -->
+            <data android:scheme="https" />
         </intent>
-<!--         <package android:name="com.android.chrome" />-->
-<!--         <package android:name="org.mozilla.firefox" />-->
-<!--         <package android:name="com.opera.browser" />-->
+        <!-- <package android:name="com.android.chrome" /> -->
+        <!-- <package android:name="org.mozilla.firefox" /> -->
+        <!-- <package android:name="com.opera.browser" /> -->
 
         <intent>
-            <action android:name="android.intent.action.VIEW"/>
-            <data
-                android:host="http"
-                />
+            <action android:name="android.intent.action.VIEW" />
+
+            <data android:host="http" />
         </intent>
     </queries>
-
-<!--    <queries>-->
-<!--        &lt;!&ndash; Declarar que quieres hacer consultas a aplicaciones de navegador &ndash;&gt;-->
-<!--        <intent>-->
-<!--            <action android:name="android.intent.action.VIEW"/>-->
-<!--            <data-->
-<!--                android:host="http"-->
-<!--                />-->
-<!--        </intent>-->
-<!--        &lt;!&ndash; <package android:name="com.android.chrome" />-->
-<!--         <package android:name="org.mozilla.firefox" />-->
-<!--         <package android:name="com.opera.browser" />&ndash;&gt;-->
-<!--    </queries>-->
 
     <application
         android:allowBackup="true"
@@ -56,15 +43,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ADFJMG1"
         tools:targetApi="31">
-        <receiver android:name=".receptor.InicioMovilReceiver"
+        <receiver
+            android:name=".descargarcanciones.DescargaReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
+        <activity
+            android:name=".descargarcanciones.DescargarCancionActivity"
+            android:exported="false" />
+
+        <receiver
+            android:name=".receptor.InicioMovilReceiver"
             android:enabled="true"
             android:exported="true">
-            <!-- configuramos el receptor para progamar qué escucha/recibe/de qué está pendiente-->
+
+            <!-- configuramos el receptor para progamar qué escucha/recibe/de qué está pendiente -->
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".receptor.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".foto.FotoActivity"
@@ -172,6 +174,8 @@
         <activity
             android:name=".MainMenuActivity"
             android:exported="true">
+
+            <!-- si quito esto, el intent-filter, la app se instala pero no se ve en el escritorio -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -225,16 +229,14 @@
         </activity>
 
         <provider
-            android:authorities="edu.adf.adfjmg1"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="edu.adf.adfjmg1"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/rutas_provider"
-                />
+                android:resource="@xml/rutas_provider" />
         </provider>
-
     </application>
 
 </manifest>

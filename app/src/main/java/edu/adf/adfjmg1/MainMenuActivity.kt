@@ -17,12 +17,14 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import edu.adf.adfjmg1.alarma.GestorAlarma
 import edu.adf.adfjmg1.ejercicio1.Ejercicio1Activity
 import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
 import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
 import edu.adf.adfjmg1.canciones.BusquedaCancionesActivity
 import edu.adf.adfjmg1.contactos.SeleccionContactoActivity
 import edu.adf.adfjmg1.contactos.SeleccionContactoPermisosActivity
+import edu.adf.adfjmg1.descargarcanciones.DescargarCancionActivity
 import edu.adf.adfjmg1.foto.FotoActivity
 import edu.adf.adfjmg1.lista.ListaUsuariosActivity
 import edu.adf.adfjmg1.perros.PerrosActivity
@@ -76,6 +78,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         mostrarAPPSinstaladas()
         gestionarPermisosNotis ()
+        lanzarAlarma()
 
         val ficherop = getSharedPreferences("ajustes", MODE_PRIVATE)
         val inicio_auto = ficherop.getBoolean("INICIO_AUTO", false)
@@ -155,6 +158,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuContacto -> Intent(this, SeleccionContactoActivity::class.java)
                 R.id.menuContactoPermiso -> Intent(this, SeleccionContactoPermisosActivity::class.java)
                 R.id.menuFoto -> Intent(this, FotoActivity::class.java)
+                R.id.menuDescarga -> Intent(this, DescargarCancionActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla
@@ -314,6 +318,10 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
 
         dialogo.show()//lo muestro
+    }
+
+    fun lanzarAlarma() {
+        GestorAlarma.programarAlarma(this)
     }
 
 }
