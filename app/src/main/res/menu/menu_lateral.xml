@@ -175,7 +175,23 @@
                 android:icon="@drawable/outline_arrow_forward_ios_24"
                 app:showAsAction="always"
                 android:title="DOWNLOAD"
-                android:orderInCategory="23"
+                android:orderInCategory="24"
+                />
+
+            <item
+                android:id="@+id/menuBioActivity"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="BIOMETRICA"
+                android:orderInCategory="25"
+                />
+
+            <item
+                android:id="@+id/menuMapa"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="MAPA"
+                android:orderInCategory="26"
                 />
         </menu>
     </item>

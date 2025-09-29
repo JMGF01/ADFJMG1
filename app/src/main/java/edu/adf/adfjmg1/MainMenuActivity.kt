@@ -18,6 +18,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import edu.adf.adfjmg1.alarma.GestorAlarma
+import edu.adf.adfjmg1.biometrico.BioActivity
 import edu.adf.adfjmg1.ejercicio1.Ejercicio1Activity
 import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
 import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
@@ -27,6 +28,7 @@ import edu.adf.adfjmg1.contactos.SeleccionContactoPermisosActivity
 import edu.adf.adfjmg1.descargarcanciones.DescargarCancionActivity
 import edu.adf.adfjmg1.foto.FotoActivity
 import edu.adf.adfjmg1.lista.ListaUsuariosActivity
+import edu.adf.adfjmg1.mapa.MapsActivity
 import edu.adf.adfjmg1.perros.PerrosActivity
 import edu.adf.adfjmg1.productos.ListaProductosActivity
 import edu.adf.adfjmg1.tabs.TabsActivity
@@ -159,6 +161,8 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuContactoPermiso -> Intent(this, SeleccionContactoPermisosActivity::class.java)
                 R.id.menuFoto -> Intent(this, FotoActivity::class.java)
                 R.id.menuDescarga -> Intent(this, DescargarCancionActivity::class.java)
+                R.id.menuBioActivity -> Intent(this, BioActivity::class.java)
+                R.id.menuMapa -> Intent(this, MapsActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla

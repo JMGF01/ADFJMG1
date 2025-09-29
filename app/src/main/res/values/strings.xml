@@ -31,4 +31,5 @@
     <string name="imc_menuSalir">SALIR</string>
     <string name="imc_menuLimpiar">LIMPIAR</string>
     <string name="visita_web">VISITA WEB</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
