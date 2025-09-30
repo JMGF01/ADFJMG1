@@ -3,6 +3,8 @@ package edu.adf.adfjmg1.mapa
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +12,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -27,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import edu.adf.adfjmg1.Constantes
 import edu.adf.adfjmg1.R
 import edu.adf.adfjmg1.databinding.ActivityMapsBinding
+import java.util.Locale
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -41,6 +45,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         {
             if (gpsActivado())
             {
+                Log.d(Constantes.ETIQUETA_LOG, "GPS ACTIVADO")
                 accederALaUbicacion()
             } else {
                 Log.d(Constantes.ETIQUETA_LOG, "GPS DESACTIVADO")
@@ -61,12 +66,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         this.locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 646)
-        }
-        else {
-            Log.d(Constantes.ETIQUETA_LOG, "Versión antigua, permiso no soportado")
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 646)
+//        }
+//        else {
+//            Log.d(Constantes.ETIQUETA_LOG, "Versión antigua, permiso no soportado")
+//        }
     }
 
     /**
@@ -87,12 +92,39 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 
         //SOLICITAMOS PERMISOS DE LOCALIZACIÓN
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 646)
-        }
-        else {
-            Log.d(Constantes.ETIQUETA_LOG, "Versión antigua, permiso no soportado")
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 646)
+//        }
+//        else {
+//            Log.d(Constantes.ETIQUETA_LOG, "Versión antigua, permiso no soportado")
+//        }
+//        if (ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            Log.d(Constantes.ETIQUETA_LOG, "Con permisos para la ubicación")
+//            if (gpsActivado())
+//            {
+//                Log.d(Constantes.ETIQUETA_LOG, "GPS ACTIVADO")
+//                accederALaUbicacion()
+//            } else {
+//                Log.d(Constantes.ETIQUETA_LOG, "GPS DESACTIVADO")
+//                solicitarActivacion()
+//            }
+//
+//        } else {
+//            Log.d(Constantes.ETIQUETA_LOG, "Pido permisos para la ubicación")
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 646)
+////                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 646)
+//
+//            } else
+//            {
+//                Log.d(Constantes.ETIQUETA_LOG, "Versión antigua, permiso no soportado")
+//            }
+//
+//        }
     }
 
     fun gpsActivado(): Boolean
@@ -107,20 +139,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray,
-        deviceId: Int
+        grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults, deviceId)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
         {
             Log.d(Constantes.ETIQUETA_LOG, "Con permisos para la ubicación")
             if (gpsActivado()) {
                 accederALaUbicacion()
             } else {
-//            Log.d(Constantes.ETIQUETA_LOG, "Sin permisos para la ubicación")
-//            Toast.makeText(this, "SIN ACCESO A LA UBICACIÓN", Toast.LENGTH_LONG).show()
-            solicitarActivacion()
-                }
+//              Log.d(Constantes.ETIQUETA_LOG, "Sin permisos para la ubicación")
+//              Toast.makeText(this, "SIN ACCESO A LA UBICACIÓN", Toast.LENGTH_LONG).show()
+                solicitarActivacion()
+            }
         } else {
             Log.d(Constantes.ETIQUETA_LOG, "SIN permisos para la ubicación")
             Toast.makeText(this, "SIN ACCESO A LA UBICACIÓN", Toast.LENGTH_LONG).show()
@@ -140,6 +171,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     var ultimaubicacion =  locationResult.lastLocation
                     Log.d(Constantes.ETIQUETA_LOG, "Última ubicación = $ultimaubicacion")
                     this@MapsActivity.fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+                    this@MapsActivity.mostrarUbicacion(locationResult.lastLocation)
                 }
             }
         }
@@ -154,12 +186,47 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 locationCallback,
                 Looper.getMainLooper()
             )
-
+        Log.d(Constantes.ETIQUETA_LOG, "Petición realizada")
         }
+    }
+
+    fun mostrarDireccionPostal(ubicacion: Location)
+    {
+        val geocoder = Geocoder(this, Locale("es"))
+        val direcciones = geocoder.getFromLocation(ubicacion.latitude, ubicacion.longitude, 1)
+
+        if (direcciones!= null && direcciones.size>0)
+        {
+            val direccion = direcciones[0]
+            val toast = "Dirección obtenida: ${direccion.getAddressLine(0)} CP = ${direccion.postalCode} LOCALIDAD = ${direccion.locality}"
+            Log.d(Constantes.ETIQUETA_LOG, toast)
+            Toast.makeText(this, toast, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun mostrarUbicacion(location: Location)
+    {
+        val ubicacionActual = LatLng(location.latitude, location.longitude)
+        this.mMap.addMarker(MarkerOptions().position(ubicacionActual).title("Estoy AQUÍ"))
+        this.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual, 12f))
+        //this.mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+        this.mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+        //this.mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+        mostrarDireccionPostal(location)
     }
 
     private fun solicitarActivacion() {
         val intentActivacionGPS = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
         launcherGpsActivation.launch(intentActivacionGPS)
+    }
+
+
+
+    fun mostrarUbicacionMapa(view: View) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 646)
+        } else {
+            Log.d(Constantes.ETIQUETA_LOG, "Versión antigua, permiso no soportado")
+        }
     }
 }
