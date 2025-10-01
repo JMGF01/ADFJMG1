@@ -23,7 +23,10 @@ object Notificaciones {
     val NOTIFICATION_CHANNEL_ID = "UNO"
     val NOTIFICATION_CHANNEL_NAME = "CANAL_ADF"
 
-//    @TargetApi(Build.VERSION_CODES.O)
+    //Con estas anotaciones, puedo usar cosas de la versión indicada dentro de la función sin preocuparme de la versión mínima
+    //Además, con Requires valida que la función llamante gestione/asegure la versión correcta
+    //Por contra, con Target no valida que la función llamante gestione/asegure la versión correcta y deja llamar sin comprobarlo
+    //    @TargetApi(Build.VERSION_CODES.O)
     @RequiresApi(Build.VERSION_CODES.O)
     private fun crearCanalNotificacion (context: Context): NotificationChannel?
     {
@@ -71,8 +74,10 @@ object Notificaciones {
         {
             var notificationChannel = crearCanalNotificacion(context)
             notificationManager.createNotificationChannel(notificationChannel!!)
+        }
 
-            var nb = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+        //CREAMOS LA NOTIFICACIÓN
+        var nb = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSmallIcon(R.drawable.outline_notifications_24)
@@ -83,21 +88,49 @@ object Notificaciones {
                 .setAutoCancel(true)//es para que cuando toque la noti, desaparezca
                 .setDefaults(Notification.DEFAULT_ALL)
 
-            val intentDestino = Intent(context, MainMenuActivity::class.java)
-            // pendingIntent -- Intent "securizado" -- permite lanzar el intent, como si estuviera dentro de mi app
-            val pendingIntent = PendingIntent.getActivity(context, 100, intentDestino, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
-            nb.setContentIntent(pendingIntent) //asocio el intent a la notificación.
-            // si estoy en api anterior, debo setear el sonido fuera porque no hay canal
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-            {
-                nb.setSound(Uri.parse("android.resource://" + context.packageName + "/" + R.raw.snd_noti))
-            }
-
-            Log.d(Constantes.ETIQUETA_LOG, "Dentro de lanzarNotificacion()2")
-            val notification = nb.build()
-
-            Log.d(Constantes.ETIQUETA_LOG, "Dentro de lanzarNotificacion() 3")
-            notificationManager.notify(500, notification)
+        val intentDestino = Intent(context, MainMenuActivity::class.java)
+        // pendingIntent -- Intent "securizado" -- permite lanzar el intent, como si estuviera dentro de mi app
+        val pendingIntent = PendingIntent.getActivity(context, 100, intentDestino, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
+        nb.setContentIntent(pendingIntent) //asocio el intent a la notificación.
+        // si estoy en api anterior, debo setear el sonido fuera porque no hay canal
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+        {
+            nb.setSound(Uri.parse("android.resource://" + context.packageName + "/" + R.raw.snd_noti))
         }
+
+        Log.d(Constantes.ETIQUETA_LOG, "Dentro de lanzarNotificacion()2")
+        val notification = nb.build()
+
+        //ADD PERMISOS
+        Log.d(Constantes.ETIQUETA_LOG, "Dentro de lanzarNotificacion() 3")
+        notificationManager.notify(500, notification)
+    }
+
+    fun crearNotificacionSegundoPlano(context: Context): Notification {
+        var segundo_plano: Notification? = null
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        var nb: NotificationCompat.Builder? = null
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val nc = crearCanalNotificacion( context)
+            notificationManager.createNotificationChannel(nc!!) //creo nc si ya existe??
+        }
+        nb = NotificationCompat.Builder(context, Notificaciones.NOTIFICATION_CHANNEL_ID)
+
+        nb.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        nb.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+        nb.setSmallIcon(R.drawable.outline_arrow_circle_down_24) //importante blanco y fondo transparente
+        nb.setContentTitle("Comprobando si hay mensajes")
+        nb.setAutoCancel(true)
+        nb.setDefaults(Notification.DEFAULT_ALL)
+        nb.setTimeoutAfter(5000)
+
+
+        segundo_plano = nb.build()
+        Log.d("MIAPP", "Notificacion segundo plano creada")
+
+        return segundo_plano
     }
 }

@@ -80,7 +80,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         mostrarAPPSinstaladas()
         gestionarPermisosNotis ()
-        lanzarAlarma()
+//        lanzarAlarma() // Ahora la lanzamos cuando se ejecute el servicio, una vez se reinicie el móvil.
 
         val ficherop = getSharedPreferences("ajustes", MODE_PRIVATE)
         val inicio_auto = ficherop.getBoolean("INICIO_AUTO", false)

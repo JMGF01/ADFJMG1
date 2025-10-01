@@ -3,12 +3,14 @@ package edu.adf.adfjmg1.receptor
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import edu.adf.adfjmg1.Constantes
 import edu.adf.adfjmg1.MainMenuActivity
 import edu.adf.adfjmg1.alarma.GestorAlarma
 import edu.adf.adfjmg1.ejercicio3.ClasificacionActivity
 import edu.adf.adfjmg1.notificaciones.Notificaciones
+import edu.adf.adfjmg1.servicios.NumAleatorioService
 
 
 class InicioMovilReceiver: BroadcastReceiver() {
@@ -18,8 +20,15 @@ class InicioMovilReceiver: BroadcastReceiver() {
         Log.d(Constantes.ETIQUETA_LOG, "En InicioMovil receiver")
 //        context.startActivity(Intent(context, MainMenuActivity::class.java))
         try {
-            Notificaciones.lanzarNotificacion(context)
-            GestorAlarma.programarAlarma(context)
+            // Notificaciones.lanzarNotificacion(context)
+            // GestorAlarma.programarAlarma(context)
+            val intentService = Intent(context, NumAleatorioService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(intentService)
+            } else {
+                context.startService(intentService)
+            }
+            Log.d(Constantes.ETIQUETA_LOG, "Servicio lanzado...")
         } catch (e: Exception) {
             Log.d(Constantes.ETIQUETA_LOG, "Error al lanzar notificaciones -> ", e)
         }

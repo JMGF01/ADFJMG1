@@ -24,9 +24,10 @@ object GestorAlarma {
     @TargetApi(Build.VERSION_CODES.S_V2)
     fun programarAlarma(context: Context)
     {
+        //accedo al servicio del Sistema AlarmManager
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         //calcular el tiempo donde suena la alarma
-        val tiempo = System.currentTimeMillis()+30000 // 30 segundos más
+        val tiempo = System.currentTimeMillis()+(30*1000) // 30 segundos más
 
         //preparo el listener de la alarma - Receiver
         val intentAlarma = Intent(context, AlarmReceiver::class.java)
