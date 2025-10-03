@@ -17,6 +17,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import edu.adf.adfjmg1.alarma.AjusteAlarmaActivity
 import edu.adf.adfjmg1.alarma.GestorAlarma
 import edu.adf.adfjmg1.biometrico.BioActivity
 import edu.adf.adfjmg1.ejercicio1.Ejercicio1Activity
@@ -53,7 +54,7 @@ import edu.adf.adfjmg1.tabs.TabsActivity
  * //TODO CÁMARA FOTOS / VIDEO
  * //TODO GPS Y MAPAS // bLUETHOHT¿¿ // NFC dni??
  * //TODO SERVICIOS DEL SISTEMA (DOWNLOAD MANAGER, ALARM MANAGER)
- * //TODO SERVICIOS PROPIOS??
+ * //TODO SERVICIOS PROPIOS started service / foreground service / intent service / binded
  * //TODO RECIEVERS
  * //TODO PROVIDERS X
  * //TODO SQLITE - ROOM
@@ -164,6 +165,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuBioActivity -> Intent(this, BioActivity::class.java)
                 R.id.menuMapa -> Intent(this, MapsActivity::class.java)
                 R.id.menuPlay -> Intent(this, PlayActivity::class.java)
+                R.id.menuAlarma -> Intent(this, AjusteAlarmaActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla

@@ -13,8 +13,8 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" /> <!-- dicen q no existe pero te quita el rojo en AS añado por si acaso necesario para poco -->
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" /> <!-- indicamos que la app usa la cámara y con true o false indicamos si deja o no instalarlo. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Utilizamos el GPS -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />  <!-- USAMOS POSICIÓN APROX -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/> <!-- para lanzar un servicio en foreground obligatorio en API 14 para especificar el tipo de servicio -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- USAMOS POSICIÓN APROX -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" /> <!-- para lanzar un servicio en foreground obligatorio en API 14 para especificar el tipo de servicio -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" /> <!-- Si lo ponemos a true, si el dispositivo no tiene cámara, no me deja instalarlo. -->
@@ -61,6 +61,9 @@
         android:theme="@style/Theme.ADFJMG1"
         tools:targetApi="31">
         <activity
+            android:name=".alarma.AjusteAlarmaActivity"
+            android:exported="false" />
+        <activity
             android:name=".servicios.PlayActivity"
             android:exported="false" />
 
@@ -74,7 +77,6 @@
         <receiver android:name=".servicios.PlayService$NotificationPlayButtonHandler" />
         <receiver android:name=".servicios.PlayService$NotificationPrevButtonHandler" />
         <receiver android:name=".servicios.PlayService$NotificationSkipButtonHandler" />
-
         <receiver
             android:name=".receptor.FinServicioReceiver"
             android:enabled="true"
@@ -121,7 +123,6 @@
             android:name=".receptor.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
-
         <receiver
             android:name=".receptor.InicioMovilReceiver"
             android:enabled="true"

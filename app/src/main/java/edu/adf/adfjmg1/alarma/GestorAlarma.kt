@@ -16,6 +16,7 @@ import android.util.Log
 
 object GestorAlarma {
 
+//    const val ID_PROCESO_ALARMA
     /**
      * Me declaro un objeto en vez de clase, cuando sólo necesito una instancia "es algo estático-JAVA"
       */
