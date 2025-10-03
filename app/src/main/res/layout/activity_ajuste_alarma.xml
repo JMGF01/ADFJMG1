@@ -7,22 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".alarma.AjusteAlarmaActivity">
 
-    <Switch
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switch1"
+        android:onClick="programarAlarma"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="32dp"
-        android:text="Switch"
         android:checked="true"
+        android:textOff="Off"
+        android:textOn="On"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:shadowColor="@color/miAzulClaro"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="32dp"
         android:text="ESTADO ALARMA"
         android:textSize="22sp"

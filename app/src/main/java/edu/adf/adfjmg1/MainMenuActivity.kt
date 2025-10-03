@@ -10,12 +10,20 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.edit
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.google.android.material.navigation.NavigationView
 import edu.adf.adfjmg1.alarma.AjusteAlarmaActivity
 import edu.adf.adfjmg1.alarma.GestorAlarma
@@ -27,6 +35,7 @@ import edu.adf.adfjmg1.canciones.BusquedaCancionesActivity
 import edu.adf.adfjmg1.contactos.SeleccionContactoActivity
 import edu.adf.adfjmg1.contactos.SeleccionContactoPermisosActivity
 import edu.adf.adfjmg1.descargarcanciones.DescargarCancionActivity
+import edu.adf.adfjmg1.fechayhora.SeleccionFechaYHoraActivity
 import edu.adf.adfjmg1.foto.FotoActivity
 import edu.adf.adfjmg1.lista.ListaUsuariosActivity
 import edu.adf.adfjmg1.mapa.MapsActivity
@@ -34,6 +43,9 @@ import edu.adf.adfjmg1.perros.PerrosActivity
 import edu.adf.adfjmg1.productos.ListaProductosActivity
 import edu.adf.adfjmg1.servicios.PlayActivity
 import edu.adf.adfjmg1.tabs.TabsActivity
+import edu.adf.adfjmg1.worker.MiTareaProgramada
+import java.text.SimpleDateFormat
+import java.util.concurrent.TimeUnit
 
 /**
  *  ESTA ES LA ACTIVIDAD DE INICIO
@@ -49,9 +61,10 @@ import edu.adf.adfjmg1.tabs.TabsActivity
  * //TODO HTTP API RETROFIT - PREVIO CORUTINAS KT - COLECCIONES -KT - git hub X
  * //TODO FRAGMENTS - VIEWPAGER - TABS X
  * //TODO NOTIFICACIONES - PENDING INTENT
- * //TODO FIREBASE
+ * //TODO FIREBASE (auth y bd)
  * //TODO PERMISOS PELIGROSOS X
  * //TODO CÁMARA FOTOS / VIDEO
+ * //TODO Autenticación Biométrica/PIN x
  * //TODO GPS Y MAPAS // bLUETHOHT¿¿ // NFC dni??
  * //TODO SERVICIOS DEL SISTEMA (DOWNLOAD MANAGER, ALARM MANAGER)
  * //TODO SERVICIOS PROPIOS started service / foreground service / intent service / binded
@@ -60,16 +73,23 @@ import edu.adf.adfjmg1.tabs.TabsActivity
  * //TODO SQLITE - ROOM
  * //TODO LIVE DATA?
  * //TODO apuntes JETPCK COMPOSE Y MONETIZACIÓN, DISEÑO Y SEGURIDAD
+ *  //TODO DESPROGRAMAR ALARMA
+ *  //TODO CalendarPicker y TimePicker
+ *  //TODO firma y PUBLICAR APPS
  */
 class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
-    var menuvisible: Boolean = false // Se usa para controlar el estado del menú de la aplicación.
+    var menuVisible: Boolean = false // Se usa para controlar el estado del menú de la aplicación.
     var launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         Log.d(Constantes.ETIQUETA_LOG, "Volviendo de Ajustes Autonicio")
         val ficherop = getSharedPreferences("ajustes", MODE_PRIVATE)
-        ficherop.edit().putBoolean("INICIO_AUTO", true).commit()
+//        ficherop.edit().putBoolean("INICIO_AUTO", true).commit()
+        ficherop.edit(true){
+            putBoolean("INICIO_AUTO", true)
+            putBoolean("ALARMA", false)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +103,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         val ficherop = getSharedPreferences("ajustes", MODE_PRIVATE)
         val inicio_auto = ficherop.getBoolean("INICIO_AUTO", false)
         if (!inicio_auto) {
+            //PRIMERA VEZ
             solicitarInicioAutomatico()
         }
 
@@ -96,13 +117,15 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         // intentCompartir()
         val ficheroInicio = getSharedPreferences(Constantes.FICHERO_PREFERENCIAS_INICIO, MODE_PRIVATE)
         val saltarVideo = ficheroInicio.getBoolean("SALTAR VIDEO", false)
-        if (!saltarVideo) {
+        if (!saltarVideo) //==false
+        {
             val intentvideo = Intent(this, VideoActivity::class.java)
             startActivity(intentvideo)
         }
 //        mostrarAPPSinstaladas()
         gestionarPermisosNotis ()
 //        lanzarAlarma() // Ahora la lanzamos cuando se ejecute el servicio, una vez se reinicie el móvil.
+        lanzarWorkManager()
 
 
 
@@ -129,12 +152,11 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         // CON FUNCIÓN ANÓNIMA
         this.navigationView.setNavigationItemSelectedListener (fun (item: MenuItem): Boolean {
             Log.d("MIAPP_MAINMENU", "Opción ${item.itemId} seleccionada")
-            this.drawerLayout.closeDrawers()
-            this.menuvisible = false
 
             var intent:Intent = when(item.itemId) {
-                R.id.menuVersiones -> Intent(this, VersionActivity::class.java)
+//                R.id.menuVersiones -> Intent(this, VersionActivity::class.java)
                 R.id.menuAdivinaNumero -> Intent(this, AdivinaNumeroActivity::class.java)
+                R.id.menuImc -> Intent(this, ImcActivity::class.java)
                 R.id.menuCalculadora -> Intent(this, Calculadora::class.java)
                 R.id.menuCuadros -> Intent(this, CuadrosActivity::class.java)
                 R.id.menuSuma -> Intent(this, SumaActivity::class.java)
@@ -166,15 +188,22 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuMapa -> Intent(this, MapsActivity::class.java)
                 R.id.menuPlay -> Intent(this, PlayActivity::class.java)
                 R.id.menuAlarma -> Intent(this, AjusteAlarmaActivity::class.java)
-                else -> Intent(this, ImcActivity::class.java)
+                R.id.menuFechaHora -> Intent(this, SeleccionFechaYHoraActivity::class.java)
+//                else -> Intent(this, ImcActivity::class.java)
+                else -> Intent(this, VersionActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla
-            return true
+
+            this.drawerLayout.closeDrawers()
+            this.menuVisible = false
+
+            return true //en una lambda, no hace poner return
         })
 
-
+// con función lambda
 //        this.navigationView.setNavigationItemSelectedListener{
 //            Log.d("MiImcActivity", "Opción ${it.itemId} seleccionada")
+//
 //            this.drawerLayout.closeDrawers()
 //            this.menuvisible = false
 //
@@ -199,27 +228,28 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
     }
 
-    fun intentCompartir()
-    {
-        val intentEnviarTexto = Intent(Intent.ACTION_SEND) // ENVIAR
-        intentEnviarTexto.type = "text/plain" //TIPO MIME - significa de qué tipo es la información
-        intentEnviarTexto.putExtra(Intent.EXTRA_TEXT, "Hola desde Android :)")
-        startActivity(Intent.createChooser(intentEnviarTexto, "Enviar mensaje con ..."))
-    }
+//    fun intentCompartir()
+//    {
+//        val intentEnviarTexto = Intent(Intent.ACTION_SEND) // ENVIAR
+//        intentEnviarTexto.type = "text/plain" //TIPO MIME - significa de qué tipo es la información
+//        intentEnviarTexto.putExtra(Intent.EXTRA_TEXT, "Hola desde Android :)")
+//        startActivity(Intent.createChooser(intentEnviarTexto, "Enviar mensaje con ..."))
+//    }
 
+    //este métod o se invoca al tocar la hamburguesa
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId) {
             android.R.id.home -> {// Esta clase R no es la de mi proyecto, si no la de Android.
                 Log.d("MIAPP_MAINMENU", "Botón Hamburguesa tocado")
-                if (this.menuvisible) {
+                if (this.menuVisible) {
                     this.drawerLayout.closeDrawers()
 //                    this.menuvisible = false
                 } else {
                     this.drawerLayout.openDrawer(GravityCompat.START)
 //                    this.menuvisible = true
                 }
-                this.menuvisible = !this.menuvisible
+                this.menuVisible = !this.menuVisible
             }
         }
 
@@ -228,8 +258,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         Log.d("MIAPP_MAINMENU", "Opción ${item.itemId} seleccionada")
-        this.drawerLayout.closeDrawers()
-        this.menuvisible = false
+
         // TODO: Completad el menú lateral y su funciomaniento
 
         var intent:Intent = when(item.itemId) {
@@ -254,6 +283,8 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 //        val miIntent: Intent = Intent(this, objeto)
 //        startActivity(miIntent)
 
+        this.drawerLayout.closeDrawers()
+        this.menuVisible = false
         return true
     }
 
@@ -282,8 +313,14 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         val apps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
 
         Log.d(Constantes.ETIQUETA_LOG, "Número apps: ${apps.size}")
-        for (app in apps.sortedBy { it.packageName }) {
-            Log.d(Constantes.ETIQUETA_LOG, "Package: ${app.packageName}, Label: ${packageManager.getApplicationLabel(app)}")
+//        for (app in apps.sortedBy { it.packageName }) {
+//            Log.d(Constantes.ETIQUETA_LOG, "Package: ${app.packageName}, Label: ${packageManager.getApplicationLabel(app)}")
+//        }
+        //ordeno por paquete
+        val appOrdenadas = apps.sortedBy { it.packageName }
+        appOrdenadas.forEach {
+            Log.d("AppInfo", "Package: ${it.packageName}, Label: ${packageManager.getApplicationLabel(it)}")
+            // Log.d("AppInfo", "$it")
         }
 
     }
@@ -329,6 +366,63 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
     fun lanzarAlarma() {
         GestorAlarma.programarAlarma(this)
+    }
+
+    fun lanzarWorkManager ()
+    {
+        //definimos restricciones
+        val constraints = Constraints.Builder()
+            //.setRequiredNetworkType(NetworkType.UNMETERED) // solo Wi-Fi
+            //.setRequiresBatteryNotLow(true)                // no ejecutar con batería baja
+            //.setRequiresCharging(true)                     // solo cuando esté cargando
+            .build()
+
+        //pasamos datos de entrada
+        val inputData = workDataOf("USER_ID" to "12345")
+
+        //creamos el trabajo periódico (la petición) con los datos y restricciones anteriores
+        val periodicWorkRequest = PeriodicWorkRequestBuilder<MiTareaProgramada>(
+            15, TimeUnit.MINUTES // Periodicidad mínima: 15 minutos
+        )
+            .setConstraints(constraints)
+            .setInputData(inputData)
+            .build()
+
+        //encolamos la petición
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                "MiTareaProgramada",                       // Nombre único
+                ExistingPeriodicWorkPolicy.KEEP,        // No reemplazar si ya existe
+                periodicWorkRequest
+            )
+
+        val tiempo = System.currentTimeMillis()+(60*1000*15)//(30*1000)//15 minutos
+        val dateformatter = SimpleDateFormat("E dd/MM/yyyy ' a las ' hh:mm:ss")
+        val mensaje = dateformatter.format(tiempo)
+        Log.d(Constantes.ETIQUETA_LOG, "ALARMA PROGRAMADA PARA $mensaje")
+        Toast.makeText(this, "Alarma programada para $mensaje", Toast.LENGTH_LONG).show()
+
+        /**
+         * parece QUE NO se ejecutan las taresas programadas tras el reinicio del móvil
+         * se puedo probar esto:
+         *
+         * tener mi clase application, con este conetenido, registrada en el manifest
+         *
+         * class MyApp : Application(), Configuration.Provider {
+         *     override fun getWorkManagerConfiguration(): Configuration {
+         *         return Configuration.Builder()
+         *             .setMinimumLoggingLevel(Log.DEBUG)
+         *             .build()
+         *     }
+         * }
+         *
+         * <application
+         *     android:name=".MyApp"
+         *     ...>
+         * </application>
+         *
+         */
+
     }
 
 }

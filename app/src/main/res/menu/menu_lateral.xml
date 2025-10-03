@@ -198,7 +198,7 @@
                 android:id="@+id/menuPlay"
                 android:icon="@drawable/outline_arrow_forward_ios_24"
                 app:showAsAction="always"
-                android:title="PLAY"
+                android:title="PLAY SERVICE"
                 android:orderInCategory="27"
                 />
 
@@ -207,6 +207,14 @@
                 android:icon="@drawable/outline_arrow_forward_ios_24"
                 app:showAsAction="always"
                 android:title="ALARMA"
+                android:orderInCategory="28"
+                />
+
+            <item
+                android:id="@+id/menuFechaHora"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="SELECCIÓN FECHA/HORA"
                 android:orderInCategory="28"
                 />
         </menu>

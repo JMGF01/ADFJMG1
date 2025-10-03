@@ -4,6 +4,7 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <!-- <item name="colorPrimary">@color/miAzul</item> -->
+        <!-- <item name="colorOnPrimary">#FFFFFF</item> -->
         <!-- para cambiar a nivel global el fondo de pantalla-->
         <!-- <item name="android:windowBackground">@color/miAzul</item> -->
     </style>
