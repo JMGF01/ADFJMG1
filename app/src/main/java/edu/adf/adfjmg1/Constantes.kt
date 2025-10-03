@@ -39,4 +39,9 @@ object Constantes {
     val ETIQUETA_LOG_THE_MEMORY: String = "MIAPP_THE_MEMORY"
     val SEPARADOR: String = " -------> "
 
+    // SERVICIO REPRODUCTOR AUDIO
+    const val MAIN_ACTION: String = "com.val.example.foreground.service.MainActivity"
+    const val STARTFOREGROUND_ACTION: String = "com.val.example.foreground.service.startforeground"
+    const val STOPFOREGROUND_ACTION: String = "com.val.example.foreground.service.stopforeground"
+
 }

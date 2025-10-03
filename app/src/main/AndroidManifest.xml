@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- declaro que mi aplicación necesita conectarse a internet -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- mi app necesita acceder al estado de la red para saber si hay internet o nó y de qué tipo -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- para lanzar notificaciones -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/> <!-- para lanzar un servicio en foreground -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/> <!-- para lanzar un servicio en foreground obligatorio a partir del API 13 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- para lanzar un servicio en foreground -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" /> <!-- para lanzar un servicio en foreground obligatorio en API 14 para especificar el tipo de servicio -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA" /> <!-- indicamos que la app usa la cámara y con true o false si el dispositivo tiene que tener cámara obligatoriamente o no -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- permitimos que nuesta app se informe del inicio del dispositivo -->
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" /> <!-- dicen q no existe pero te quita el rojo en AS añado por si acaso necesario para poco -->
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" /> <!-- indicamos que la app usa la cámara y con true o false indicamos si deja o no instalarlo. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Utilizamos el GPS -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Usamos las antenas -->
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />  <!-- USAMOS POSICIÓN APROX -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/> <!-- para lanzar un servicio en foreground obligatorio en API 14 para especificar el tipo de servicio -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" /> <!-- Si lo ponemos a true, si el dispositivo no tiene cámara, no me deja instalarlo. -->
@@ -37,6 +36,19 @@
             <data android:host="http" />
         </intent>
     </queries>
+    <!--
+    con esto, puede salir bloatware - software de relleno que aparece oculto en el listado de apps
+    a partir de las versión 11, cuando lanzamos un intent implícito o listamos las apps, hay algunas
+    que pueden ocultarse: con esto, hacemos que sean visibles
+    pixel sin capa de personalización del fabricante: menos bloatware
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -48,16 +60,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ADFJMG1"
         tools:targetApi="31">
+        <activity
+            android:name=".servicios.PlayActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".servicios.PlayService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback" />
+
+        <receiver android:name=".servicios.PlayService$NotificationCloseButtonHandler" />
+        <receiver android:name=".servicios.PlayService$NotificationPlayButtonHandler" />
+        <receiver android:name=".servicios.PlayService$NotificationPrevButtonHandler" />
+        <receiver android:name=".servicios.PlayService$NotificationSkipButtonHandler" />
+
         <receiver
             android:name=".receptor.FinServicioReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <service
             android:name=".servicios.NumAleatorioService"
             android:enabled="true"
             android:exported="true"
-            android:foregroundServiceType="dataSync"/>
+            android:foregroundServiceType="dataSync" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -91,6 +118,11 @@
             android:exported="false" />
 
         <receiver
+            android:name=".receptor.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
             android:name=".receptor.InicioMovilReceiver"
             android:enabled="true"
             android:exported="true">
@@ -101,10 +133,6 @@
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".receptor.AlarmReceiver"
-            android:enabled="true"
-            android:exported="true" />
 
         <activity
             android:name=".foto.FotoActivity"

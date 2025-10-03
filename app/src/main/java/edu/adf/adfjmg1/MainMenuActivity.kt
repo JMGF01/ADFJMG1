@@ -31,6 +31,7 @@ import edu.adf.adfjmg1.lista.ListaUsuariosActivity
 import edu.adf.adfjmg1.mapa.MapsActivity
 import edu.adf.adfjmg1.perros.PerrosActivity
 import edu.adf.adfjmg1.productos.ListaProductosActivity
+import edu.adf.adfjmg1.servicios.PlayActivity
 import edu.adf.adfjmg1.tabs.TabsActivity
 
 /**
@@ -78,10 +79,6 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 //        this.drawerLayout =  findViewById<DrawerLayout>(R.id.drawer)
 //        this.navigationView = findViewById<NavigationView>(R.id.navigationView)
 
-        mostrarAPPSinstaladas()
-        gestionarPermisosNotis ()
-//        lanzarAlarma() // Ahora la lanzamos cuando se ejecute el servicio, una vez se reinicie el móvil.
-
         val ficherop = getSharedPreferences("ajustes", MODE_PRIVATE)
         val inicio_auto = ficherop.getBoolean("INICIO_AUTO", false)
         if (!inicio_auto) {
@@ -95,13 +92,16 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         //this.navigationView.setNavigationItemSelectedListener(this)
         //this.navigationView.setNavigationItemSelectedListener{false} así sería suficiente
 
+        // intentCompartir()
         val ficheroInicio = getSharedPreferences(Constantes.FICHERO_PREFERENCIAS_INICIO, MODE_PRIVATE)
         val saltarVideo = ficheroInicio.getBoolean("SALTAR VIDEO", false)
         if (!saltarVideo) {
             val intentvideo = Intent(this, VideoActivity::class.java)
             startActivity(intentvideo)
         }
-
+//        mostrarAPPSinstaladas()
+        gestionarPermisosNotis ()
+//        lanzarAlarma() // Ahora la lanzamos cuando se ejecute el servicio, una vez se reinicie el móvil.
 
 
 
@@ -163,6 +163,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuDescarga -> Intent(this, DescargarCancionActivity::class.java)
                 R.id.menuBioActivity -> Intent(this, BioActivity::class.java)
                 R.id.menuMapa -> Intent(this, MapsActivity::class.java)
+                R.id.menuPlay -> Intent(this, PlayActivity::class.java)
                 else -> Intent(this, ImcActivity::class.java)
             }
             startActivity(intent) // Voy a otra pantalla
