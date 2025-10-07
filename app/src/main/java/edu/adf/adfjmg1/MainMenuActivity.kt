@@ -20,21 +20,21 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.android.material.navigation.NavigationView
 import edu.adf.adfjmg1.alarma.AjusteAlarmaActivity
 import edu.adf.adfjmg1.alarma.GestorAlarma
+import edu.adf.adfjmg1.basedatos.BaseDatosActivity
 import edu.adf.adfjmg1.biometrico.BioActivity
-import edu.adf.adfjmg1.ejercicio1.Ejercicio1Activity
-import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
-import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
 import edu.adf.adfjmg1.canciones.BusquedaCancionesActivity
 import edu.adf.adfjmg1.contactos.SeleccionContactoActivity
 import edu.adf.adfjmg1.contactos.SeleccionContactoPermisosActivity
 import edu.adf.adfjmg1.descargarcanciones.DescargarCancionActivity
+import edu.adf.adfjmg1.ejercicio1.Ejercicio1Activity
+import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
+import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
 import edu.adf.adfjmg1.fechayhora.SeleccionFechaYHoraActivity
 import edu.adf.adfjmg1.foto.FotoActivity
 import edu.adf.adfjmg1.lista.ListaUsuariosActivity
@@ -189,6 +189,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuPlay -> Intent(this, PlayActivity::class.java)
                 R.id.menuAlarma -> Intent(this, AjusteAlarmaActivity::class.java)
                 R.id.menuFechaHora -> Intent(this, SeleccionFechaYHoraActivity::class.java)
+                R.id.menuBaseDatos -> Intent(this, BaseDatosActivity::class.java)
 //                else -> Intent(this, ImcActivity::class.java)
                 else -> Intent(this, VersionActivity::class.java)
             }
