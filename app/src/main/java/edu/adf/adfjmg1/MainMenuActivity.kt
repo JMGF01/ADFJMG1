@@ -26,6 +26,7 @@ import androidx.work.workDataOf
 import com.google.android.material.navigation.NavigationView
 import edu.adf.adfjmg1.alarma.AjusteAlarmaActivity
 import edu.adf.adfjmg1.alarma.GestorAlarma
+import edu.adf.adfjmg1.authfirebase.MenuAuthActivity
 import edu.adf.adfjmg1.basedatos.BaseDatosActivity
 import edu.adf.adfjmg1.biometrico.BioActivity
 import edu.adf.adfjmg1.canciones.BusquedaCancionesActivity
@@ -76,6 +77,7 @@ import java.util.concurrent.TimeUnit
  *  //TODO DESPROGRAMAR ALARMA
  *  //TODO CalendarPicker y TimePicker
  *  //TODO firma y PUBLICAR APPS
+ *  //TODO themebuilder material / colores / diseñar el tema
  */
 class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -190,6 +192,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuAlarma -> Intent(this, AjusteAlarmaActivity::class.java)
                 R.id.menuFechaHora -> Intent(this, SeleccionFechaYHoraActivity::class.java)
                 R.id.menuBaseDatos -> Intent(this, BaseDatosActivity::class.java)
+                R.id.menuLogin -> Intent(this, MenuAuthActivity::class.java)
 //                else -> Intent(this, ImcActivity::class.java)
                 else -> Intent(this, VersionActivity::class.java)
             }

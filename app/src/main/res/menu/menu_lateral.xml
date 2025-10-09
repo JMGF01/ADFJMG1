@@ -225,6 +225,14 @@
                 android:title="BASE DE DATOS ROOM"
                 android:orderInCategory="30"
                 />
+
+            <item
+                android:id="@+id/menuLogin"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="MENU LOGIN"
+                android:orderInCategory="30"
+                />
         </menu>
     </item>
     <item android:title="EJERCICIOS VERANO">
