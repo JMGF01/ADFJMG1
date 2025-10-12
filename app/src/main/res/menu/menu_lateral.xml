@@ -231,7 +231,15 @@
                 android:icon="@drawable/outline_arrow_forward_ios_24"
                 app:showAsAction="always"
                 android:title="MENU LOGIN"
-                android:orderInCategory="30"
+                android:orderInCategory="31"
+                />
+
+            <item
+                android:id="@+id/menuBBDD"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="MENU BASE DE DATOS"
+                android:orderInCategory="32"
                 />
         </menu>
     </item>

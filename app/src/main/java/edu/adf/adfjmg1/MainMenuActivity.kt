@@ -42,6 +42,7 @@ import edu.adf.adfjmg1.lista.ListaUsuariosActivity
 import edu.adf.adfjmg1.mapa.MapsActivity
 import edu.adf.adfjmg1.perros.PerrosActivity
 import edu.adf.adfjmg1.productos.ListaProductosActivity
+import edu.adf.adfjmg1.realtimedatabase.InsertarClientesFirebaseActivity
 import edu.adf.adfjmg1.servicios.PlayActivity
 import edu.adf.adfjmg1.tabs.TabsActivity
 import edu.adf.adfjmg1.worker.MiTareaProgramada
@@ -62,7 +63,8 @@ import java.util.concurrent.TimeUnit
  * //TODO HTTP API RETROFIT - PREVIO CORUTINAS KT - COLECCIONES -KT - git hub X
  * //TODO FRAGMENTS - VIEWPAGER - TABS X
  * //TODO NOTIFICACIONES - PENDING INTENT
- * //TODO FIREBASE (auth y bd)
+ * //TODO FIREBASE (auth y bd) --> falta revisar el delete por campo no clave y el update
+ * //TODO FIREBASE messagin --> notificaciones por servidor
  * //TODO PERMISOS PELIGROSOS X
  * //TODO CÁMARA FOTOS / VIDEO
  * //TODO Autenticación Biométrica/PIN x
@@ -71,13 +73,15 @@ import java.util.concurrent.TimeUnit
  * //TODO SERVICIOS PROPIOS started service / foreground service / intent service / binded
  * //TODO RECIEVERS
  * //TODO PROVIDERS X
- * //TODO SQLITE - ROOM
+ * //TODO SQLITE - ROOM --> añadir más entidades a nuestro esquema
  * //TODO LIVE DATA?
  * //TODO apuntes JETPCK COMPOSE Y MONETIZACIÓN, DISEÑO Y SEGURIDAD
- *  //TODO DESPROGRAMAR ALARMA
- *  //TODO CalendarPicker y TimePicker
- *  //TODO firma y PUBLICAR APPS
- *  //TODO themebuilder material / colores / diseñar el tema
+ * //TODO personalizar Fuentes tipos de letra
+ * //TODO DESPROGRAMAR ALARMA
+ * //TODO CalendarPicker y TimePicker
+ * //TODO firma y PUBLICAR APPS
+ * //TODO themebuilder material / colores / diseñar el tema
+ * // TODO proyecto API MAPA no de google con consulta al API de clima
  */
 class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -193,6 +197,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuFechaHora -> Intent(this, SeleccionFechaYHoraActivity::class.java)
                 R.id.menuBaseDatos -> Intent(this, BaseDatosActivity::class.java)
                 R.id.menuLogin -> Intent(this, MenuAuthActivity::class.java)
+                R.id.menuBBDD -> Intent(this, InsertarClientesFirebaseActivity::class.java)
 //                else -> Intent(this, ImcActivity::class.java)
                 else -> Intent(this, VersionActivity::class.java)
             }
