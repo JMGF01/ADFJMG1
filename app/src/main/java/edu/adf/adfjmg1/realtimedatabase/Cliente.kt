@@ -1,3 +1,3 @@
 package edu.adf.adfjmg1.realtimedatabase
 
-data class Cliente(val edad: Long, val localidad: String, val nombre: String, val email:String, var clave:String="")
+data class Cliente(var edad: Long, val localidad: String, val nombre: String, val email:String, var clave:String="")

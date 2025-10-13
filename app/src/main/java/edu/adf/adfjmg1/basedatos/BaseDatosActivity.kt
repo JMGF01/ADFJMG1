@@ -17,9 +17,12 @@ import com.google.android.material.snackbar.Snackbar
 import edu.adf.adfjmg1.Constantes
 import edu.adf.adfjmg1.R
 import edu.adf.adfjmg1.basedatos.adapter.AdapterPersonas
+import edu.adf.adfjmg1.basedatos.entity.Empleo
 import edu.adf.adfjmg1.basedatos.entity.Persona
+import edu.adf.adfjmg1.basedatos.entity.TipoContrato
 import edu.adf.adfjmg1.basedatos.viewmodel.PersonaViewModel
 import edu.adf.adfjmg1.databinding.ActivityBaseDatosBinding
+import java.util.Date
 
 /**
  * ///////////////////////////////////////////////////////////////////////
@@ -94,7 +97,28 @@ class BaseDatosActivity : AppCompatActivity() {
             personas?.let{
                 Log.d(Constantes.ETIQUETA_LOG, "Personas = ${personas.size} = $personas")
                 adapterPersonas.listaPersonas = it
-                adapterPersonas.notifyDataSetChanged()
+                //TODO deberíamos controlar si la lista se ha actualizado por borrar
+                // o por insertar y en qué posición, para así usar
+                // notifyItemRemoved(posicion_elemento_eliminado);
+                // o notifyItemInserted(posicion_elemento_insertado);
+                //y repintar sólo esa posición de la fila
+                // adapterPersonas.notifyDataSetChanged()
+//                adapterPersonas.notifyDataSetChanged()
+                when (personaViewModel.ultimaOperacionBD)
+                {
+                    UltimaOperacionBD.INSERTAR -> {
+                        adapterPersonas.notifyItemInserted(personaViewModel.posicionAfectada)
+                        Log.d(Constantes.ETIQUETA_LOG, "Lista actualizada tras inserción en pos $personaViewModel.posicionAfectada")
+                    }
+                    UltimaOperacionBD.BORRAR -> {adapterPersonas.notifyItemRemoved (personaViewModel.posicionAfectada)
+                        Log.d(Constantes.ETIQUETA_LOG, "Lista actualizada tras inserción en pos $personaViewModel.posicionAfectada")}
+                    UltimaOperacionBD.NINGUNA -> {
+                        adapterPersonas.notifyDataSetChanged()
+                        Log.d(Constantes.ETIQUETA_LOG, "Lista actualizada sin inserción ni borrado")
+                    }
+                }
+                personaViewModel.ultimaOperacionBD = UltimaOperacionBD.NINGUNA//actualizamos
+
             }
         })
     }
@@ -122,8 +146,21 @@ class BaseDatosActivity : AppCompatActivity() {
         return nombre.toString().replaceFirstChar { it.uppercaseChar() }
     }
 
+//    fun insertarPersona(view: View) {
+//        personaViewModel.insertar(Persona(nombre="Andrés", edad = 25))
+//        personaViewModel.contarPersonas()
+//    }
+
     fun insertarPersona(view: View) {
-        personaViewModel.insertar(Persona(nombre="Andrés", edad = 25))
+        personaViewModel.insertar(Persona(nombre =generarNombre(), edad =generarNumeroAleatorio()), personaViewModel.personas.value!!.size)
+        personaViewModel.contarPersonas()
+    }
+
+    fun insertarPersonaYEmpleo(view: View) {
+//        val personaAux = Persona(nombre="Andrés", edad = 25)
+        val personaAux = Persona(nombre =generarNombre(), edad =generarNumeroAleatorio())
+        val empleoAux = Empleo(0,0,"BARRENDERO", Date(), 1500.0, TipoContrato.TEMPORAL)
+        personaViewModel.insertarPersonaYEmpleo(personaAux, personaViewModel.personas.value.size!!, empleoAux)
         personaViewModel.contarPersonas()
     }
 
