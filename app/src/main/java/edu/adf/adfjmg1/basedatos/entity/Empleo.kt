@@ -17,14 +17,14 @@ import java.util.Date
 )
 data class Empleo(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    var personaId: Int,
+    var personaId: Long,
     val nombre: String,
     val fechaInicio: Date,
     val salario: Double,
     val tipoContrato: TipoContrato
-)
-
-enum class TipoContrato {
-    TEMPORAL,
-    INDEFINIDO
+){
+    enum class TipoContrato {
+        TEMPORAL,
+        INDEFINIDO
+    }
 }

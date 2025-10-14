@@ -17,7 +17,7 @@ import edu.adf.adfjmg1.basedatos.entity.Persona
 import java.util.concurrent.Executors
 
 @Database(entities = [Persona::class, Empleo::class, Coche::class], version = 1)
-@TypeConverters(Conversor::class) // Para que guarde las fechas como timestamp y los enumerados
+@TypeConverters(Conversor::class) // Para que guarde las fechas como timestamp y los enumerados, tira de aquí para hacer las conversiones
 abstract class AppDatabase : RoomDatabase() {
     abstract fun personaDao(): PersonaDao
     abstract fun empleoDao(): EmpleoDao

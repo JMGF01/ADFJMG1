@@ -13,7 +13,7 @@ class Repositorio(private val personaDao: PersonaDao, private val empleoDao: Emp
 
     suspend fun insertar(persona: Persona):Long
     {
-        personaDao.insertar(persona)
+        return personaDao.insertar(persona)
     }
 
     suspend fun borrar(persona: Persona)
@@ -26,10 +26,17 @@ class Repositorio(private val personaDao: PersonaDao, private val empleoDao: Emp
         return personaDao.countPersonas()
     }
 
-    suspend fun insertarPersonaYEmpleo(persona: Persona, empleo: Empleo)
+//    suspend fun insertarPersonaYEmpleo(persona: Persona, empleo: Empleo)
+//    {
+//        personaDao.insertar(persona)
+//        empleo.personaId = persona.id
+//        empleoDao.insert(empleo)
+//    }
+
+    suspend fun insertarPersonaYEmpleo (persona: Persona, empleo: Empleo)
     {
-        personaDao.insertar(persona)
-        empleo.personaId = persona.id
+        val idpersona = insertar(persona)
+        empleo.personaId = idpersona
         empleoDao.insert(empleo)
     }
 
@@ -41,5 +48,10 @@ class Repositorio(private val personaDao: PersonaDao, private val empleoDao: Emp
     suspend fun borrarCoche(coche: Coche)
     {
         cocheDao.deleteCoche(coche)
+    }
+
+    suspend fun leerCochesPersona(personaId: Int): List<Coche>
+    {
+        return cocheDao.getCochesDePersona(personaId.toLong())
     }
 }

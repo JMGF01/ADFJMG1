@@ -1,9 +1,19 @@
 package edu.adf.adfjmg1.basedatos.converter
 
 import androidx.room.TypeConverter
-import edu.adf.adfjmg1.basedatos.entity.TipoContrato
+import edu.adf.adfjmg1.basedatos.entity.Empleo.TipoContrato
 import java.util.Date
 
+/**
+ *Esta clase, la tenemos para convertir Date en Long y Enum en String
+ *y viceversa, ya que SQLite no soporta tipos Date ni Enum
+ *Si tenemos un Date en Java, lo guardamos como Long ( y al leerlo, lo traducimos de Long a Date)
+ *Si tenemos un Enum en kotlin, lo guardamos como String ( y al leerlo, lo traducimos de String a Enum)
+ *Esta clase, la referimos en APP DATABASE (la definición de la base de datos9
+ *
+ *@see edu.adf.profe.basedatos.db.AppDatabase
+
+ */
 class Conversor {
 
     @TypeConverter

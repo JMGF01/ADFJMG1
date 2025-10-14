@@ -7,8 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import edu.adf.adfjmg1.Constantes
 import edu.adf.adfjmg1.basedatos.UltimaOperacionBD
+import edu.adf.adfjmg1.basedatos.entity.Coche
 import edu.adf.adfjmg1.basedatos.entity.Empleo
 import edu.adf.adfjmg1.basedatos.entity.Persona
+import edu.adf.adfjmg1.basedatos.entity.PersonaConDetalles
 import edu.adf.adfjmg1.basedatos.repository.Repositorio
 import edu.adf.profe.basedatos.db.AppDatabase
 import kotlinx.coroutines.launch
@@ -17,7 +19,8 @@ import kotlinx.coroutines.launch
 class PersonaViewModel(application: Application): AndroidViewModel(application) // se pasa el contexto (en este caso pasamos application, pero podríamos pasar el contexto) porque es necesario para trabajar con BBDD.
 {
     private val repository: Repositorio
-    val personas: LiveData<List<Persona>>
+//    val personas: LiveData<List<Persona>>
+    val personasDetalles: LiveData<List<PersonaConDetalles>>
     lateinit var ultimaOperacionBD: UltimaOperacionBD
     var posicionAfectada:Int = -1
 
@@ -26,7 +29,8 @@ class PersonaViewModel(application: Application): AndroidViewModel(application) 
         val empleoDao = AppDatabase.getDatabase(application).empleoDao()
         val cocheDao = AppDatabase.getDatabase(application).cocheDao()
         repository = Repositorio(personaDao, empleoDao, cocheDao)
-        personas = repository.todasLasPersonas
+//        personas = repository.todasLasPersonas
+        personasDetalles = repository.todasLasPersonas
         ultimaOperacionBD = UltimaOperacionBD.NINGUNA
     }
 
@@ -63,6 +67,12 @@ class PersonaViewModel(application: Application): AndroidViewModel(application) 
             val nper = repository.contarPersonas()
             Log.d(Constantes.ETIQUETA_LOG, "numpersonas  $nper")
         }
+    }
+
+    suspend fun obtenerCochesPersona(personaId: Int):Pair<Int, List<Coche>>
+    {
+        var listaCoches = repository.leerCochesPersona(personaId)
+        return personaId to listaCoches
     }
 
 

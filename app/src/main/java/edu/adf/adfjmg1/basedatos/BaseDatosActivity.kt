@@ -10,6 +10,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,9 +20,11 @@ import edu.adf.adfjmg1.R
 import edu.adf.adfjmg1.basedatos.adapter.AdapterPersonas
 import edu.adf.adfjmg1.basedatos.entity.Empleo
 import edu.adf.adfjmg1.basedatos.entity.Persona
-import edu.adf.adfjmg1.basedatos.entity.TipoContrato
+import edu.adf.adfjmg1.basedatos.entity.PersonaConDetalles
 import edu.adf.adfjmg1.basedatos.viewmodel.PersonaViewModel
 import edu.adf.adfjmg1.databinding.ActivityBaseDatosBinding
+import edu.adf.adfjmg1.util.LogUtil
+import kotlinx.coroutines.launch
 import java.util.Date
 
 /**
@@ -71,7 +74,8 @@ import java.util.Date
 
 class BaseDatosActivity : AppCompatActivity() {
 
-    val personas:MutableList<Persona> = mutableListOf() // creamos la lista de personas vacía
+//    var personas:MutableList<Persona> = mutableListOf() // creamos la lista de personas vacía
+var personas:MutableList<PersonaConDetalles> = mutableListOf()//creamos la lista de personas vacía
     lateinit var binding: ActivityBaseDatosBinding
     lateinit var adapterPersonas: AdapterPersonas
 
@@ -84,14 +88,16 @@ class BaseDatosActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        adapterPersonas = AdapterPersonas(personas)
+        adapterPersonas = AdapterPersonas(personas, ::clickFila)
         binding.recview.adapter = adapterPersonas
         binding.recview.layoutManager = LinearLayoutManager(this)
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.recview)
 
         //ligamos las actualizaciones automáticas de la lista.
-        personaViewModel.personas.observe(this, { //Cuando se detecta que hay un cambio, se llama a la función anónima.
+
+//        personaViewModel.personas.observe(this, { //Cuando se detecta que hay un cambio, se llama a la función anónima.
+        personaViewModel.personasDetalles.observe(this, {
             personas ->
             //Log.d(Constantes.ETIQUETA_LOG, "Personas = $personas")
             personas?.let{
@@ -108,10 +114,14 @@ class BaseDatosActivity : AppCompatActivity() {
                 {
                     UltimaOperacionBD.INSERTAR -> {
                         adapterPersonas.notifyItemInserted(personaViewModel.posicionAfectada)
-                        Log.d(Constantes.ETIQUETA_LOG, "Lista actualizada tras inserción en pos $personaViewModel.posicionAfectada")
+                        Log.d(Constantes.ETIQUETA_LOG,"Lista actualizada tras inserción en pos $personaViewModel.posicionAfectada"
+                        )
                     }
-                    UltimaOperacionBD.BORRAR -> {adapterPersonas.notifyItemRemoved (personaViewModel.posicionAfectada)
-                        Log.d(Constantes.ETIQUETA_LOG, "Lista actualizada tras inserción en pos $personaViewModel.posicionAfectada")}
+                    UltimaOperacionBD.BORRAR -> {
+                        adapterPersonas.notifyItemRemoved(personaViewModel.posicionAfectada)
+                        Log.d(Constantes.ETIQUETA_LOG,"Lista actualizada tras inserción en pos $personaViewModel.posicionAfectada"
+                        )
+                    }
                     UltimaOperacionBD.NINGUNA -> {
                         adapterPersonas.notifyDataSetChanged()
                         Log.d(Constantes.ETIQUETA_LOG, "Lista actualizada sin inserción ni borrado")
@@ -146,22 +156,43 @@ class BaseDatosActivity : AppCompatActivity() {
         return nombre.toString().replaceFirstChar { it.uppercaseChar() }
     }
 
+    fun clickFila(personaConDetalles: PersonaConDetalles)
+    {
+        Log.d(Constantes.ETIQUETA_LOG, "Tocado fila $personaConDetalles")
+        lifecycleScope.launch {
+            var par = personaViewModel.obtenerCochesPersona(personaConDetalles.persona.id)
+            Log.d(Constantes.ETIQUETA_LOG, "${LogUtil.getLogInfo()} Persona con id = ${par.first}")
+            Log.d(Constantes.ETIQUETA_LOG, "${LogUtil.getLogInfo()} Coches = ${par.first}")
+        }
+    }
+
 //    fun insertarPersona(view: View) {
 //        personaViewModel.insertar(Persona(nombre="Andrés", edad = 25))
 //        personaViewModel.contarPersonas()
 //    }
 
+//    fun insertarPersona(view: View) {
+//        personaViewModel.insertar(Persona(nombre =generarNombre(), edad =generarNumeroAleatorio()), personaViewModel.personas.value!!.size)
+//        personaViewModel.contarPersonas()
+//    }
     fun insertarPersona(view: View) {
-        personaViewModel.insertar(Persona(nombre =generarNombre(), edad =generarNumeroAleatorio()), personaViewModel.personas.value!!.size)
+        personaViewModel.insertar(Persona(nombre =generarNombre(), edad =generarNumeroAleatorio()), personaViewModel.personasDetalles.value!!.size)
         personaViewModel.contarPersonas()
     }
 
+//    fun insertarPersonaYEmpleo(view: View) {
+////        val personaAux = Persona(nombre="Andrés", edad = 25)
+//        val personaAux = Persona(nombre =generarNombre(), edad =generarNumeroAleatorio())
+//        val empleoAux = Empleo(0,0,"BARRENDERO", Date(), 1500.0, TipoContrato.TEMPORAL)
+//        personaViewModel.insertarPersonaYEmpleo(personaAux, personaViewModel.personas.value.size!!, empleoAux)
+//        personaViewModel.contarPersonas()
+//    }
+
     fun insertarPersonaYEmpleo(view: View) {
-//        val personaAux = Persona(nombre="Andrés", edad = 25)
         val personaAux = Persona(nombre =generarNombre(), edad =generarNumeroAleatorio())
-        val empleoAux = Empleo(0,0,"BARRENDERO", Date(), 1500.0, TipoContrato.TEMPORAL)
-        personaViewModel.insertarPersonaYEmpleo(personaAux, personaViewModel.personas.value.size!!, empleoAux)
-        personaViewModel.contarPersonas()
+        val empleoAux = Empleo(0, 0, "BARRENDERO", Date(), 1500.0, Empleo.TipoContrato.TEMPORAL)
+        personaViewModel.insertarPersonaYEmpleo(personaAux, personaViewModel.personasDetalles.value!!.size, empleoAux)
+//        personaViewModel.contarPersonas()
     }
 
     val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -173,27 +204,25 @@ class BaseDatosActivity : AppCompatActivity() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val position = viewHolder.adapterPosition
-            val persona = this@BaseDatosActivity.adapterPersonas.listaPersonas[position] // Método que debes crear en tu adaptador
+//            val persona = this@BaseDatosActivity.adapterPersonas.listaPersonas[position] // Método que debes crear en tu adaptador
+            val persona = this@BaseDatosActivity.adapterPersonas.listaPersonas[position].persona // Método que debes crear en tu adaptador
+            val empleo = this@BaseDatosActivity.adapterPersonas.listaPersonas[position].empleo
 
             if (direction == ItemTouchHelper.LEFT) {
                 // Aquí es donde eliminamos el ítem
-                personaViewModel.borrar(persona)
+                personaViewModel.borrar(persona, position)
 
                 // Mostrar Snackbar para deshacer la eliminación
-                Snackbar.make(
-                    this@BaseDatosActivity.binding.recview,
-                    "Persona eliminada",
-                    Snackbar.LENGTH_LONG
-                )
+                Snackbar.make(this@BaseDatosActivity.binding.recview,"Persona eliminada",Snackbar.LENGTH_LONG)
                     .setAction("Deshacer") {
                         // Si el usuario quiere deshacer, simplemente reinsertamos el ítem
-                        personaViewModel.insertar(persona)
+                        personaViewModel.insertarPersonaYEmpleo(persona, position, empleo!!)
                     }
                     .show()
             } else if (direction == ItemTouchHelper.RIGHT) {
-                Log.d(Constantes.ETIQUETA_LOG, "Se está deslizando hacia la izquierda")
-                this@BaseDatosActivity.binding.textView.text = persona.nombre
-                adapterPersonas.notifyItemChanged(position)
+                Log.d(Constantes.ETIQUETA_LOG, "Swiped right - favorito")
+                //this@BaseDatosActivity.binding.textView.text = persona.nombre
+                adapterPersonas.notifyItemChanged(position) //repintamos el azul a su original
                 Snackbar.make(binding.recview, "Marcado como favorito", Snackbar.LENGTH_SHORT).show()
             }
         }
