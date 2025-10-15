@@ -6,17 +6,20 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import edu.adf.adfjmg1.databinding.ActivityFormularioBinding
-import androidx.core.content.edit
-import androidx.core.net.toUri
 import java.io.File
 import java.io.FileOutputStream
 
@@ -45,6 +48,12 @@ class FormularioActivity : AppCompatActivity() {
 //            ActivityResultContracts.StartActivityForResult(), {
 //                it.
 //            })
+
+        // dibujamos la barra del menú app bar
+        supportActionBar?.show()
+
+        //programamos el menú contextual sobre la imagen
+        registerForContextMenu(binding.imagenFormulario)
 
         //si hay datos en el fichero
         val fichUsuario = getSharedPreferences("usuario", MODE_PRIVATE)
@@ -167,7 +176,10 @@ class FormularioActivity : AppCompatActivity() {
         //2) tengo que preparar el objeto para lanar el 1) y recibir su respuesta
         //3) a la vuelta, coger la foto y ponerla en el imageView
         //función lambda / flecha
-        this.binding.imagenFormulario.setOnClickListener { imagen ->
+//        this.binding.imagenFormulario.setOnClickListener { imagen ->
+//            seleccionarFoto()
+//        }
+        this.binding.imagenCargarFoto.setOnClickListener{
             seleccionarFoto()
         }
 
@@ -183,6 +195,21 @@ class FormularioActivity : AppCompatActivity() {
         this.binding.imagenFormulario.setOnClickListener (this::seleccionarFoto2)*/
 
     } // fin OnCreate
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menu?.add(Menu.NONE, 1, 1, "Borrar")
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        Log.d(Constantes.ETIQUETA_LOG, "MENU TOCADO ${item.title}")
+        binding.imagenFormulario.setImageResource(R.drawable.ic_launcher_background)
+        return super.onContextItemSelected(item)
+    }
 
     fun seleccionarFoto ()
     {

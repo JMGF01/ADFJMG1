@@ -4,6 +4,8 @@ import android.app.ActivityOptions
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -36,6 +38,8 @@ class AdivinaNumeroActivity : AppCompatActivity() {
     var numeroVidas:Int = 5
     lateinit var etTextoFinal:TextView
 
+    lateinit var menuBar:Menu
+
     // REGIÓN DE TEXTOS
     val textoFinalEnhorabuena:String = "¡ENHORABUENA, LO HAS ADIVINADO!"
     val textoFinalFallo:String = "GAME OVER, EL NÚMERO ERA "
@@ -58,6 +62,11 @@ class AdivinaNumeroActivity : AppCompatActivity() {
             finalText.equals(textoFinalEnhorabuena) -> muestraTextoFinal(textoFinalEnhorabuena)
             finalText.equals(textoFinalFallo) -> muestraTextoFinal(textoFinalFallo + numeroSecreto)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        this.menuBar = menu!! //me guardo la referencia para poder usarlo depués
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -87,8 +96,26 @@ class AdivinaNumeroActivity : AppCompatActivity() {
                 Log.d("MIAPPADIVINA","El juego ha finalizado pero el usuario sigue jugando, reseteamos la partida")
 //                resetPartida()
 //                finishAffinity()
+                pintarReinicioEnMenu()
             }
         }
+    }
+
+    private fun pintarReinicioEnMenu() {
+        this.menuBar.add(Menu.NONE, 1, Menu.NONE, "Reinicio")
+            .setIcon(R.drawable.outline_autorenew_24)
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId)
+        {
+            1 -> {
+                reiniciarPartida(null)
+                this.menuBar.clear()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     /**
@@ -226,7 +253,7 @@ class AdivinaNumeroActivity : AppCompatActivity() {
         return numUsuario
     }
 
-    fun reiniciarPartida(view: View)
+    fun reiniciarPartida(view: View?)
     {
 //        recreate() // esto reinicia la pantalla, pero llmaa a onSaveInstanceState y en este caso no me interesa porque la partida ha terminado y no me interesa guardar nada.
         finish()
