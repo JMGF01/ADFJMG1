@@ -1,5 +1,6 @@
 package edu.adf.adfjmg1
 
+import android.Manifest
 import android.annotation.TargetApi
 import android.content.ComponentName
 import android.content.DialogInterface
@@ -15,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -23,7 +25,9 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import edu.adf.adfjmg1.alarma.AjusteAlarmaActivity
 import edu.adf.adfjmg1.alarma.GestorAlarma
 import edu.adf.adfjmg1.authfirebase.MenuAuthActivity
@@ -45,6 +49,7 @@ import edu.adf.adfjmg1.productos.ListaProductosActivity
 import edu.adf.adfjmg1.realtimedatabase.InsertarClientesFirebaseActivity
 import edu.adf.adfjmg1.servicios.PlayActivity
 import edu.adf.adfjmg1.tabs.TabsActivity
+import edu.adf.adfjmg1.util.LogUtil
 import edu.adf.adfjmg1.worker.MiTareaProgramada
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
@@ -65,6 +70,7 @@ import java.util.concurrent.TimeUnit
  * //TODO NOTIFICACIONES - PENDING INTENT
  * //TODO FIREBASE (auth y bd) --> falta revisar el delete por campo no clave y el update
  * //TODO FIREBASE messagin --> notificaciones por servidor
+ * //TODO FIREBASE login con Cuenta de GOOGLE
  * //TODO PERMISOS PELIGROSOS X
  * //TODO CÁMARA FOTOS / VIDEO
  * //TODO Autenticación Biométrica/PIN x
@@ -74,6 +80,7 @@ import java.util.concurrent.TimeUnit
  * //TODO RECIEVERS
  * //TODO PROVIDERS X
  * //TODO SQLITE - ROOM --> añadir más entidades a nuestro esquema
+ * //TODO SQLITE - ROOM -->  RELACIÓN N:m? listener único para recycler? mostrarCoches en otra actividad/fragment? / STATEFLOW? / inserte coches?
  * //TODO LIVE DATA?
  * //TODO apuntes JETPCK COMPOSE Y MONETIZACIÓN, DISEÑO Y SEGURIDAD
  * //TODO personalizar Fuentes tipos de letra
@@ -81,7 +88,8 @@ import java.util.concurrent.TimeUnit
  * //TODO CalendarPicker y TimePicker
  * //TODO firma y PUBLICAR APPS
  * //TODO themebuilder material / colores / diseñar el tema
- * // TODO proyecto API MAPA no de google con consulta al API de clima
+ * //TODO proyecto API MAPA no de google con consulta al API de clima
+ * //TODO FLOW  vs LiveData
  */
 class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -111,6 +119,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         if (!inicio_auto) {
             //PRIMERA VEZ
             solicitarInicioAutomatico()
+            askNotificationPermission() // por notificaciones firebase
         }
 
         this.drawerLayout =  findViewById<DrawerLayout>(R.id.drawer)
@@ -133,6 +142,24 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 //        lanzarAlarma() // Ahora la lanzamos cuando se ejecute el servicio, una vez se reinicie el móvil.
         lanzarWorkManager()
 
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(Constantes.ETIQUETA_LOG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            } else {
+                // Get new FCM registration token
+                val token = task.result
+
+                // Log and toast
+                val msg = "TOKEN CREADO PARA NOTIFICACIONES = $token"// getString(R.string.msg_token_fmt, token)
+                Log.d(Constantes.ETIQUETA_LOG, "${LogUtil.getLogInfo()}  $msg")
+                // Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                //Log.d(Constantes.ETIQUETA_LOG, "Token registro FBCM $token")
+            }
+
+
+        })
 
 
         //TODO tarea opcional: Haced esta función setNavigationItemSelectedListener en versión función anónima
@@ -432,6 +459,52 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
          *
          */
 
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // FCM SDK (and your app) can post notifications.
+            Log.d(Constantes.ETIQUETA_LOG, "Permisos notificaciones concedidos")
+        } else {
+            // TODO: Inform user that that your app will not show notifications.
+            Log.d(Constantes.ETIQUETA_LOG, "Permisos notificaciones NO concedidos")
+        }
+    }
+
+//    private fun askNotificationPermission() {
+//        // This is only necessary for API level >= 33 (TIRAMISU)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+//                PackageManager.PERMISSION_GRANTED
+//            ) {
+//                // FCM SDK (and your app) can post notifications.
+//            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+//                // TODO: display an educational UI explaining to the user the features that will be enabled
+//                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
+//                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
+//                //       If the user selects "No thanks," allow the user to continue without notifications.
+//            } else {
+//                // Directly ask for the permission
+//                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+//            }
+//        }
+//    }
+
+
+    /**
+     * Método para preguntar por notificaciones para firebase a partir de la versión 13 Tiramisú
+     */
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
 }
