@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "137076053589",
+    "firebase_url": "https://projectone-78b7d-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "projectone-78b7d",
+    "storage_bucket": "projectone-78b7d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137076053589:android:165f838c74f6cbfb3aa6dc",
+        "android_client_info": {
+          "package_name": "edu.adf.adfjmg1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKniVxVqcAB4AiRYrgmGk-cDNgZL62zXQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

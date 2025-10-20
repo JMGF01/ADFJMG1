@@ -42,6 +42,7 @@ import edu.adf.adfjmg1.ejercicio2.PrensaDeportivaActivity
 import edu.adf.adfjmg1.ejercicio3.TheMemoryActivity
 import edu.adf.adfjmg1.fechayhora.SeleccionFechaYHoraActivity
 import edu.adf.adfjmg1.foto.FotoActivity
+import edu.adf.adfjmg1.googleauth.GoogleAuthActivity
 import edu.adf.adfjmg1.lista.ListaUsuariosActivity
 import edu.adf.adfjmg1.mapa.MapsActivity
 import edu.adf.adfjmg1.perros.PerrosActivity
@@ -225,6 +226,7 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuBaseDatos -> Intent(this, BaseDatosActivity::class.java)
                 R.id.menuLogin -> Intent(this, MenuAuthActivity::class.java)
                 R.id.menuBBDD -> Intent(this, InsertarClientesFirebaseActivity::class.java)
+                R.id.menuGoogleAUTH -> Intent(this, GoogleAuthActivity::class.java)
 //                else -> Intent(this, ImcActivity::class.java)
                 else -> Intent(this, VersionActivity::class.java)
             }

@@ -241,6 +241,14 @@
                 android:title="MENU BASE DE DATOS"
                 android:orderInCategory="32"
                 />
+
+            <item
+                android:id="@+id/menuGoogleAUTH"
+                android:icon="@drawable/outline_arrow_forward_ios_24"
+                app:showAsAction="always"
+                android:title="GOOGLE AUTH"
+                android:orderInCategory="33"
+                />
         </menu>
     </item>
     <item android:title="EJERCICIOS VERANO">
