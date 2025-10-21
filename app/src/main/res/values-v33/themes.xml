@@ -1,22 +1,16 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
 
-    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-
-        <item name="windowSplashScreenBackground">@color/miGrisSuave</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-        <item name="windowSplashScreenAnimationDuration">10000</item>
-        <!-- No parece que afecte. Aún con un icono transparente-->
-        <item name="windowSplashScreenIconBackgroundColor">@color/miNaranja</item>
-        <!-- No se puede incluir con o sin prefijo android:-->
-        <!--<item name="android:windowSplashScreenBrandingImage">@drawable/imagen_derrota</item>-->
-
-
-        <!-- No parece que afecte. S/e programáticamente sí que hay setearlo-->
-        <item name="postSplashScreenTheme">@style/AppTheme</item>
-    </style>
     <style name="AppTheme" parent="Theme.Material3.Light">
-        <!--<item name="android:windowBackground">@mipmap/ic_launcher</item>-->
+        <item name="android:windowSplashScreenBackground">@color/miGrisSuave</item>
         <!-- <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>-->
+        <item name="android:windowSplashScreenAnimatedIcon">
+            @drawable/ic_launcher_foreground
+        </item>
+        <item name="android:windowSplashScreenAnimationDuration">10000</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/miNaranja</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/imagen_derrota</item>
+        <item name="android:windowSplashScreenBehavior">icon_preferred</item>
         <!-- esta fuente se usa en botones, textviews y la mayoría de textos de la app -->
         <item name="android:fontFamily">@font/bbhfont</item>
 
@@ -55,35 +49,21 @@
         <item name="colorSecondaryFixed">@color/md_theme_secondaryFixed</item>
         <item name="colorOnSecondaryFixed">@color/md_theme_onSecondaryFixed</item>
         <item name="colorSecondaryFixedDim">@color/md_theme_secondaryFixedDim</item>
-        <item name="colorOnSecondaryFixedVariant">@color/md_theme_onSecondaryFixedVariant</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_onSecondaryFixedVariant
+        </item>
         <item name="colorTertiaryFixed">@color/md_theme_tertiaryFixed</item>
         <item name="colorOnTertiaryFixed">@color/md_theme_onTertiaryFixed</item>
         <item name="colorTertiaryFixedDim">@color/md_theme_tertiaryFixedDim</item>
-        <item name="colorOnTertiaryFixedVariant">@color/md_theme_onTertiaryFixedVariant</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_onTertiaryFixedVariant
+        </item>
         <item name="colorSurfaceDim">@color/md_theme_surfaceDim</item>
         <item name="colorSurfaceBright">@color/md_theme_surfaceBright</item>
-        <item name="colorSurfaceContainerLowest">@color/md_theme_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLowest">@color/md_theme_surfaceContainerLowest
+        </item>
         <item name="colorSurfaceContainerLow">@color/md_theme_surfaceContainerLow</item>
         <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
-        <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
-    </style>
-
-    <!-- Base application theme. -->
-    <style name="Base.Theme.ADFJMG1" parent="Theme.Material3.DayNight">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <!-- <item name="colorPrimary">@color/miAzul</item> -->
-        <!-- <item name="colorOnPrimary">#FFFFFF</item> -->
-        <!-- para cambiar a nivel global el fondo de pantalla-->
-        <!-- <item name="android:windowBackground">@color/miAzul</item> -->
-    </style>
-
-    <style name="Theme.ADFJMG1" parent="Base.Theme.ADFJMG1" />
-    <style name="Theme.ADFJMG1.SinBarra" parent="Theme.Material3.DayNight.NoActionBar" />
-
-    <!-- res/values/styles.xml -->
-    <style name="FuenteMenuLateral" parent="TextAppearance.AppCompat.Body1">
-        <item name="fontFamily">@font/bbhfont</item>
+        <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest
+        </item>
     </style>
 </resources>

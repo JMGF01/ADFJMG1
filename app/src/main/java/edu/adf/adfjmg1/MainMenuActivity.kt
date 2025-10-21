@@ -1,23 +1,31 @@
 package edu.adf.adfjmg1
 
 import android.Manifest
+import android.animation.ObjectAnimator
 import android.annotation.TargetApi
 import android.content.ComponentName
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewTreeObserver
+import android.view.animation.AnticipateInterpolator
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.doOnEnd
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.work.Constraints
@@ -89,9 +97,15 @@ import java.util.concurrent.TimeUnit
  * //TODO CalendarPicker y TimePicker
  * //TODO firma y PUBLICAR APPS
  * //TODO themebuilder material / colores / diseñar el tema
- * //TODO proyecto API MAPA no de google con consulta al API de clima
+ * //TODO proyecto API MAPA no de google con consulta al API de clima en varios módulos
  * //TODO FLOW  vs LiveData
+ * //TODO bLUETHOHT¿¿ // NFC dni??
+ * //TODO VISTAS JETPACK COMPOSE
+ * //TODO splash screen - pantalla de inicio
+ * //TODO transiones / animaciones
+ * //TODO APp shortcuts
  */
+
 class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var drawerLayout: DrawerLayout
@@ -108,12 +122,24 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme) // Actualizamos el tema al tema normal (eliminamos el usado para la splash screen en versiones anteriores)
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
         setContentView(R.layout.activity_main_menu)
 
 //        this.drawerLayout =  findViewById<DrawerLayout>(R.id.drawer)
 //        this.navigationView = findViewById<NavigationView>(R.id.navigationView)
+
+        //VER COMENTARIOS estas dos funciones sobre Splash Screen
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+        {
+            Log.d(Constantes.ETIQUETA_LOG, "Estoy en V12 o superior")
+            retardoModerno()
+        } else {
+            Log.d(Constantes.ETIQUETA_LOG, "Estoy en V12 o superior")
+            retardoAntiguo()
+            animacionSalidaSplash()
+        }
 
         val ficherop = getSharedPreferences("ajustes", MODE_PRIVATE)
         val inicio_auto = ficherop.getBoolean("INICIO_AUTO", false)
@@ -264,6 +290,10 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 //        val intent = Intent(this, ImcActivity::class.java)
 //        startActivity(intent)
 
+        //dibujamos con fuente iconográfica
+        val fuente = Typeface.createFromAsset(assets, "fuentepatas.ttf")
+        val mensaje = findViewById<TextView>(R.id.logopatas)
+        mensaje.typeface = fuente
     }
 
 //    fun intentCompartir()
@@ -507,6 +537,83 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+    }
+
+    /**
+    Por defecto, cuando ya se ha dibujado la Actividad Principal, la Splash Screen
+    desaparece. Sin emabargo, al programar esta función Predraw no se pinta ningún
+    fotograma, hasta que esta función no devuelta true. Por ejemplo
+    en este caso, estamos causando un retardo de 6 segundos y hasta que no acabe
+    la actividad no empieza a pintarse y mientras, se ve sólo la Splash Screen
+     */
+    fun retardoAntiguo ()
+    {
+        // Set up an OnPreDrawListener to the root view.
+        //OJO android.R.id.content apunta al FrameLayout que contiene toda la interfaz de tu Activity.
+        //Ese content existe siempre, todos nuestros layouts montan en este Frame y sigue estando en JetPack Compose
+        val content = findViewById<View>(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    // Check whether the initial data is ready.
+                    Thread.sleep(6000)
+                    return if (true) {
+                        // The content is ready. Start drawing.
+                        content.viewTreeObserver.removeOnPreDrawListener(this)
+                        true
+                    } else {
+                        // The content isn't ready. Suspend.
+                        false
+                    }
+                }
+            })
+    }
+
+    fun retardoModerno ()
+    {
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition {
+            Thread.sleep(5000)
+            true }
+    }
+
+    /**
+     * La salidad de la SplashScreen, puede ser animada. De modo, que podemos
+     * definir un listener al finalizar su tiempo y cargar una animación
+     * como ésta
+     */
+    fun animacionSalidaSplash ()
+    {
+        //sólo para versiones anteriores
+        //también podría obtener la instancia con val splashScreen = installSplashScreen()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            splashScreen.setOnExitAnimationListener { splashScreenView ->
+                // Create your custom animation.
+                val slideUp = ObjectAnimator.ofFloat(
+                    splashScreenView,
+                    View.TRANSLATION_X,
+                    0f,
+                    -splashScreenView.width.toFloat()
+                )
+                slideUp.interpolator = AnticipateInterpolator()
+                slideUp.duration = 20000L
+
+                // Call SplashScreenView.remove at the end of your custom animation.
+                slideUp.doOnEnd { splashScreenView.remove() }
+
+                // Run your animation.
+                slideUp.start()
+            }
+        }
+        /*
+        * splashScreen.setOnExitAnimationListener { splashScreenView ->
+    splashScreenView.iconView.animate()
+        .alpha(0f)
+        .setDuration(300L)
+        .withEndAction {
+            splashScreenView.remove()
+        }
+}*/
     }
 
 }

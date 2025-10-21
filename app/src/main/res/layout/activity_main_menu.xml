@@ -16,6 +16,7 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/cabecera_menu_desplegable"
         app:menu="@menu/menu_lateral"
+        app:itemTextAppearance="@style/FuenteMenuLateral"
         />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -43,6 +43,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        // debug {
+        //     buildConfigField("Boolean", "ROOM_LOGGING", "true")
+        // }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -54,6 +58,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -79,6 +84,7 @@ dependencies {
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
 //    implementation(libs.firebase.auth.ktx) //Da error al hacer el build.gradle si se utiliza
+    implementation(libs.androidx.core.splashscreen)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

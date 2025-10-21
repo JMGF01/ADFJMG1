@@ -31,5 +31,6 @@
     <string name="imc_menuSalir">SALIR</string>
     <string name="imc_menuLimpiar">LIMPIAR</string>
     <string name="visita_web">VISITA WEB</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps" translatable="false">MapsActivity</string>
+    <string name="logopatas" translatable="false">\u0061 \u0064 \u0066</string>
 </resources>
