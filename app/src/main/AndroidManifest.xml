@@ -61,6 +61,21 @@
         android:theme="@style/Theme.ADFJMG1"
         tools:targetApi="31">
         <activity
+            android:name=".animaciones.AnimationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".animaciones.TransitionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".animaciones.AndroidGrandeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".animaciones.AndroidPequeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".animaciones.RippleYDesaparecerActivity"
+            android:exported="false" />
+        <activity
             android:name=".googleauth.GoogleAuthActivity"
             android:exported="false" />
         <activity
@@ -260,9 +275,9 @@
             android:exported="false"
             android:label="@string/titulo_actividad_suma" />
         <activity
-            android:theme="@style/Theme.App.Starting"
             android:name=".MainMenuActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.App.Starting">
 
             <!-- si quito esto, el intent-filter, la app se instala pero no se ve en el escritorio -->
             <intent-filter>

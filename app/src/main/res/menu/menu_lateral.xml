@@ -74,6 +74,30 @@
             android:title="FORMULARIO"
             android:orderInCategory="11"
             />
+
+        <item
+            android:id="@+id/menuRIPPLE"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="RIPPLE"
+            android:orderInCategory="34"
+            />
+
+        <item
+            android:id="@+id/menuTransicion"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="TRANSICION"
+            android:orderInCategory="35"
+            />
+
+        <item
+            android:id="@+id/menuAnimacion"
+            android:icon="@drawable/outline_arrow_forward_ios_24"
+            app:showAsAction="always"
+            android:title="ANIMACION"
+            android:orderInCategory="36"
+            />
     </menu>
 </item>
 

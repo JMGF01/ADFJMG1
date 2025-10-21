@@ -38,6 +38,9 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import edu.adf.adfjmg1.alarma.AjusteAlarmaActivity
 import edu.adf.adfjmg1.alarma.GestorAlarma
+import edu.adf.adfjmg1.animaciones.AndroidPequeActivity
+import edu.adf.adfjmg1.animaciones.AnimationActivity
+import edu.adf.adfjmg1.animaciones.RippleYDesaparecerActivity
 import edu.adf.adfjmg1.authfirebase.MenuAuthActivity
 import edu.adf.adfjmg1.basedatos.BaseDatosActivity
 import edu.adf.adfjmg1.biometrico.BioActivity
@@ -122,7 +125,9 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         setTheme(R.style.AppTheme) // Actualizamos el tema al tema normal (eliminamos el usado para la splash screen en versiones anteriores)
+
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
         setContentView(R.layout.activity_main_menu)
@@ -253,6 +258,9 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 R.id.menuLogin -> Intent(this, MenuAuthActivity::class.java)
                 R.id.menuBBDD -> Intent(this, InsertarClientesFirebaseActivity::class.java)
                 R.id.menuGoogleAUTH -> Intent(this, GoogleAuthActivity::class.java)
+                R.id.menuRIPPLE -> Intent(this, RippleYDesaparecerActivity::class.java)
+                R.id.menuTransicion -> Intent(this, AndroidPequeActivity::class.java)
+                R.id.menuAnimacion -> Intent(this, AnimationActivity::class.java)
 //                else -> Intent(this, ImcActivity::class.java)
                 else -> Intent(this, VersionActivity::class.java)
             }
@@ -556,7 +564,8 @@ class MainMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     // Check whether the initial data is ready.
-                    Thread.sleep(6000)
+//                    Thread.sleep(6000)
+                      Thread.sleep(500)
                     return if (true) {
                         // The content is ready. Start drawing.
                         content.viewTreeObserver.removeOnPreDrawListener(this)
